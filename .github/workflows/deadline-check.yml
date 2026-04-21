@@ -26,10 +26,6 @@ jobs:
         id: scan
         run: python scripts/check_deadlines.py --data data/conferences.json --candidates data/deadline-candidates.json --report deadline-report.md
 
-      - name: Compare ATHENE radar
-        id: athene
-        run: python scripts/check_athene.py --data data/conferences.json --candidates data/athene-candidates.json --report athene-report.md
-
       - name: Upload deadline report
         if: always()
         uses: actions/upload-artifact@v4
@@ -38,17 +34,9 @@ jobs:
           path: |
             deadline-report.md
             data/deadline-candidates.json
-            athene-report.md
-            data/athene-candidates.json
 
       - name: Open review issue
         if: steps.scan.outputs.has_candidates == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh issue create --title "Conference deadline check $(date -u +%Y-%m-%d)" --body-file deadline-report.md
-
-      - name: Open ATHENE review issue
-        if: steps.athene.outputs.has_candidates == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh issue create --title "ATHENE radar review $(date -u +%Y-%m-%d)" --body-file athene-report.md

@@ -16,7 +16,6 @@ Each conference entry can include:
 - conference dates
 - location
 - website and CFP links
-- rank, when useful
 - notes about why the venue is relevant
 
 ## Research Areas
@@ -44,19 +43,6 @@ Anyone with repository access can update that file directly. The app also has an
 Use ISO dates (`YYYY-MM-DD`) for deadlines and other sortable date fields.
 
 For venues with multiple deadlines, such as PETS/PoPETs issues or multi-cycle security conferences, use `deadline_entries`. The app shows the next upcoming deadline automatically.
-
-## Views And Filters
-
-The app supports card and table views. Cards are better for browsing, while the table view is better for comparing deadlines quickly.
-
-The summary counters can be used as quick filters:
-
-- `all` shows every matching conference
-- `open` shows conferences with future deadlines
-- `review` shows entries that may need attention, such as expected deadlines, TBA deadlines, or old yearly CFP links
-- `closed` shows conferences whose current deadline has passed
-
-The sidebar can filter by research area, deadline month, venue type, and rank. Results can be sorted by submission deadline, event date, name, or search relevance.
 
 ## Deadline Checks
 
@@ -90,18 +76,6 @@ If the checker finds a possible different deadline, or if a page cannot be check
 
 The checker is useful for catching changes, but it is not meant to be a fully automatic source of truth. Some conference pages are difficult to parse, especially pages that use PDFs, JavaScript-rendered dates, old CFP archives, missing years, or multiple submission rounds.
 
-### ATHENE Comparison
-
-The workflow also compares our local data with ATHENE's public conference radar:
-
-```text
-https://www.athene-center.de/en/research/cfp
-```
-
-ATHENE is used as a discovery and sanity-check source only. The comparison script looks for relevant-looking conferences, possible newer deadlines, and possible next-year cycles that are not yet reflected locally.
-
-It opens a review issue when it finds candidates, but it does not update `data/conferences.json` automatically. Official conference CFP pages remain the source of truth.
-
 ## Calendar Reminders
 
 Conference cards with an exact deadline include an `Add deadline` button. It downloads a calendar event with reminders 30 days, 14 days, and 3 days before the deadline.
@@ -112,5 +86,4 @@ Conference cards with an exact deadline include an `Add deadline` button. It dow
 - Add more conferences.
 - Keep CFP links up to date, especially when a conference moves to a new yearly website.
 - Add missing notification dates and conference dates where possible.
-- Review ATHENE comparison issues and decide which candidates belong in the PEPSys radar.
 - Periodically review automated deadline-check issues and update `data/conferences.json` when needed.

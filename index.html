@@ -16,21 +16,13 @@
         </div>
       </div>
       <div class="summary-strip" aria-label="Conference summary">
-        <button class="summary-card active" type="button" data-status="all" aria-pressed="true">
+        <button id="summaryAllButton" class="summary-card active" type="button" aria-pressed="true">
           <strong id="summaryTotal">0</strong>
-          <span>all</span>
+          <span>matching</span>
         </button>
-        <button class="summary-card" type="button" data-status="open" aria-pressed="false">
-          <strong id="summaryOpen">0</strong>
-          <span>open</span>
-        </button>
-        <button class="summary-card" type="button" data-status="review" aria-pressed="false">
-          <strong id="summaryReview">0</strong>
-          <span>review</span>
-        </button>
-        <button class="summary-card" type="button" data-status="closed" aria-pressed="false">
-          <strong id="summaryClosed">0</strong>
-          <span>closed</span>
+        <button id="summaryUpcomingButton" class="summary-card" type="button" aria-pressed="false">
+          <strong id="summaryUpcoming">0</strong>
+          <span>upcoming</span>
         </button>
       </div>
     </header>
@@ -63,17 +55,9 @@
           </label>
 
           <label class="field">
-            <span>Rank</span>
-            <select id="rankFilter">
-              <option value="">All ranks</option>
-            </select>
-          </label>
-
-          <label class="field">
             <span>Sort</span>
             <select id="sortSelect">
               <option value="deadline">Deadline</option>
-              <option value="event">Event date</option>
               <option value="name">Name</option>
               <option value="relevance">Relevance</option>
             </select>
@@ -207,7 +191,6 @@
             <h2></h2>
           </div>
         </div>
-        <div class="status-badges"></div>
         <div class="deadline-block">
           <span class="date-chip"></span>
           <span class="days-chip"></span>
