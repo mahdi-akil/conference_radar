@@ -1,4 +1,5 @@
 const DATA_URL = "data/conferences.json";
+const VIEW_STORAGE_KEY = "conference-radar-view";
 const STOP_WORDS = new Set(["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with"]);
 const CORE_AREAS = [
   { value: "privacy", label: "Privacy", aliases: ["privacy", "data protection", "gdpr", "identity", "anonymity"] },
@@ -12,6 +13,7 @@ const today = startOfDay(new Date());
 const state = {
   conferences: [],
   filtered: [],
+  view: loadSavedView(),
 };
 
 const els = {
@@ -20,6 +22,7 @@ const els = {
   month: document.querySelector("#monthFilter"),
   type: document.querySelector("#typeFilter"),
   sort: document.querySelector("#sortSelect"),
+  viewButtons: document.querySelectorAll(".view-toggle"),
   reset: document.querySelector("#resetButton"),
   results: document.querySelector("#results"),
   template: document.querySelector("#conferenceTemplate"),
@@ -59,6 +62,15 @@ function bindEvents() {
     input.addEventListener("input", applyFilters);
   });
 
+  els.viewButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      state.view = button.dataset.view === "table" ? "table" : "cards";
+      saveView(state.view);
+      updateViewButtons();
+      renderResults(state.filtered);
+    });
+  });
+
   els.reset.addEventListener("click", () => {
     els.search.value = "";
     els.topic.value = "";
@@ -68,6 +80,23 @@ function bindEvents() {
     applyFilters();
   });
 
+  updateViewButtons();
+}
+
+function loadSavedView() {
+  try {
+    return localStorage.getItem(VIEW_STORAGE_KEY) === "table" ? "table" : "cards";
+  } catch {
+    return "cards";
+  }
+}
+
+function saveView(view) {
+  try {
+    localStorage.setItem(VIEW_STORAGE_KEY, view);
+  } catch {
+    // The view switch still works if the browser blocks local storage.
+  }
 }
 
 function bindAdminHelper() {
@@ -294,12 +323,19 @@ function renderSummary(conferences) {
 
 function renderResults(conferences) {
   els.results.replaceChildren();
+  els.results.classList.toggle("table-view", state.view === "table");
+  els.results.classList.toggle("card-view", state.view !== "table");
 
   if (!conferences.length) {
     const empty = document.createElement("div");
     empty.className = "empty-state";
     empty.textContent = "No conferences match the current filters.";
     els.results.appendChild(empty);
+    return;
+  }
+
+  if (state.view === "table") {
+    renderTableResults(conferences);
     return;
   }
 
@@ -331,6 +367,101 @@ function renderResults(conferences) {
     setLink(card.querySelector(".cfp-link"), conference.cfp_url || conference.website_url);
     setCalendarButton(card.querySelector(".calendar-button"), conference);
     els.results.appendChild(node);
+  });
+}
+
+function renderTableResults(conferences) {
+  const shell = document.createElement("div");
+  shell.className = "table-shell";
+
+  const table = document.createElement("table");
+  table.className = "conference-table";
+
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  ["Deadline", "Days", "Venue", "Areas", "Location", "Conference", "Links"].forEach((heading) => {
+    const th = document.createElement("th");
+    th.scope = "col";
+    th.textContent = heading;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+
+  const tbody = document.createElement("tbody");
+  conferences.forEach((conference) => {
+    const row = document.createElement("tr");
+
+    const deadlineCell = tableCell("deadline-cell");
+    const deadline = document.createElement("span");
+    deadline.className = "table-date";
+    deadline.textContent = formatDeadline(conference);
+    deadlineCell.appendChild(deadline);
+
+    const daysCell = tableCell();
+    const days = document.createElement("span");
+    days.className = `table-days ${dayClass(conference.deadlineDate)}`;
+    days.textContent = formatDays(conference.deadlineDate);
+    daysCell.appendChild(days);
+
+    const venueCell = tableCell("venue-cell");
+    const acronym = document.createElement("span");
+    acronym.className = "table-acronym";
+    acronym.textContent = conference.acronym || "Conference";
+    const name = document.createElement("span");
+    name.className = "table-name";
+    name.textContent = conference.name;
+    venueCell.append(acronym, name);
+
+    const areasCell = tableCell();
+    areasCell.textContent = (conference.areas || []).map(toTitle).join(", ") || "TBA";
+
+    const locationCell = tableCell();
+    locationCell.textContent = conference.location || "TBA";
+
+    const dateCell = tableCell();
+    dateCell.textContent = conference.conference_dates || "TBA";
+
+    const linksCell = tableCell("table-actions");
+    const calendarButton = document.createElement("button");
+    calendarButton.className = "calendar-button compact";
+    calendarButton.type = "button";
+    calendarButton.textContent = "Add deadline";
+    setCalendarButton(calendarButton, conference);
+    linksCell.appendChild(calendarButton);
+    appendTableLink(linksCell, "Website", conference.website_url);
+    appendTableLink(linksCell, "CFP", conference.cfp_url || conference.website_url);
+
+    row.append(deadlineCell, daysCell, venueCell, areasCell, locationCell, dateCell, linksCell);
+    tbody.appendChild(row);
+  });
+
+  table.append(thead, tbody);
+  shell.appendChild(table);
+  els.results.appendChild(shell);
+}
+
+function tableCell(className = "") {
+  const cell = document.createElement("td");
+  if (className) cell.className = className;
+  return cell;
+}
+
+function appendTableLink(container, label, url) {
+  if (!url) return;
+  const link = document.createElement("a");
+  link.className = "text-link";
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noreferrer";
+  link.textContent = label;
+  container.appendChild(link);
+}
+
+function updateViewButtons() {
+  els.viewButtons.forEach((button) => {
+    const isActive = button.dataset.view === state.view;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
   });
 }
 

@@ -395,6 +395,49 @@ main {
   color: var(--ink);
 }
 
+.view-field {
+  align-self: end;
+}
+
+.segmented-control {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-height: 42px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.view-toggle {
+  appearance: none;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 10px;
+  font-weight: 850;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+.view-toggle:last-child {
+  border-right: 0;
+}
+
+.view-toggle:hover,
+.view-toggle.active {
+  background: var(--graphite);
+  color: white;
+}
+
+.view-toggle:focus {
+  outline: 3px solid rgba(11, 129, 123, 0.2);
+  outline-offset: -3px;
+}
+
 .dialog-actions {
   display: flex;
   flex-wrap: wrap;
@@ -413,6 +456,10 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 16px;
+}
+
+.results.table-view {
+  grid-template-columns: 1fr;
 }
 
 .conference-card {
@@ -569,6 +616,12 @@ main {
   white-space: nowrap;
 }
 
+.calendar-button.compact {
+  min-height: 30px;
+  padding: 5px 9px;
+  font-size: 0.82rem;
+}
+
 .calendar-button[hidden] {
   display: none;
 }
@@ -591,6 +644,118 @@ main {
   padding: 28px;
   text-align: center;
   color: var(--muted);
+}
+
+.table-shell {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow);
+}
+
+.conference-table {
+  width: 100%;
+  min-width: 960px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.conference-table th,
+.conference-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 12px 13px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.conference-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f7f9f8;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.conference-table tbody tr:hover {
+  background: #f7fbfa;
+}
+
+.conference-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.deadline-cell {
+  min-width: 155px;
+}
+
+.table-date {
+  display: block;
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.table-days {
+  display: inline-flex;
+  min-width: 76px;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--teal-quiet);
+  color: #075c58;
+  padding: 5px 9px;
+  font-size: 0.78rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.table-days.soon {
+  background: #f5ead2;
+  color: #704d0e;
+}
+
+.table-days.closed {
+  background: #f1dddd;
+  color: #842f2f;
+}
+
+.venue-cell {
+  min-width: 240px;
+}
+
+.table-acronym,
+.table-name {
+  display: block;
+}
+
+.table-acronym {
+  color: var(--teal);
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.table-name {
+  margin-top: 3px;
+  color: var(--ink);
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.table-actions {
+  min-width: 190px;
+}
+
+.table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  align-items: center;
 }
 
 @media (max-width: 900px) {
@@ -621,6 +786,10 @@ main {
 
   .field.wide {
     grid-column: 1 / -1;
+  }
+
+  .view-field {
+    align-self: stretch;
   }
 
   .admin-open-button {
@@ -665,5 +834,9 @@ main {
 
   .results {
     grid-template-columns: 1fr;
+  }
+
+  .conference-table {
+    min-width: 820px;
   }
 }
