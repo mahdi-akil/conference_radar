@@ -1,0 +1,42 @@
+name: Deadline check
+
+on:
+  schedule:
+    - cron: "15 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-deadlines:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scan CFP pages
+        id: scan
+        run: python scripts/check_deadlines.py --data data/conferences.json --candidates data/deadline-candidates.json --report deadline-report.md
+
+      - name: Upload deadline report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deadline-check-report
+          path: |
+            deadline-report.md
+            data/deadline-candidates.json
+
+      - name: Open review issue
+        if: steps.scan.outputs.has_candidates == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue create --title "Conference deadline check $(date -u +%Y-%m-%d)" --body-file deadline-report.md

@@ -1,0 +1,1613 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-04-21",
+  "conferences": [
+    {
+      "id": "iwpe-2026",
+      "name": "International Workshop on Privacy Engineering",
+      "acronym": "IWPE",
+      "type": "workshop",
+      "topics": [
+        "privacy",
+        "privacy engineering",
+        "security",
+        "data protection"
+      ],
+      "keywords": [
+        "privacy by design",
+        "privacy requirements",
+        "privacy risk",
+        "PETs",
+        "compliance"
+      ],
+      "submission_deadline": "2026-02-26",
+      "expected_deadline_months": [
+        "february",
+        "march"
+      ],
+      "deadline_kind": "scientific paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-03-31",
+      "conference_dates": "2026-07-06",
+      "expected_conference_months": [
+        "june",
+        "july"
+      ],
+      "location": "Lisbon, Portugal",
+      "website_url": "https://www.iwpe.info/",
+      "cfp_url": "https://www.iwpe.info/paper-publications-deadlines.html",
+      "description": "Focused privacy engineering venue, co-located with IEEE EuroS&P 2026.",
+      "rank": "",
+      "notes": "Strong fit for engineering, requirements, DPIA, PET integration, compliance tooling.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "apf-2026",
+      "name": "Annual Privacy Forum",
+      "acronym": "APF",
+      "type": "conference",
+      "topics": [
+        "privacy",
+        "data protection",
+        "law",
+        "policy",
+        "privacy engineering"
+      ],
+      "keywords": [
+        "GDPR",
+        "AI",
+        "governance",
+        "business",
+        "law enforcement",
+        "Springer LNCS"
+      ],
+      "submission_deadline": "2026-04-22",
+      "expected_deadline_months": [
+        "april"
+      ],
+      "deadline_kind": "full paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-05-22",
+      "conference_dates": "2026-09-09 to 2026-09-10",
+      "expected_conference_months": [
+        "september"
+      ],
+      "location": "Salzburg, Austria",
+      "website_url": "https://privacyforum.eu/",
+      "cfp_url": "https://privacyforum.eu/callforpapers.html",
+      "description": "Interdisciplinary European privacy and data protection forum connecting research, policy, and practice.",
+      "rank": "",
+      "notes": "Community event, not only technical; especially relevant locally for Salzburg.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "privacy-symposium-2026",
+      "name": "Privacy and Data Governance Symposium",
+      "acronym": "Privacy Symposium",
+      "type": "conference",
+      "topics": [
+        "privacy",
+        "data protection",
+        "data governance",
+        "law",
+        "policy"
+      ],
+      "keywords": [
+        "GDPR",
+        "regulatory compliance",
+        "data governance",
+        "privacy engineering",
+        "Springer"
+      ],
+      "submission_deadline": "2025-11-28",
+      "expected_deadline_months": [
+        "november"
+      ],
+      "deadline_kind": "scientific paper",
+      "deadline_timezone": "",
+      "notification_date": "2026-01-19",
+      "conference_dates": "2026-04-20 to 2026-04-24",
+      "expected_conference_months": [
+        "april",
+        "may"
+      ],
+      "location": "Venice, Italy",
+      "website_url": "https://privacysymposium.org/",
+      "cfp_url": "https://privacysymposium.org/call-for-papers/",
+      "description": "Policy, regulation, compliance, and technology event with a scientific paper track.",
+      "rank": "",
+      "notes": "Community and governance oriented; useful for privacy regulation and compliance work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "cpdp-2026",
+      "name": "Computers, Privacy and Data Protection",
+      "acronym": "CPDP",
+      "type": "conference",
+      "topics": [
+        "privacy",
+        "data protection",
+        "digital rights",
+        "law",
+        "policy"
+      ],
+      "keywords": [
+        "digital governance",
+        "fundamental rights",
+        "civil society",
+        "panels",
+        "academic papers"
+      ],
+      "submission_deadline": "2026-01-31",
+      "expected_deadline_months": [
+        "january",
+        "february"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "CET",
+      "notification_date": "2026-03-27",
+      "conference_dates": "2026-05-20 to 2026-05-22",
+      "expected_conference_months": [
+        "may"
+      ],
+      "location": "Brussels, Belgium",
+      "website_url": "https://www.cpdpconferences.org/",
+      "cfp_url": "https://www.cpdpconferences.org/call-for-papers-2026",
+      "description": "Major multidisciplinary privacy, data protection, and digital rights conference.",
+      "rank": "",
+      "notes": "More legal/policy/community than classic CS proceedings, but very relevant for privacy groups.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "soups-2026",
+      "name": "Symposium on Usable Privacy and Security",
+      "acronym": "SOUPS",
+      "type": "symposium",
+      "topics": [
+        "usable security",
+        "usable privacy",
+        "privacy",
+        "security",
+        "HCI"
+      ],
+      "keywords": [
+        "human factors",
+        "user studies",
+        "organizational security",
+        "field studies",
+        "replication"
+      ],
+      "submission_deadline": "2026-02-19",
+      "expected_deadline_months": [
+        "february",
+        "may"
+      ],
+      "deadline_kind": "technical paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-05-19",
+      "conference_dates": "2026-08-23 to 2026-08-26",
+      "expected_conference_months": [
+        "august"
+      ],
+      "location": "Hannover, Germany",
+      "website_url": "https://soups.page/",
+      "cfp_url": "https://soups.page/cfp.html",
+      "description": "Primary venue for human-centered usable privacy and security research.",
+      "rank": "B",
+      "notes": "HCI-driven; posters/workshops had later 2026 deadlines than technical papers.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "pets-popets-2026",
+      "name": "Privacy Enhancing Technologies Symposium / Proceedings on Privacy Enhancing Technologies",
+      "acronym": "PETS/PoPETs",
+      "type": "symposium",
+      "topics": [
+        "privacy",
+        "privacy enhancing technologies",
+        "security",
+        "cryptography"
+      ],
+      "keywords": [
+        "anonymous communication",
+        "measurement",
+        "PETs",
+        "differential privacy",
+        "privacy attacks"
+      ],
+      "submission_deadline": "2026-05-31",
+      "deadline_entries": [
+        {
+          "label": "PoPETs 2027 Issue 1",
+          "date": "2026-05-31",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "PoPETs 2027 Issue 2",
+          "date": "2026-08-31",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "PoPETs 2027 Issue 3",
+          "date": "2026-11-30",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "PoPETs 2027 Issue 4",
+          "date": "2027-02-28",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        }
+      ],
+      "expected_deadline_months": [
+        "february",
+        "may",
+        "august",
+        "november"
+      ],
+      "deadline_kind": "journal issue paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-08-01",
+      "conference_dates": "PETS 2027 TBA",
+      "expected_conference_months": [
+        "july"
+      ],
+      "location": "TBA",
+      "website_url": "https://petsymposium.org/",
+      "cfp_url": "https://petsymposium.org/cfp26.php",
+      "description": "Premier privacy-enhancing technologies venue with four yearly PoPETs submission issues.",
+      "rank": "A",
+      "notes": "Crypto/privacy-heavy; four issue deadlines per volume. 2027 issue dates follow the official quarterly PoPETs pattern; replace with the official CFP 2027 URL when published.",
+      "auto_check": false,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "expected"
+    },
+    {
+      "id": "eurosp-2026",
+      "name": "IEEE European Symposium on Security and Privacy",
+      "acronym": "EuroS&P",
+      "type": "symposium",
+      "topics": [
+        "security",
+        "privacy",
+        "systems security",
+        "network security"
+      ],
+      "keywords": [
+        "SoK",
+        "applied security",
+        "IEEE",
+        "EuroS&P workshops"
+      ],
+      "submission_deadline": "2025-11-20",
+      "expected_deadline_months": [
+        "october",
+        "november"
+      ],
+      "deadline_kind": "full paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-03-05",
+      "conference_dates": "2026-07-06 to 2026-07-10",
+      "expected_conference_months": [
+        "june",
+        "july"
+      ],
+      "location": "Lisbon, Portugal",
+      "website_url": "https://eurosp2026.ieee-security.org/",
+      "cfp_url": "https://eurosp2026.ieee-security.org/cfp.html",
+      "description": "European flagship IEEE venue for security and privacy research.",
+      "rank": "A",
+      "notes": "Main 2026 deadline is closed; useful to track for the 2027 cycle.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ieee-sp-2026",
+      "name": "IEEE Symposium on Security and Privacy",
+      "acronym": "IEEE S&P",
+      "type": "symposium",
+      "topics": [
+        "security",
+        "privacy",
+        "systems security",
+        "network security"
+      ],
+      "keywords": [
+        "Oakland",
+        "IEEE",
+        "top-tier security",
+        "security and privacy workshops"
+      ],
+      "submission_deadline": "2025-11-13",
+      "expected_deadline_months": [
+        "june",
+        "november"
+      ],
+      "deadline_kind": "cycle 2 full paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-01-22",
+      "conference_dates": "2026-05-18 to 2026-05-21",
+      "expected_conference_months": [
+        "may"
+      ],
+      "location": "San Francisco, CA, USA",
+      "website_url": "https://www.ieee-security.org/TC/SP2026/",
+      "cfp_url": "https://www.ieee-security.org/TC/SP2026/cfpapers.html",
+      "description": "Flagship IEEE security and privacy research conference.",
+      "rank": "A*",
+      "notes": "Very crypto/security-heavy and highly selective; two annual submission cycles.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ifip-summer-school-2026",
+      "name": "IFIP Summer School on Privacy and Identity Management",
+      "acronym": "IFIP Summer School",
+      "type": "summer school",
+      "topics": [
+        "privacy",
+        "identity management",
+        "data protection",
+        "security",
+        "PhD"
+      ],
+      "keywords": [
+        "doctoral",
+        "summer school",
+        "identity",
+        "interdisciplinary",
+        "Springer"
+      ],
+      "submission_deadline": "2026-04-30",
+      "expected_deadline_months": [
+        "april",
+        "july",
+        "september"
+      ],
+      "deadline_kind": "abstract",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-06-05",
+      "conference_dates": "2026-08-10 to 2026-08-14",
+      "expected_conference_months": [
+        "august"
+      ],
+      "location": "Leuven, Belgium",
+      "website_url": "https://ifip-summerschool.github.io/",
+      "cfp_url": "https://ifip-summerschool.github.io/important_dates/",
+      "description": "Privacy and identity management summer school, especially useful for PhD researchers.",
+      "rank": "",
+      "notes": "Full paper deadline is 2026-07-31; revised full paper deadline is 2026-09-25.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "dpm",
+      "name": "International Workshop on Data Privacy Management",
+      "acronym": "DPM",
+      "type": "workshop",
+      "topics": [
+        "privacy",
+        "data protection",
+        "privacy management",
+        "security assurance"
+      ],
+      "keywords": [
+        "privacy policies",
+        "data management",
+        "privacy engineering",
+        "security assurance"
+      ],
+      "submission_deadline": "",
+      "expected_deadline_months": [
+        "june"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "September",
+      "expected_conference_months": [
+        "september"
+      ],
+      "location": "Varies",
+      "website_url": "https://link.springer.com/conference/dpm",
+      "cfp_url": "https://link.springer.com/conference/dpm",
+      "description": "Workshop series on data privacy management, often relevant for privacy policy and assurance work.",
+      "rank": "",
+      "notes": "No current 2026 CFP found during seeding; keep as a manual follow-up item.",
+      "auto_check": false,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "expected"
+    },
+    {
+      "id": "usenix-security-2026",
+      "name": "USENIX Security Symposium",
+      "acronym": "USENIX Security",
+      "type": "symposium",
+      "topics": [
+        "security",
+        "privacy",
+        "systems security",
+        "network security"
+      ],
+      "keywords": [
+        "systems",
+        "operating systems",
+        "cloud",
+        "web security",
+        "privacy"
+      ],
+      "submission_deadline": "2026-02-05",
+      "expected_deadline_months": [
+        "february",
+        "may",
+        "september"
+      ],
+      "deadline_kind": "cycle 2 paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-05-14",
+      "conference_dates": "2026-08-12 to 2026-08-14",
+      "expected_conference_months": [
+        "august"
+      ],
+      "location": "Baltimore, MD, USA",
+      "website_url": "https://www.usenix.org/conference/usenixsecurity26",
+      "cfp_url": "https://www.usenix.org/conference/usenixsecurity26/call-for-papers",
+      "description": "Top venue for systems, network, software, and applied security and privacy.",
+      "rank": "A*",
+      "notes": "Multiple cycles in many years; monitor current CFP for next volume.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ndss-2026",
+      "name": "Network and Distributed System Security Symposium",
+      "acronym": "NDSS",
+      "type": "symposium",
+      "topics": [
+        "security",
+        "privacy",
+        "network security",
+        "distributed systems"
+      ],
+      "keywords": [
+        "Internet security",
+        "systems",
+        "network protocols",
+        "IoT",
+        "web security"
+      ],
+      "submission_deadline": "2025-08-06",
+      "expected_deadline_months": [
+        "april",
+        "august"
+      ],
+      "deadline_kind": "fall cycle paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2025-10-22",
+      "conference_dates": "2026-02-23 to 2026-02-27",
+      "expected_conference_months": [
+        "february"
+      ],
+      "location": "San Diego, CA, USA",
+      "website_url": "https://www.ndss-symposium.org/ndss2026/",
+      "cfp_url": "https://www.ndss-symposium.org/ndss2026/submissions/call-for-papers/",
+      "description": "Top practical network and distributed systems security venue.",
+      "rank": "A*",
+      "notes": "Two review cycles; good for networked privacy/security systems.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "acm-ccs-2026",
+      "name": "ACM Conference on Computer and Communications Security",
+      "acronym": "ACM CCS",
+      "type": "conference",
+      "topics": [
+        "security",
+        "privacy",
+        "systems security",
+        "cryptography"
+      ],
+      "keywords": [
+        "SIGSAC",
+        "applied security",
+        "communications security",
+        "open science",
+        "ethics"
+      ],
+      "submission_deadline": "2026-04-29",
+      "expected_deadline_months": [
+        "january",
+        "april"
+      ],
+      "deadline_kind": "cycle B full paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-07-17",
+      "conference_dates": "2026-11-15 to 2026-11-19",
+      "expected_conference_months": [
+        "november"
+      ],
+      "location": "The Hague, The Netherlands",
+      "website_url": "https://www.sigsac.org/ccs/CCS2026/",
+      "cfp_url": "https://www.sigsac.org/ccs/CCS2026/call-for/call-for-papers.html",
+      "description": "ACM SIGSAC flagship conference for computer and communications security.",
+      "rank": "A*",
+      "notes": "Cycle B abstract deadline is 2026-04-22; full paper deadline is 2026-04-29.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "asiaccs-2026",
+      "name": "ACM Asia Conference on Computer and Communications Security",
+      "acronym": "ASIACCS",
+      "type": "conference",
+      "topics": [
+        "security",
+        "privacy",
+        "systems security",
+        "network security"
+      ],
+      "keywords": [
+        "ACM",
+        "SoK",
+        "applied security",
+        "communications security"
+      ],
+      "submission_deadline": "2025-12-12",
+      "expected_deadline_months": [
+        "august",
+        "december"
+      ],
+      "deadline_kind": "cycle 2 paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-03-10",
+      "conference_dates": "2026-06-01 to 2026-06-05",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Bangalore, India",
+      "website_url": "https://asiaccs2026.cse.iitkgp.ac.in/",
+      "cfp_url": "https://asiaccs2026.cse.iitkgp.ac.in/call-for-papers/",
+      "description": "Strong ACM venue for real-world security and privacy research.",
+      "rank": "A",
+      "notes": "Two submission rounds; useful alternative to CCS/NDSS/USENIX/S&P.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "raid-2026",
+      "name": "International Symposium on Research in Attacks, Intrusions and Defenses",
+      "acronym": "RAID",
+      "type": "symposium",
+      "topics": [
+        "security",
+        "intrusion detection",
+        "malware",
+        "measurement"
+      ],
+      "keywords": [
+        "attacks",
+        "defenses",
+        "cyber threats",
+        "measurement studies",
+        "datasets"
+      ],
+      "submission_deadline": "2026-04-16",
+      "expected_deadline_months": [
+        "april"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-07-10",
+      "conference_dates": "2026-10-11 to 2026-10-14",
+      "expected_conference_months": [
+        "october"
+      ],
+      "location": "Lancaster, UK",
+      "website_url": "https://raid2026.org/",
+      "cfp_url": "https://raid2026.org/call.html",
+      "description": "Security venue focused on attacks, intrusions, defenses, malware, and measurement.",
+      "rank": "",
+      "notes": "Good fit for empirical security, threat measurement, and defense papers.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "acsac-2026",
+      "name": "Annual Computer Security Applications Conference",
+      "acronym": "ACSAC",
+      "type": "conference",
+      "topics": [
+        "security",
+        "privacy",
+        "applied security",
+        "usable security"
+      ],
+      "keywords": [
+        "applied security",
+        "cyber-physical systems",
+        "IoT",
+        "agentic systems",
+        "case studies"
+      ],
+      "submission_deadline": "2026-05-26",
+      "expected_deadline_months": [
+        "may"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-09-08",
+      "conference_dates": "2026",
+      "expected_conference_months": [
+        "december"
+      ],
+      "location": "TBA",
+      "website_url": "https://www.acsac.org/2026/",
+      "cfp_url": "https://www.acsac.org/2026/submissions/papers/",
+      "description": "Applied security conference with privacy, usable security, CPS/IoT, and real-world security topics.",
+      "rank": "B",
+      "notes": "Hard topic theme for 2026 includes security and privacy of agentic systems.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "csf-2026",
+      "name": "IEEE Computer Security Foundations Symposium",
+      "acronym": "CSF",
+      "type": "symposium",
+      "topics": [
+        "security",
+        "privacy",
+        "formal methods",
+        "cryptography",
+        "foundations"
+      ],
+      "keywords": [
+        "formal verification",
+        "information flow",
+        "security protocols",
+        "privacy foundations",
+        "SoK"
+      ],
+      "submission_deadline": "2026-01-29",
+      "expected_deadline_months": [
+        "january",
+        "july",
+        "october"
+      ],
+      "deadline_kind": "winter cycle paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-04-01",
+      "conference_dates": "2026-07-26 to 2026-07-29",
+      "expected_conference_months": [
+        "july"
+      ],
+      "location": "Lisbon, Portugal",
+      "website_url": "https://www.ieee-security.org/TC/CSF2026/",
+      "cfp_url": "https://www.ieee-security.org/TC/CSF2026/cfp.html",
+      "description": "Foundational security and privacy venue for rigorous models, proofs, protocols, and formal analysis.",
+      "rank": "A",
+      "notes": "Rolling yearly deadlines; good for formal privacy/security work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "nspw-2026",
+      "name": "New Security Paradigms Workshop",
+      "acronym": "NSPW",
+      "type": "workshop",
+      "topics": [
+        "security",
+        "privacy",
+        "usable security",
+        "socio-technical security"
+      ],
+      "keywords": [
+        "new paradigms",
+        "risk",
+        "threat modeling",
+        "security critique",
+        "human factors"
+      ],
+      "submission_deadline": "2026-04-30",
+      "expected_deadline_months": [
+        "april"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-06-30",
+      "conference_dates": "2026-09-27 to 2026-09-30",
+      "expected_conference_months": [
+        "september"
+      ],
+      "location": "Victoria, BC, Canada",
+      "website_url": "https://www.nspw.org/2026",
+      "cfp_url": "https://www.nspw.org/2026/cfp",
+      "description": "Small, discussion-heavy workshop for unconventional security and privacy ideas.",
+      "rank": "",
+      "notes": "Great for early, critical, socio-technical, or paradigm-shifting work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "smartgridcomm-2026",
+      "name": "IEEE International Conference on Smart Grid Communications, Control and Computing Technologies",
+      "acronym": "SmartGridComm",
+      "type": "conference",
+      "topics": [
+        "smart grids",
+        "security",
+        "privacy",
+        "cyber-physical systems",
+        "energy"
+      ],
+      "keywords": [
+        "critical infrastructure",
+        "communications",
+        "control",
+        "privacy and security",
+        "power systems"
+      ],
+      "submission_deadline": "2026-05-29",
+      "expected_deadline_months": [
+        "may"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "",
+      "notification_date": "2026-06-19",
+      "conference_dates": "2026-10-26 to 2026-10-29",
+      "expected_conference_months": [
+        "october"
+      ],
+      "location": "College Station, TX, USA",
+      "website_url": "https://sgc2026.ieee-smartgridcomm.org/",
+      "cfp_url": "https://sgc2026.ieee-smartgridcomm.org/",
+      "description": "Smart grid communications venue with a dedicated Privacy and Security symposium track.",
+      "rank": "",
+      "notes": "High relevance for smart grids, energy systems, privacy, security, and CPS. The official page renders dates in a way the simple checker misreads, so keep this manual for now.",
+      "auto_check": false,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "acm-eenergy-2026",
+      "name": "ACM International Conference on Future and Sustainable Energy Systems",
+      "acronym": "ACM e-Energy",
+      "type": "conference",
+      "topics": [
+        "smart grids",
+        "energy",
+        "privacy",
+        "security",
+        "cyber-physical systems"
+      ],
+      "keywords": [
+        "smart energy",
+        "sustainability",
+        "cybersecurity",
+        "resiliency",
+        "IoT",
+        "control"
+      ],
+      "submission_deadline": "2026-01-29",
+      "expected_deadline_months": [
+        "january",
+        "september"
+      ],
+      "deadline_kind": "winter full paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-03-17",
+      "conference_dates": "2026-06-22 to 2026-06-25",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Banff, Canada",
+      "website_url": "https://energy.acm.org/conferences/eenergy/2026/",
+      "cfp_url": "https://energy.acm.org/conferences/eenergy/2026/pages/cfp.php",
+      "description": "Energy-systems computing venue that explicitly includes privacy, cybersecurity, and smart-grid resilience.",
+      "rank": "",
+      "notes": "Good non-security-core venue for smart grid privacy/security work. The site blocks the simple checker, so verify manually or add a custom checker later.",
+      "auto_check": false,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ieee-isi-2026",
+      "name": "IEEE International Conference on Intelligence and Security Informatics",
+      "acronym": "IEEE ISI",
+      "type": "conference",
+      "topics": [
+        "security",
+        "AI security",
+        "cybersecurity",
+        "responsible AI"
+      ],
+      "keywords": [
+        "security informatics",
+        "large model security",
+        "responsible AI",
+        "cybersecurity"
+      ],
+      "submission_deadline": "2026-05-31",
+      "expected_deadline_months": [
+        "may"
+      ],
+      "deadline_kind": "regular paper",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "2026-08-12 to 2026-08-14",
+      "expected_conference_months": [
+        "august"
+      ],
+      "location": "Cambridge, UK",
+      "website_url": "https://ieee-isi.org/2026/",
+      "cfp_url": "https://ieee-isi.org/2026/contributions/call-for-papers/",
+      "description": "Security informatics venue with current emphasis on AI, cybersecurity, and responsible/security challenges.",
+      "rank": "",
+      "notes": "Relevant if the group works on AI security, responsible AI, or security analytics.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "acns-2026",
+      "name": "Applied Cryptography and Network Security",
+      "acronym": "ACNS",
+      "type": "conference",
+      "areas": [
+        "crypto",
+        "privacy",
+        "security"
+      ],
+      "topics": [
+        "applied cryptography",
+        "network security",
+        "privacy",
+        "security"
+      ],
+      "keywords": [
+        "cryptographic protocols",
+        "cybersecurity",
+        "privacy",
+        "real-world security"
+      ],
+      "submission_deadline": "2026-01-23",
+      "expected_deadline_months": [
+        "september",
+        "january"
+      ],
+      "deadline_kind": "cycle 2 paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-03-19",
+      "conference_dates": "2026-06-22 to 2026-06-25",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Stony Brook, NY, USA",
+      "website_url": "https://acns2026.github.io/",
+      "cfp_url": "https://acns2026.github.io/cfp.html",
+      "description": "Applied cryptography, cybersecurity, network security, and privacy conference with real-world emphasis.",
+      "rank": "",
+      "notes": "Good fit for applied crypto, privacy protocols, and network security work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "esorics-2026",
+      "name": "European Symposium on Research in Computer Security",
+      "acronym": "ESORICS",
+      "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "iot"
+      ],
+      "topics": [
+        "security",
+        "privacy",
+        "usable security",
+        "IoT",
+        "AI security"
+      ],
+      "keywords": [
+        "human-centered security",
+        "privacy-enhancing technologies",
+        "socio-technical security",
+        "Springer LNCS"
+      ],
+      "submission_deadline": "2026-01-09",
+      "expected_deadline_months": [
+        "january"
+      ],
+      "deadline_kind": "winter cycle paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-03-10",
+      "conference_dates": "2026-09-21 to 2026-09-25",
+      "expected_conference_months": [
+        "september"
+      ],
+      "location": "Rome, Italy",
+      "website_url": "https://sites.google.com/di.uniroma1.it/esorics2026/",
+      "cfp_url": "https://www.ieee-security.org/Calendar/cfps/cfp-ESORICS2026.html",
+      "description": "European computer security research venue with security, privacy, usable security, and socio-technical scope.",
+      "rank": "A",
+      "notes": "Good European venue for privacy/security work, especially usable and human-centered topics in 2026.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "secdev-2026",
+      "name": "IEEE Secure Development Conference",
+      "acronym": "SecDev",
+      "type": "conference",
+      "areas": [
+        "security",
+        "privacy"
+      ],
+      "topics": [
+        "secure development",
+        "software security",
+        "privacy engineering",
+        "security"
+      ],
+      "keywords": [
+        "build security in",
+        "secure systems",
+        "developer tooling",
+        "software engineering"
+      ],
+      "submission_deadline": "2026-01-29",
+      "expected_deadline_months": [
+        "january"
+      ],
+      "deadline_kind": "paper and tutorial",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "2026-07-05 to 2026-07-06",
+      "expected_conference_months": [
+        "july"
+      ],
+      "location": "Montreal, Canada",
+      "website_url": "https://conf.researchr.org/home/secdev-2026",
+      "cfp_url": "https://www.ieee-security.org/Calendar/cfps/cfp-SecDev2026.html",
+      "description": "Venue focused on methods, tools, and experience for building secure systems.",
+      "rank": "",
+      "notes": "Potentially useful for privacy engineering tooling and secure-by-design work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "acm-ieee-sec-2026",
+      "name": "ACM/IEEE Symposium on Edge Computing",
+      "acronym": "SEC",
+      "type": "symposium",
+      "areas": [
+        "energy",
+        "iot",
+        "security"
+      ],
+      "topics": [
+        "edge computing",
+        "IoT",
+        "security",
+        "smart energy",
+        "sustainability"
+      ],
+      "keywords": [
+        "edge",
+        "IoT hubs",
+        "smart energy",
+        "distributed systems",
+        "sustainable computing"
+      ],
+      "submission_deadline": "2026-05-01",
+      "expected_deadline_months": [
+        "may"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "",
+      "notification_date": "2026-07-29",
+      "conference_dates": "2026",
+      "expected_conference_months": [],
+      "location": "TBA",
+      "website_url": "https://acm-ieee-sec.org/2026/",
+      "cfp_url": "https://acm-ieee-sec.org/2026/call_for_papers.php",
+      "description": "Edge computing venue relevant for IoT, distributed infrastructure, smart energy, and security/privacy systems.",
+      "rank": "",
+      "notes": "Not a pure security venue, but relevant for IoT/edge/energy security and privacy systems.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "financial-cryptography-2026",
+      "name": "Financial Cryptography and Data Security",
+      "acronym": "FC",
+      "type": "conference",
+      "areas": [
+        "crypto",
+        "privacy",
+        "security"
+      ],
+      "topics": [
+        "financial cryptography",
+        "cryptography",
+        "privacy",
+        "security",
+        "blockchain"
+      ],
+      "keywords": [
+        "DeFi",
+        "digital cash",
+        "blockchain",
+        "zero-knowledge proofs",
+        "economics of security"
+      ],
+      "submission_deadline": "2025-09-20",
+      "expected_deadline_months": [
+        "september"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2025-11-24",
+      "conference_dates": "2026-03-02 to 2026-03-06",
+      "expected_conference_months": [
+        "march"
+      ],
+      "location": "St. Kitts",
+      "website_url": "https://fc26.ifca.ai/",
+      "cfp_url": "https://ifca.ai/fc26/cfp.html",
+      "description": "Cryptography, security, privacy, blockchain, and financial systems security venue.",
+      "rank": "B",
+      "notes": "Good for applied crypto, PETs, blockchain, DeFi, electronic payments, and security economics.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "aft-2026",
+      "name": "Advances in Financial Technologies",
+      "acronym": "AFT",
+      "type": "conference",
+      "areas": [
+        "crypto",
+        "security"
+      ],
+      "topics": [
+        "financial technology",
+        "cryptography",
+        "blockchain",
+        "security"
+      ],
+      "keywords": [
+        "digital currencies",
+        "DeFi",
+        "blockchains",
+        "cryptographic financial instruments"
+      ],
+      "submission_deadline": "2026-05-27",
+      "expected_deadline_months": [
+        "may"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-07-15",
+      "conference_dates": "2026-10-06 to 2026-10-09",
+      "expected_conference_months": [
+        "october"
+      ],
+      "location": "TBA",
+      "website_url": "https://aft.ifca.ai/aft26/",
+      "cfp_url": "https://aft.ifca.ai/aft26/CFP.html",
+      "description": "Financial technologies venue for digital currencies, blockchains, DeFi, and security analysis.",
+      "rank": "",
+      "notes": "Useful if the group touches blockchain, cryptographic finance, or decentralized systems.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "cbt-2026",
+      "name": "International Workshop on Cryptocurrencies and Blockchain Technology",
+      "acronym": "CBT",
+      "type": "workshop",
+      "areas": [
+        "crypto",
+        "privacy",
+        "security"
+      ],
+      "topics": [
+        "cryptocurrencies",
+        "blockchain",
+        "privacy",
+        "security",
+        "cryptography"
+      ],
+      "keywords": [
+        "DeFi",
+        "consensus",
+        "privacy-enhancing technologies",
+        "Layer 2",
+        "smart contracts"
+      ],
+      "submission_deadline": "2026-06-17",
+      "expected_deadline_months": [
+        "june"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "",
+      "notification_date": "2026-07-22",
+      "conference_dates": "2026-09-17",
+      "expected_conference_months": [
+        "september"
+      ],
+      "location": "Rome, Italy",
+      "website_url": "https://cbtworkshop.org/",
+      "cfp_url": "https://cbtworkshop.org/",
+      "description": "ESORICS-affiliated workshop on cryptocurrencies, blockchain technology, privacy, and security.",
+      "rank": "",
+      "notes": "Good smaller venue for blockchain privacy/security papers. The page lists month/day deadlines without years, so keep this manual for now.",
+      "auto_check": false,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "codaspy-2026",
+      "name": "ACM Conference on Data and Application Security and Privacy",
+      "acronym": "CODASPY",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "security"
+      ],
+      "topics": [
+        "data security",
+        "application security",
+        "privacy",
+        "access control"
+      ],
+      "keywords": [
+        "database security",
+        "privacy policies",
+        "authorization",
+        "data protection"
+      ],
+      "submission_deadline": "2026-01-02",
+      "expected_deadline_months": [
+        "december",
+        "january"
+      ],
+      "deadline_kind": "research paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-02-27",
+      "conference_dates": "2026-06-23 to 2026-06-25",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Frankfurt am Main, Germany",
+      "website_url": "https://www.codaspy.org/2026/",
+      "cfp_url": "https://codaspy.org/2026/cfp.html",
+      "description": "ACM venue for data security, application security, privacy, access control, and policy work.",
+      "rank": "",
+      "notes": "Good fit for privacy and data/application security papers.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "wisec-2026",
+      "name": "ACM Conference on Security and Privacy in Wireless and Mobile Networks",
+      "acronym": "WiSec",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "iot"
+      ],
+      "topics": [
+        "wireless security",
+        "mobile security",
+        "privacy",
+        "IoT",
+        "cyber-physical systems"
+      ],
+      "keywords": [
+        "smart devices",
+        "wireless privacy",
+        "location privacy",
+        "mobile platforms",
+        "sensor networks"
+      ],
+      "submission_deadline": "2026-03-03",
+      "deadline_entries": [
+        {
+          "label": "Second cycle",
+          "date": "2026-03-03",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Posters and demos",
+          "date": "2026-04-07",
+          "kind": "poster/demo submission",
+          "timezone": "AoE"
+        }
+      ],
+      "expected_deadline_months": [
+        "november",
+        "march",
+        "april"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-04-14",
+      "conference_dates": "2026-06-30 to 2026-07-03",
+      "expected_conference_months": [
+        "june",
+        "july"
+      ],
+      "location": "Saarbrucken, Germany",
+      "website_url": "https://wisec26.events.cispa.de/",
+      "cfp_url": "https://wisec26.events.cispa.de/call-for-papers/",
+      "description": "Security and privacy venue for wireless, mobile, IoT, and cyber-physical systems.",
+      "rank": "",
+      "notes": "Highly relevant for IoT, mobile privacy, location privacy, and wireless security.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ieee-cns-2026",
+      "name": "IEEE Conference on Communications and Network Security",
+      "acronym": "IEEE CNS",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "iot"
+      ],
+      "topics": [
+        "communications security",
+        "network security",
+        "privacy",
+        "wireless security"
+      ],
+      "keywords": [
+        "mobile security",
+        "network protocols",
+        "cybersecurity",
+        "secure communications"
+      ],
+      "submission_deadline": "2026-05-11",
+      "expected_deadline_months": [
+        "may"
+      ],
+      "deadline_kind": "technical paper",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "2026-09-14 to 2026-09-17",
+      "expected_conference_months": [
+        "september"
+      ],
+      "location": "Newark, DE, USA",
+      "website_url": "https://www.comsoc.org/conferences-events/ieee-conference-communications-and-network-security-2026",
+      "cfp_url": "https://www.comsoc.org/conferences-events/ieee-conference-communications-and-network-security-2026",
+      "description": "IEEE communications-oriented security venue for network, mobile, wireless, and communications security.",
+      "rank": "",
+      "notes": "Good for network and communications security/privacy work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ifip-sec-2026",
+      "name": "IFIP TC11 Information Security and Privacy Conference",
+      "acronym": "IFIP SEC",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "crypto",
+        "iot"
+      ],
+      "topics": [
+        "information security",
+        "privacy",
+        "applied cryptography",
+        "IoT security",
+        "cyber-physical systems"
+      ],
+      "keywords": [
+        "privacy-by-design",
+        "critical infrastructure",
+        "cloud security",
+        "human aspects",
+        "identity management"
+      ],
+      "submission_deadline": "2025-12-19",
+      "expected_deadline_months": [
+        "december"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-02-13",
+      "conference_dates": "2026-06-09 to 2026-06-11",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Perth, Australia",
+      "website_url": "https://ifipsec.org/",
+      "cfp_url": "https://ifipsec.org/cfp.html",
+      "description": "IFIP flagship information security and privacy conference with broad security, privacy, and ICT scope.",
+      "rank": "",
+      "notes": "Good broad security/privacy venue, including privacy-by-design, IoT security, and critical infrastructure.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "acisp-2026",
+      "name": "Australasian Conference on Information Security and Privacy",
+      "acronym": "ACISP",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "crypto",
+        "iot"
+      ],
+      "topics": [
+        "information security",
+        "privacy",
+        "cryptology",
+        "software security",
+        "network security"
+      ],
+      "keywords": [
+        "privacy and anonymity",
+        "blockchain",
+        "digital forensics",
+        "cyber-physical systems",
+        "machine learning security"
+      ],
+      "submission_deadline": "2026-02-26",
+      "deadline_entries": [
+        {
+          "label": "Round 1",
+          "date": "2025-11-27",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Round 2",
+          "date": "2026-02-26",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        }
+      ],
+      "expected_deadline_months": [
+        "november",
+        "february"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-04-16",
+      "conference_dates": "2026-07-06 to 2026-07-09",
+      "expected_conference_months": [
+        "july"
+      ],
+      "location": "Perth, Australia",
+      "website_url": "https://acisp.org/",
+      "cfp_url": "https://acisp.org/cfp.html",
+      "description": "Security and privacy conference covering cryptology, privacy, software security, forensics, and network security.",
+      "rank": "",
+      "notes": "Good Australasian security/privacy venue with crypto, privacy, and CPS/security tracks.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ifip-networking-2026",
+      "name": "IFIP Networking Conference",
+      "acronym": "IFIP Networking",
+      "type": "conference",
+      "areas": [
+        "security",
+        "iot",
+        "energy"
+      ],
+      "topics": [
+        "networking",
+        "network security",
+        "IoT",
+        "autonomous networking",
+        "energy-efficient networking"
+      ],
+      "keywords": [
+        "network security",
+        "privacy",
+        "IoT networks",
+        "wireless networking",
+        "AI-driven networking"
+      ],
+      "submission_deadline": "2026-02-28",
+      "expected_deadline_months": [
+        "february",
+        "march"
+      ],
+      "deadline_kind": "main track paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-04-08",
+      "conference_dates": "2026-05-24 to 2026-05-27",
+      "expected_conference_months": [
+        "may"
+      ],
+      "location": "Lugano, Switzerland",
+      "website_url": "https://networking.ifip.org/2026/",
+      "cfp_url": "https://networking.ifip.org/2026/index.php/calls/call-for-papers",
+      "description": "Networking venue with relevant network security, IoT, autonomous networking, and energy-efficient networking topics.",
+      "rank": "",
+      "notes": "Not a pure security venue, but useful for networked privacy/security systems and IoT work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "cnsm-2026",
+      "name": "International Conference on Network and Service Management",
+      "acronym": "CNSM",
+      "type": "conference",
+      "areas": [
+        "security",
+        "iot",
+        "energy"
+      ],
+      "topics": [
+        "network management",
+        "service management",
+        "network security",
+        "IoT",
+        "automation"
+      ],
+      "keywords": [
+        "agentic intelligence",
+        "cloud management",
+        "pervasive systems",
+        "network resilience",
+        "security management"
+      ],
+      "submission_deadline": "2026-06-15",
+      "expected_deadline_months": [
+        "june"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "",
+      "notification_date": "2026-08-26",
+      "conference_dates": "2026-10-26 to 2026-10-30",
+      "expected_conference_months": [
+        "october"
+      ],
+      "location": "Alcala de Henares, Spain",
+      "website_url": "https://www.cnsm-conf.org/2026/",
+      "cfp_url": "https://www.cnsm-conf.org/2026/cfp.html",
+      "description": "Network and service management venue relevant for security management, IoT, cloud, and resilient infrastructure.",
+      "rank": "",
+      "notes": "Useful for systems/security management and networked infrastructure work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ieee-icbc-2026",
+      "name": "IEEE International Conference on Blockchain and Cryptocurrency",
+      "acronym": "IEEE ICBC",
+      "type": "conference",
+      "areas": [
+        "crypto",
+        "privacy",
+        "security",
+        "iot"
+      ],
+      "topics": [
+        "blockchain",
+        "cryptocurrency",
+        "security",
+        "privacy",
+        "IoT"
+      ],
+      "keywords": [
+        "smart contracts",
+        "DeFi",
+        "distributed consensus",
+        "cryptocurrency forensics",
+        "blockchain privacy"
+      ],
+      "submission_deadline": "2026-01-07",
+      "expected_deadline_months": [
+        "january"
+      ],
+      "deadline_kind": "paper/poster",
+      "deadline_timezone": "",
+      "notification_date": "2026-03-18",
+      "conference_dates": "2026-06-01 to 2026-06-05",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Brisbane, Australia",
+      "website_url": "https://icbc2026.ieee-icbc.org/",
+      "cfp_url": "https://icbc2026.ieee-icbc.org/call-papers",
+      "description": "IEEE blockchain and cryptocurrency venue covering security, privacy, smart contracts, DeFi, and blockchain for IoT/CPS.",
+      "rank": "",
+      "notes": "Good crypto/security venue for blockchain, smart contracts, DeFi, and privacy work.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "chi-2026",
+      "name": "ACM CHI Conference on Human Factors in Computing Systems",
+      "acronym": "CHI",
+      "type": "conference",
+      "topics": [
+        "HCI",
+        "usable privacy",
+        "usable security",
+        "privacy"
+      ],
+      "keywords": [
+        "human factors",
+        "interaction design",
+        "user studies",
+        "security behavior",
+        "privacy behavior"
+      ],
+      "submission_deadline": "2025-09-11",
+      "expected_deadline_months": [
+        "september"
+      ],
+      "deadline_kind": "full paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-01-15",
+      "conference_dates": "2026-04-13 to 2026-04-17",
+      "expected_conference_months": [
+        "april"
+      ],
+      "location": "Barcelona, Spain",
+      "website_url": "https://chi2026.acm.org/",
+      "cfp_url": "https://chi2026.acm.org/authors/papers/",
+      "description": "Top HCI venue; relevant for usable privacy/security and human-centered data protection work.",
+      "rank": "",
+      "notes": "Not a security venue, but can be excellent for user-facing privacy/security research.",
+      "auto_check": true,
+      "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    }
+  ]
+}

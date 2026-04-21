@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conference Radar</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span>
+        </div>
+        <div>
+          <h1>Conference Radar</h1>
+          <p>Privacy, security, and systems venues worth watching.</p>
+        </div>
+      </div>
+      <div class="summary-strip" aria-label="Conference summary">
+        <div>
+          <strong id="summaryTotal">0</strong>
+          <span>shown</span>
+        </div>
+        <div>
+          <strong id="summaryUpcoming">0</strong>
+          <span>upcoming</span>
+        </div>
+        <div>
+          <strong id="summarySoon">0</strong>
+          <span>next 60 days</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="radar-shell" aria-label="Conference filters and results">
+        <aside class="filters" aria-label="Filters">
+          <label class="field wide">
+            <span>Search</span>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="smart grids September 2026">
+          </label>
+
+          <label class="field">
+            <span>Area</span>
+            <select id="topicFilter">
+              <option value="">All areas</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Deadline Month</span>
+            <input id="monthFilter" type="month">
+          </label>
+
+          <label class="field">
+            <span>Type</span>
+            <select id="typeFilter">
+              <option value="">All types</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Sort</span>
+            <select id="sortSelect">
+              <option value="deadline">Deadline</option>
+              <option value="name">Name</option>
+              <option value="relevance">Relevance</option>
+            </select>
+          </label>
+
+          <button id="resetButton" class="secondary-button has-symbol" data-symbol="reset" type="button">Reset filters</button>
+
+          <button id="addConferenceButton" class="admin-open-button has-symbol" data-symbol="plus" type="button">
+            <span>Add conference</span>
+          </button>
+        </aside>
+
+        <section id="results" class="results" aria-live="polite"></section>
+      </section>
+    </main>
+
+    <dialog id="addConferenceDialog" class="admin-dialog">
+      <form id="addConferenceForm" class="admin-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="acronym">Admin helper</p>
+            <h2>Add conference</h2>
+          </div>
+          <button class="secondary-button compact has-symbol" data-symbol="close" type="button" id="closeAddDialogButton">Close</button>
+        </div>
+
+        <div class="admin-grid">
+          <label class="field">
+            <span>Name</span>
+            <input name="name" required placeholder="Annual Privacy Forum">
+          </label>
+          <label class="field">
+            <span>Acronym</span>
+            <input name="acronym" required placeholder="APF">
+          </label>
+          <label class="field">
+            <span>Type</span>
+            <select name="type">
+              <option value="conference">Conference</option>
+              <option value="symposium">Symposium</option>
+              <option value="workshop">Workshop</option>
+              <option value="summer school">Summer school</option>
+            </select>
+          </label>
+          <fieldset class="area-picker">
+            <legend>Areas</legend>
+            <label><input type="checkbox" name="areas" value="privacy"> Privacy</label>
+            <label><input type="checkbox" name="areas" value="security"> Security</label>
+            <label><input type="checkbox" name="areas" value="crypto"> Crypto</label>
+            <label><input type="checkbox" name="areas" value="energy"> Energy</label>
+            <label><input type="checkbox" name="areas" value="iot"> IoT</label>
+          </fieldset>
+          <label class="field">
+            <span>Deadline</span>
+            <input name="submission_deadline" type="date">
+          </label>
+          <label class="field">
+            <span>Expected Months</span>
+            <input name="expected_deadline_months" placeholder="april, september">
+          </label>
+          <label class="field">
+            <span>Notification</span>
+            <input name="notification_date" type="date">
+          </label>
+          <label class="field">
+            <span>Conference Dates</span>
+            <input name="conference_dates" placeholder="2026-09-09 to 2026-09-10">
+          </label>
+          <label class="field">
+            <span>Location</span>
+            <input name="location" placeholder="Salzburg, Austria">
+          </label>
+          <label class="field">
+            <span>Website</span>
+            <input name="website_url" type="url" placeholder="https://example.org">
+          </label>
+          <label class="field">
+            <span>CFP URL</span>
+            <input name="cfp_url" type="url" placeholder="https://example.org/cfp">
+          </label>
+          <label class="field wide">
+            <span>Description</span>
+            <textarea name="description" rows="2" placeholder="Short summary of why this venue matters."></textarea>
+          </label>
+          <label class="field">
+            <span>Rank</span>
+            <input name="rank" placeholder="A, B, CORE A, ...">
+          </label>
+          <label class="field checkbox-field">
+            <input name="auto_check" type="checkbox" checked>
+            <span>Auto-check CFP page</span>
+          </label>
+          <label class="field wide">
+            <span>Notes</span>
+            <textarea name="notes" rows="2" placeholder="Internal fit, caveats, tracks, or manual checks."></textarea>
+          </label>
+        </div>
+
+        <div class="dialog-actions">
+          <button class="admin-open-button has-symbol" data-symbol="save" type="submit">
+            <span>Generate JSON</span>
+          </button>
+          <button id="copyConferenceJsonButton" class="calendar-button" type="button">Copy JSON</button>
+        </div>
+
+        <label class="field wide">
+          <span>JSON record</span>
+          <textarea id="conferenceJsonOutput" class="admin-output" readonly rows="12"></textarea>
+        </label>
+      </form>
+    </dialog>
+
+    <template id="conferenceTemplate">
+      <article class="conference-card">
+        <div class="card-topline">
+          <div>
+            <p class="acronym"></p>
+            <h2></h2>
+          </div>
+        </div>
+        <div class="deadline-block">
+          <span class="date-chip"></span>
+          <span class="days-chip"></span>
+        </div>
+        <p class="details"></p>
+        <div class="tag-row"></div>
+        <dl class="facts">
+          <div>
+            <dt>Location</dt>
+            <dd class="location"></dd>
+          </div>
+          <div>
+            <dt>Conference</dt>
+            <dd class="conference-date"></dd>
+          </div>
+          <div>
+            <dt>Checked</dt>
+            <dd class="checked-date"></dd>
+          </div>
+        </dl>
+        <div class="card-actions">
+          <button class="calendar-button has-symbol" data-symbol="calendar" type="button" title="Download calendar event">
+            <span>Add deadline</span>
+          </button>
+          <a class="text-link website-link" target="_blank" rel="noreferrer">Website</a>
+          <a class="text-link cfp-link" target="_blank" rel="noreferrer">CFP</a>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
