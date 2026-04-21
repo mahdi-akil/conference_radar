@@ -379,7 +379,7 @@ function renderTableResults(conferences) {
 
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
-  ["Deadline", "Days", "Venue", "Areas", "Location", "Conference", "Links"].forEach((heading) => {
+  ["Deadline", "Venue", "Areas", "Location", "Links"].forEach((heading) => {
     const th = document.createElement("th");
     th.scope = "col";
     th.textContent = heading;
@@ -395,13 +395,10 @@ function renderTableResults(conferences) {
     const deadline = document.createElement("span");
     deadline.className = "table-date";
     deadline.textContent = formatDeadline(conference);
-    deadlineCell.appendChild(deadline);
-
-    const daysCell = tableCell();
     const days = document.createElement("span");
     days.className = `table-days ${dayClass(conference.deadlineDate)}`;
     days.textContent = formatDays(conference.deadlineDate);
-    daysCell.appendChild(days);
+    deadlineCell.append(deadline, days);
 
     const venueCell = tableCell("venue-cell");
     const acronym = document.createElement("span");
@@ -410,7 +407,10 @@ function renderTableResults(conferences) {
     const name = document.createElement("span");
     name.className = "table-name";
     name.textContent = conference.name;
-    venueCell.append(acronym, name);
+    const meta = document.createElement("span");
+    meta.className = "table-meta";
+    meta.textContent = conference.conference_dates ? `Conference: ${conference.conference_dates}` : "Conference: TBA";
+    venueCell.append(acronym, name, meta);
 
     const areasCell = tableCell();
     areasCell.textContent = (conference.areas || []).map(toTitle).join(", ") || "TBA";
@@ -418,20 +418,20 @@ function renderTableResults(conferences) {
     const locationCell = tableCell();
     locationCell.textContent = conference.location || "TBA";
 
-    const dateCell = tableCell();
-    dateCell.textContent = conference.conference_dates || "TBA";
-
-    const linksCell = tableCell("table-actions");
+    const linksCell = tableCell();
+    const actions = document.createElement("div");
+    actions.className = "table-actions";
     const calendarButton = document.createElement("button");
     calendarButton.className = "calendar-button compact";
     calendarButton.type = "button";
     calendarButton.textContent = "Add deadline";
     setCalendarButton(calendarButton, conference);
-    linksCell.appendChild(calendarButton);
-    appendTableLink(linksCell, "Website", conference.website_url);
-    appendTableLink(linksCell, "CFP", conference.cfp_url || conference.website_url);
+    actions.appendChild(calendarButton);
+    appendTableLink(actions, "Website", conference.website_url);
+    appendTableLink(actions, "CFP", conference.cfp_url || conference.website_url);
+    linksCell.appendChild(actions);
 
-    row.append(deadlineCell, daysCell, venueCell, areasCell, locationCell, dateCell, linksCell);
+    row.append(deadlineCell, venueCell, areasCell, locationCell, linksCell);
     tbody.appendChild(row);
   });
 

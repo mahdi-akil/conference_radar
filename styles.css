@@ -395,49 +395,6 @@ main {
   color: var(--ink);
 }
 
-.view-field {
-  align-self: end;
-}
-
-.segmented-control {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  min-height: 42px;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background: rgba(255, 255, 255, 0.92);
-}
-
-.view-toggle {
-  appearance: none;
-  border: 0;
-  border-right: 1px solid var(--line);
-  background: transparent;
-  color: var(--muted);
-  padding: 8px 10px;
-  font-weight: 850;
-  cursor: pointer;
-  transition:
-    background-color 160ms ease,
-    color 160ms ease;
-}
-
-.view-toggle:last-child {
-  border-right: 0;
-}
-
-.view-toggle:hover,
-.view-toggle.active {
-  background: var(--graphite);
-  color: white;
-}
-
-.view-toggle:focus {
-  outline: 3px solid rgba(11, 129, 123, 0.2);
-  outline-offset: -3px;
-}
-
 .dialog-actions {
   display: flex;
   flex-wrap: wrap;
@@ -451,8 +408,84 @@ main {
   line-height: 1.45;
 }
 
-.results {
+.results-panel {
   grid-area: results;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.results-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 38px;
+}
+
+.view-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 8px 18px rgba(32, 35, 41, 0.06);
+}
+
+.view-icon-button {
+  appearance: none;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 30px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.view-icon-button:hover {
+  background: #eef8f6;
+  color: var(--teal);
+}
+
+.view-icon-button.active {
+  background: var(--graphite);
+  color: white;
+  box-shadow: 0 6px 12px rgba(32, 35, 41, 0.16);
+}
+
+.view-icon-button:focus {
+  outline: 3px solid rgba(11, 129, 123, 0.2);
+  outline-offset: 2px;
+}
+
+.view-icon {
+  display: block;
+  width: 17px;
+  height: 17px;
+}
+
+.cards-icon {
+  background:
+    linear-gradient(currentColor 0 0) 0 0 / 7px 7px no-repeat,
+    linear-gradient(currentColor 0 0) 10px 0 / 7px 7px no-repeat,
+    linear-gradient(currentColor 0 0) 0 10px / 7px 7px no-repeat,
+    linear-gradient(currentColor 0 0) 10px 10px / 7px 7px no-repeat;
+}
+
+.table-icon {
+  background:
+    linear-gradient(currentColor 0 0) 0 1px / 17px 3px no-repeat,
+    linear-gradient(currentColor 0 0) 0 7px / 17px 3px no-repeat,
+    linear-gradient(currentColor 0 0) 0 13px / 17px 3px no-repeat;
+}
+
+.results {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 16px;
@@ -652,29 +685,26 @@ main {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.95);
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 24px rgba(32, 35, 41, 0.07);
 }
 
 .conference-table {
   width: 100%;
-  min-width: 960px;
+  min-width: 760px;
   border-collapse: collapse;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
 }
 
 .conference-table th,
 .conference-table td {
   border-bottom: 1px solid var(--line);
-  padding: 12px 13px;
+  padding: 11px 12px;
   text-align: left;
   vertical-align: top;
 }
 
 .conference-table th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: #f7f9f8;
+  background: #f8faf9;
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 850;
@@ -691,17 +721,19 @@ main {
 }
 
 .deadline-cell {
-  min-width: 155px;
+  min-width: 150px;
 }
 
 .table-date {
   display: block;
   color: var(--ink);
   font-weight: 850;
+  line-height: 1.25;
 }
 
 .table-days {
   display: inline-flex;
+  margin-top: 7px;
   min-width: 76px;
   justify-content: center;
   border-radius: 999px;
@@ -724,11 +756,12 @@ main {
 }
 
 .venue-cell {
-  min-width: 240px;
+  min-width: 255px;
 }
 
 .table-acronym,
-.table-name {
+.table-name,
+.table-meta {
   display: block;
 }
 
@@ -747,8 +780,11 @@ main {
   line-height: 1.3;
 }
 
-.table-actions {
-  min-width: 190px;
+.table-meta {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.3;
 }
 
 .table-actions {
@@ -756,6 +792,7 @@ main {
   flex-wrap: wrap;
   gap: 8px 10px;
   align-items: center;
+  min-width: 180px;
 }
 
 @media (max-width: 900px) {
@@ -786,10 +823,6 @@ main {
 
   .field.wide {
     grid-column: 1 / -1;
-  }
-
-  .view-field {
-    align-self: stretch;
   }
 
   .admin-open-button {
@@ -837,6 +870,6 @@ main {
   }
 
   .conference-table {
-    min-width: 820px;
+    min-width: 720px;
   }
 }

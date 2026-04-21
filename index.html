@@ -69,14 +69,6 @@
             </select>
           </label>
 
-          <div class="field view-field">
-            <span>View</span>
-            <div class="segmented-control" role="group" aria-label="Result view">
-              <button id="cardsViewButton" class="view-toggle" type="button" data-view="cards" aria-pressed="true">Cards</button>
-              <button id="tableViewButton" class="view-toggle" type="button" data-view="table" aria-pressed="false">Table</button>
-            </div>
-          </div>
-
           <button id="resetButton" class="secondary-button has-symbol" data-symbol="reset" type="button">Reset filters</button>
 
           <button id="addConferenceButton" class="admin-open-button has-symbol" data-symbol="plus" type="button">
@@ -84,7 +76,20 @@
           </button>
         </aside>
 
-        <section id="results" class="results" aria-live="polite"></section>
+        <div class="results-panel">
+          <div class="results-toolbar" aria-label="Results options">
+            <div class="view-switch" role="group" aria-label="Result view">
+              <button class="view-toggle view-icon-button" type="button" data-view="cards" aria-pressed="true" title="Card view" aria-label="Card view">
+                <span class="view-icon cards-icon" aria-hidden="true"></span>
+              </button>
+              <button class="view-toggle view-icon-button" type="button" data-view="table" aria-pressed="false" title="Table view" aria-label="Table view">
+                <span class="view-icon table-icon" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+
+          <section id="results" class="results" aria-live="polite"></section>
+        </div>
       </section>
     </main>
 
