@@ -93,16 +93,49 @@ h1 {
 
 .summary-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(92px, 1fr));
+  grid-template-columns: repeat(2, minmax(110px, 1fr));
   gap: 10px;
-  min-width: min(100%, 370px);
+  min-width: min(100%, 270px);
 }
 
-.summary-strip div {
+.summary-card {
+  appearance: none;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.78);
   padding: 12px 14px;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.summary-card:hover {
+  border-color: rgba(11, 129, 123, 0.36);
+  background: #f7fbfa;
+  box-shadow: 0 8px 18px rgba(32, 35, 41, 0.08);
+  transform: translateY(-1px);
+}
+
+.summary-card.active {
+  border-color: rgba(11, 129, 123, 0.5);
+  background: #eef8f6;
+}
+
+.summary-card:focus {
+  outline: 3px solid rgba(11, 129, 123, 0.2);
+  outline-offset: 2px;
+}
+
+.summary-card:disabled {
+  cursor: default;
+  opacity: 0.58;
+  transform: none;
+  box-shadow: none;
 }
 
 .summary-strip strong {

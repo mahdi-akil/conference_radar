@@ -13,6 +13,8 @@ const today = startOfDay(new Date());
 const state = {
   conferences: [],
   filtered: [],
+  matching: [],
+  upcomingOnly: false,
   view: loadSavedView(),
 };
 
@@ -26,9 +28,10 @@ const els = {
   reset: document.querySelector("#resetButton"),
   results: document.querySelector("#results"),
   template: document.querySelector("#conferenceTemplate"),
+  summaryAllButton: document.querySelector("#summaryAllButton"),
+  summaryUpcomingButton: document.querySelector("#summaryUpcomingButton"),
   summaryTotal: document.querySelector("#summaryTotal"),
   summaryUpcoming: document.querySelector("#summaryUpcoming"),
-  summarySoon: document.querySelector("#summarySoon"),
   addConference: document.querySelector("#addConferenceButton"),
   addDialog: document.querySelector("#addConferenceDialog"),
   closeAddDialog: document.querySelector("#closeAddDialogButton"),
@@ -71,12 +74,23 @@ function bindEvents() {
     });
   });
 
+  els.summaryAllButton.addEventListener("click", () => {
+    state.upcomingOnly = false;
+    applyFilters();
+  });
+
+  els.summaryUpcomingButton.addEventListener("click", () => {
+    state.upcomingOnly = true;
+    applyFilters();
+  });
+
   els.reset.addEventListener("click", () => {
     els.search.value = "";
     els.topic.value = "";
     els.month.value = "";
     els.type.value = "";
     els.sort.value = "deadline";
+    state.upcomingOnly = false;
     applyFilters();
   });
 
@@ -278,10 +292,13 @@ function applyFilters() {
 
   filtered = sortConferences(filtered, els.sort.value, words);
   const displayable = filtered.filter(isDisplayableConference);
-  state.filtered = displayable;
+  const upcoming = displayable.filter(isUpcomingConference);
+  const visible = state.upcomingOnly ? upcoming : displayable;
+  state.matching = displayable;
+  state.filtered = visible;
 
-  renderSummary(displayable);
-  renderResults(displayable);
+  renderSummary(displayable, upcoming);
+  renderResults(visible);
 }
 
 function sortConferences(conferences, sortMode, words) {
@@ -313,12 +330,14 @@ function score(conference, words) {
   }, 0);
 }
 
-function renderSummary(conferences) {
-  const upcoming = conferences.filter((conference) => daysUntil(conference.deadlineDate) >= 0);
-  const soon = upcoming.filter((conference) => daysUntil(conference.deadlineDate) <= 60);
-  els.summaryTotal.textContent = conferences.length;
-  els.summaryUpcoming.textContent = upcoming.length;
-  els.summarySoon.textContent = soon.length;
+function renderSummary(matchingConferences, upcomingConferences) {
+  els.summaryTotal.textContent = matchingConferences.length;
+  els.summaryUpcoming.textContent = upcomingConferences.length;
+  els.summaryAllButton.classList.toggle("active", !state.upcomingOnly);
+  els.summaryUpcomingButton.classList.toggle("active", state.upcomingOnly);
+  els.summaryAllButton.setAttribute("aria-pressed", String(!state.upcomingOnly));
+  els.summaryUpcomingButton.setAttribute("aria-pressed", String(state.upcomingOnly));
+  els.summaryUpcomingButton.disabled = upcomingConferences.length === 0;
 }
 
 function renderResults(conferences) {
@@ -467,6 +486,10 @@ function updateViewButtons() {
 
 function isDisplayableConference(conference) {
   return Boolean(conference.deadlineDate);
+}
+
+function isUpcomingConference(conference) {
+  return daysUntil(conference.deadlineDate) >= 0;
 }
 
 function setLink(anchor, url) {
