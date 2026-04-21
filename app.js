@@ -318,7 +318,14 @@ function sortConferences(conferences, sortMode, words) {
 function compareDeadline(a, b) {
   const aTime = a.deadlineDate?.getTime() ?? Number.POSITIVE_INFINITY;
   const bTime = b.deadlineDate?.getTime() ?? Number.POSITIVE_INFINITY;
-  return aTime - bTime;
+  const aClosed = daysUntil(a.deadlineDate) < 0;
+  const bClosed = daysUntil(b.deadlineDate) < 0;
+
+  if (aClosed !== bClosed) {
+    return aClosed ? 1 : -1;
+  }
+
+  return aClosed ? bTime - aTime : aTime - bTime;
 }
 
 function score(conference, words) {

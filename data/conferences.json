@@ -476,7 +476,7 @@
       "deadline_confidence": "official"
     },
     {
-      "id": "ndss-2026",
+      "id": "ndss-2027",
       "name": "Network and Distributed System Security Symposium",
       "acronym": "NDSS",
       "type": "symposium",
@@ -493,21 +493,35 @@
         "IoT",
         "web security"
       ],
-      "submission_deadline": "2025-08-06",
+      "submission_deadline": "2026-05-06",
+      "deadline_entries": [
+        {
+          "label": "Summer cycle",
+          "date": "2026-05-06",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Fall cycle",
+          "date": "2026-08-19",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        }
+      ],
       "expected_deadline_months": [
-        "april",
+        "may",
         "august"
       ],
-      "deadline_kind": "fall cycle paper",
+      "deadline_kind": "paper submission",
       "deadline_timezone": "AoE",
-      "notification_date": "2025-10-22",
-      "conference_dates": "2026-02-23 to 2026-02-27",
+      "notification_date": "2026-07-22",
+      "conference_dates": "2027",
       "expected_conference_months": [
         "february"
       ],
-      "location": "San Diego, CA, USA",
-      "website_url": "https://www.ndss-symposium.org/ndss2026/",
-      "cfp_url": "https://www.ndss-symposium.org/ndss2026/submissions/call-for-papers/",
+      "location": "TBA",
+      "website_url": "https://www.ndss-symposium.org/ndss2027/",
+      "cfp_url": "https://www.ndss-symposium.org/ndss2027/submissions/call-for-papers/",
       "description": "Top practical network and distributed systems security venue.",
       "rank": "A*",
       "notes": "Two review cycles; good for networked privacy/security systems.",
