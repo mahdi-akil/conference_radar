@@ -43,6 +43,9 @@ textarea {
   justify-content: space-between;
   gap: 24px;
   padding: 28px clamp(18px, 4vw, 56px) 18px;
+  border-bottom: 1px solid rgba(216, 222, 227, 0.76);
+  background: rgba(247, 244, 238, 0.78);
+  backdrop-filter: blur(8px);
 }
 
 .brand {
@@ -90,16 +93,17 @@ textarea {
 
 h1 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 4.3rem);
-  line-height: 0.95;
+  font-size: 3.7rem;
+  line-height: 0.98;
   letter-spacing: 0;
 }
 
 .brand p {
   max-width: 520px;
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-size: 1rem;
+  margin: 10px 0 0;
+  color: var(--graphite);
+  font-size: 1.08rem;
+  font-weight: 650;
 }
 
 .summary-strip {
@@ -132,7 +136,7 @@ h1 {
 }
 
 main {
-  padding: 0 clamp(18px, 4vw, 56px) 40px;
+  padding: 18px clamp(18px, 4vw, 56px) 40px;
 }
 
 .radar-shell {
@@ -195,29 +199,49 @@ main {
 .field input:focus,
 .field select:focus,
 .field textarea:focus,
-.secondary-button:focus {
+.secondary-button:focus,
+.admin-open-button:focus,
+.calendar-button:focus {
   outline: 3px solid rgba(11, 129, 123, 0.2);
   border-color: var(--teal);
 }
 
-.secondary-button {
+.secondary-button,
+.admin-open-button,
+.calendar-button {
+  appearance: none;
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  border-radius: 7px;
+  font-weight: 850;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.secondary-button {
   min-height: 42px;
   border: 1px solid var(--line);
-  border-radius: 6px;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--graphite);
   padding: 8px 12px;
-  font-weight: 800;
-  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(32, 35, 41, 0.04);
 }
 
 .secondary-button:hover {
-  border-color: var(--teal);
+  border-color: rgba(11, 129, 123, 0.42);
+  background: #f7fbfa;
   color: var(--teal);
+  box-shadow: 0 8px 18px rgba(32, 35, 41, 0.08);
+  transform: translateY(-1px);
 }
 
 .secondary-button.compact {
@@ -228,28 +252,21 @@ main {
 .has-symbol::before {
   display: inline-grid;
   place-items: center;
-  width: 18px;
-  height: 18px;
+  width: 1.05em;
+  height: 1.05em;
   flex: 0 0 auto;
-  border-radius: 50%;
-  font-size: 0.94rem;
+  font-size: 1rem;
   font-weight: 900;
   line-height: 1;
 }
 
 .secondary-button.has-symbol::before {
-  background: rgba(11, 129, 123, 0.12);
   color: var(--teal);
 }
 
 .admin-open-button.has-symbol::before,
 .calendar-button.has-symbol::before {
-  background: rgba(255, 255, 255, 0.22);
   color: currentColor;
-}
-
-.calendar-button.has-symbol::before {
-  background: rgba(11, 129, 123, 0.14);
 }
 
 .has-symbol[data-symbol="reset"]::before {
@@ -269,32 +286,24 @@ main {
 }
 
 .has-symbol[data-symbol="calendar"]::before {
-  content: "▣";
-  font-size: 0.82rem;
+  content: "□";
+  font-size: 0.95rem;
 }
 
 .admin-open-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
   min-height: 42px;
-  border: 1px solid var(--graphite);
-  border-radius: 6px;
-  background: var(--graphite);
+  border: 1px solid #22272e;
+  background: linear-gradient(180deg, #353b43, #22272e);
   color: white;
   padding: 8px 12px;
-  font-weight: 800;
-  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(32, 35, 41, 0.16);
 }
 
 .admin-open-button:hover {
-  background: var(--teal);
+  background: linear-gradient(180deg, #128e87, #0b746f);
   border-color: var(--teal);
-}
-
-.admin-open-button:focus {
-  outline: 3px solid rgba(11, 129, 123, 0.2);
+  box-shadow: 0 12px 24px rgba(11, 129, 123, 0.2);
+  transform: translateY(-1px);
 }
 
 .admin-dialog {
@@ -540,26 +549,20 @@ main {
 }
 
 .calendar-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
   min-height: 34px;
-  border: 1px solid rgba(11, 129, 123, 0.3);
-  border-radius: 6px;
-  background: var(--teal-quiet);
+  border: 1px solid rgba(11, 129, 123, 0.35);
+  background: #eef8f6;
   color: #075c58;
-  padding: 6px 10px;
-  font-weight: 800;
-  cursor: pointer;
+  padding: 6px 11px;
+  box-shadow: 0 1px 0 rgba(32, 35, 41, 0.04);
 }
 
 .calendar-button:hover {
   border-color: var(--teal);
-  color: var(--teal);
-}
-
-.calendar-button:focus {
-  outline: 3px solid rgba(11, 129, 123, 0.2);
+  background: #dff2ef;
+  color: #064d49;
+  box-shadow: 0 8px 18px rgba(11, 129, 123, 0.12);
+  transform: translateY(-1px);
 }
 
 .calendar-button span {
@@ -596,6 +599,10 @@ main {
     flex-direction: column;
   }
 
+  h1 {
+    font-size: 3rem;
+  }
+
   .summary-strip {
     min-width: 0;
   }
@@ -624,6 +631,14 @@ main {
 @media (max-width: 620px) {
   .app-header {
     padding-top: 18px;
+  }
+
+  h1 {
+    font-size: 2.35rem;
+  }
+
+  .brand p {
+    font-size: 1rem;
   }
 
   .brand {
