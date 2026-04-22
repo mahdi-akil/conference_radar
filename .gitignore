@@ -4,3 +4,4 @@ __pycache__/
 .venv/
 deadline-report.md
 data/deadline-candidates.json
+data/deadline-proposals.json

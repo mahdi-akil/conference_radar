@@ -69,10 +69,39 @@ For each conference with `auto_check: true`, the checker:
 - searches nearby text for dates such as `2026-09-15`, `September 15, 2026`, or `15 September 2026`
 - compares the dates it found with the deadline stored in `data/conferences.json`
 - writes a review report with the current deadline, possible new deadline, source URL, confidence level, and a short source snippet
+- writes a reviewable proposal file to `data/deadline-proposals.json`
 
 If the stored deadline is already found on the page, the checker treats that as confirmation and avoids reporting unrelated dates like notification, camera-ready, registration, or conference dates.
 
-If the checker finds a possible different deadline, or if a page cannot be checked, the repository workflow opens a GitHub issue so someone can review it. The data file still needs to be updated manually after review.
+If the checker finds a possible different deadline, or if a page cannot be checked, the repository workflow opens a GitHub issue so someone can review it.
+
+### Applying Reviewed Deadline Changes
+
+The checker does not overwrite `data/conferences.json` directly. When it finds possible changes, it writes proposals like this:
+
+```json
+{
+  "conference_id": "example-2026",
+  "field": "submission_deadline",
+  "current_value": "2026-04-01",
+  "proposed_value": "2026-04-15",
+  "apply": false
+}
+```
+
+To approve a change, review it against the official CFP and change only the correct proposals to:
+
+```json
+"apply": true
+```
+
+Then run:
+
+```bash
+python3 scripts/update_dates.py
+```
+
+The update script applies approved proposals to `data/conferences.json`, updates matching `deadline_entries` when possible, and removes `data/deadline-proposals.json` after a successful update.
 
 The checker is useful for catching changes, but it is not meant to be a fully automatic source of truth. Some conference pages are difficult to parse, especially pages that use PDFs, JavaScript-rendered dates, old CFP archives, missing years, or multiple submission rounds.
 

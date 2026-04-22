@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Find reviewable deadline candidates from conference CFP pages.
 
-The script is intentionally conservative. It does not rewrite the canonical
-conference deadline; it records candidate dates with source snippets so a human
+The script is intentionally conservative. It does not rewrite the current
+conference deadline, but rather records candidate dates with source snippets so we
 can approve changes in Git.
 """
 
@@ -117,6 +117,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Scan conference pages for deadline candidates.")
     parser.add_argument("--data", default="data/conferences.json", help="Path to conference JSON data.")
     parser.add_argument("--candidates", default="data/deadline-candidates.json", help="Path for candidate JSON output.")
+    parser.add_argument("--proposals", default="data/deadline-proposals.json", help="Path for reviewable deadline proposals.")
     parser.add_argument("--report", default="deadline-report.md", help="Path for Markdown report output.")
     parser.add_argument("--github-output", default=os.environ.get("GITHUB_OUTPUT"), help="GitHub Actions output path.")
     args = parser.parse_args()
@@ -148,6 +149,7 @@ def main() -> int:
         candidates.extend(find_candidates(conference, source_url, page_text))
 
     write_candidates(Path(args.candidates), candidates)
+    write_proposals(Path(args.proposals), candidates)
     write_report(Path(args.report), checked, candidates, errors)
     write_github_output(args.github_output, checked, candidates, errors)
 
@@ -291,6 +293,32 @@ def write_candidates(path: Path, candidates: list[Candidate]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def write_proposals(path: Path, candidates: list[Candidate]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    proposals = [
+        {
+            "conference_id": candidate.conference_id,
+            "acronym": candidate.acronym,
+            "name": candidate.name,
+            "field": "submission_deadline",
+            "current_value": candidate.current_deadline,
+            "proposed_value": candidate.candidate_deadline,
+            "confidence": candidate.confidence,
+            "source_url": candidate.source_url,
+            "snippet": candidate.snippet,
+            "apply": False,
+        }
+        for candidate in candidates
+        if candidate.confidence != "same-as-current"
+    ]
+    payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "instructions": "Review each proposal against the official CFP. Set apply=true only for proposals that should update data/conferences.json, then run scripts/update_dates.py.",
+        "proposals": proposals,
+    }
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
 def write_report(path: Path, checked: int, candidates: list[Candidate], errors: list[str]) -> None:
     lines = [
         "# Conference Deadline Check",
@@ -302,7 +330,15 @@ def write_report(path: Path, checked: int, candidates: list[Candidate], errors: 
 
     changed = [candidate for candidate in candidates if candidate.confidence != "same-as-current"]
     if changed:
-        lines.extend(["## Potential Changes", ""])
+        lines.extend(
+            [
+                "## Potential Changes",
+                "",
+                "A reviewable proposal file was also written to `data/deadline-proposals.json`.",
+                "Set `apply` to `true` for correct proposals, then run `python3 scripts/update_dates.py`.",
+                "",
+            ]
+        )
         for candidate in changed:
             lines.extend(
                 [
