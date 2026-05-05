@@ -18,7 +18,7 @@ const state = {
   conferences: [],
   filtered: [],
   matching: [],
-  upcomingOnly: false,
+  summaryMode: "all",
   view: loadSavedView(),
 };
 
@@ -34,8 +34,10 @@ const els = {
   template: document.querySelector("#conferenceTemplate"),
   summaryAllButton: document.querySelector("#summaryAllButton"),
   summaryUpcomingButton: document.querySelector("#summaryUpcomingButton"),
+  summaryTbaButton: document.querySelector("#summaryTbaButton"),
   summaryTotal: document.querySelector("#summaryTotal"),
   summaryUpcoming: document.querySelector("#summaryUpcoming"),
+  summaryTba: document.querySelector("#summaryTba"),
   addConference: document.querySelector("#addConferenceButton"),
   addDialog: document.querySelector("#addConferenceDialog"),
   closeAddDialog: document.querySelector("#closeAddDialogButton"),
@@ -79,12 +81,17 @@ function bindEvents() {
   });
 
   els.summaryAllButton.addEventListener("click", () => {
-    state.upcomingOnly = false;
+    state.summaryMode = "all";
     applyFilters();
   });
 
   els.summaryUpcomingButton.addEventListener("click", () => {
-    state.upcomingOnly = true;
+    state.summaryMode = "upcoming";
+    applyFilters();
+  });
+
+  els.summaryTbaButton.addEventListener("click", () => {
+    state.summaryMode = "tba";
     applyFilters();
   });
 
@@ -94,7 +101,7 @@ function bindEvents() {
     els.month.value = "";
     els.type.value = "";
     els.sort.value = "deadline";
-    state.upcomingOnly = false;
+    state.summaryMode = "all";
     applyFilters();
   });
 
@@ -295,14 +302,20 @@ function applyFilters() {
   });
 
   filtered = sortConferences(filtered, els.sort.value, words);
-  const displayable = filtered.filter(isDisplayableConference);
-  const upcoming = displayable.filter(isUpcomingConference);
-  const visible = state.upcomingOnly ? upcoming : displayable;
-  state.matching = displayable;
+  const upcoming = filtered.filter(isUpcomingConference);
+  const tba = filtered.filter(isTbaConference);
+  const visible = pickSummaryResults(filtered, upcoming, tba);
+  state.matching = filtered;
   state.filtered = visible;
 
-  renderSummary(displayable, upcoming);
+  renderSummary(filtered, upcoming, tba);
   renderResults(visible);
+}
+
+function pickSummaryResults(allConferences, upcomingConferences, tbaConferences) {
+  if (state.summaryMode === "upcoming") return upcomingConferences;
+  if (state.summaryMode === "tba") return tbaConferences;
+  return allConferences;
 }
 
 function sortConferences(conferences, sortMode, words) {
@@ -341,14 +354,18 @@ function score(conference, words) {
   }, 0);
 }
 
-function renderSummary(matchingConferences, upcomingConferences) {
+function renderSummary(matchingConferences, upcomingConferences, tbaConferences) {
   els.summaryTotal.textContent = matchingConferences.length;
   els.summaryUpcoming.textContent = upcomingConferences.length;
-  els.summaryAllButton.classList.toggle("active", !state.upcomingOnly);
-  els.summaryUpcomingButton.classList.toggle("active", state.upcomingOnly);
-  els.summaryAllButton.setAttribute("aria-pressed", String(!state.upcomingOnly));
-  els.summaryUpcomingButton.setAttribute("aria-pressed", String(state.upcomingOnly));
+  els.summaryTba.textContent = tbaConferences.length;
+  els.summaryAllButton.classList.toggle("active", state.summaryMode === "all");
+  els.summaryUpcomingButton.classList.toggle("active", state.summaryMode === "upcoming");
+  els.summaryTbaButton.classList.toggle("active", state.summaryMode === "tba");
+  els.summaryAllButton.setAttribute("aria-pressed", String(state.summaryMode === "all"));
+  els.summaryUpcomingButton.setAttribute("aria-pressed", String(state.summaryMode === "upcoming"));
+  els.summaryTbaButton.setAttribute("aria-pressed", String(state.summaryMode === "tba"));
   els.summaryUpcomingButton.disabled = upcomingConferences.length === 0;
+  els.summaryTbaButton.disabled = tbaConferences.length === 0;
 }
 
 function renderResults(conferences) {
@@ -374,6 +391,7 @@ function renderResults(conferences) {
     const card = node.querySelector(".conference-card");
     card.querySelector(".acronym").textContent = conference.acronym || "Conference";
     card.querySelector("h2").textContent = conference.name;
+    applyStatusBadge(card.querySelector(".status-badge"), conference);
 
     card.querySelector(".date-chip").textContent = formatDeadline(conference);
     const daysChip = card.querySelector(".days-chip");
@@ -383,10 +401,7 @@ function renderResults(conferences) {
 
     const tagRow = card.querySelector(".tag-row");
     (conference.topics || []).forEach((topic) => {
-      const tag = document.createElement("span");
-      tag.className = "tag";
-      tag.textContent = toTitle(topic);
-      tagRow.appendChild(tag);
+      tagRow.appendChild(buildTag(toTitle(topic)));
     });
 
     card.querySelector(".location").textContent = conference.location || "TBA";
@@ -420,6 +435,7 @@ function renderTableResults(conferences) {
   const tbody = document.createElement("tbody");
   conferences.forEach((conference) => {
     const row = document.createElement("tr");
+    const status = getConferenceStatus(conference);
 
     const deadlineCell = tableCell("deadline-cell");
     const deadline = document.createElement("span");
@@ -428,7 +444,10 @@ function renderTableResults(conferences) {
     const days = document.createElement("span");
     days.className = `table-days ${dayClass(conference.deadlineDate)}`;
     days.textContent = formatDays(conference.deadlineDate);
-    deadlineCell.append(deadline, days);
+    const statusBadge = document.createElement("span");
+    statusBadge.className = `status-badge ${status.className}`;
+    statusBadge.textContent = status.label;
+    deadlineCell.append(deadline, days, statusBadge);
 
     const venueCell = tableCell("venue-cell");
     const acronym = document.createElement("span");
@@ -442,8 +461,14 @@ function renderTableResults(conferences) {
     meta.textContent = conference.conference_dates ? `Conference: ${conference.conference_dates}` : "Conference: TBA";
     venueCell.append(acronym, name, meta);
 
-    const areasCell = tableCell();
-    areasCell.textContent = (conference.areas || []).map(toTitle).join(", ") || "TBA";
+    const areasCell = tableCell("areas-cell");
+    if ((conference.areas || []).length) {
+      (conference.areas || []).forEach((area) => {
+        areasCell.appendChild(buildTag(toTitle(area), "table-tag"));
+      });
+    } else {
+      areasCell.textContent = "TBA";
+    }
 
     const locationCell = tableCell();
     locationCell.textContent = conference.location || "TBA";
@@ -495,13 +520,43 @@ function updateViewButtons() {
   });
 }
 
-function isDisplayableConference(conference) {
-  return Boolean(conference.deadlineDate);
-}
-
 function isUpcomingConference(conference) {
   const days = daysUntil(conference.deadlineDate);
   return days >= 0 && days <= 30;
+}
+
+function isTbaConference(conference) {
+  return !conference.deadlineDate;
+}
+
+function getConferenceStatus(conference) {
+  if (!conference.deadlineDate) {
+    return {
+      label: conference.expected_deadline_months?.length ? "Expected" : "TBA",
+      className: "tba",
+    };
+  }
+  const days = daysUntil(conference.deadlineDate);
+  if (days < 0) {
+    return { label: "Closed", className: "closed" };
+  }
+  if (days <= 30) {
+    return { label: "Next 30 days", className: "soon" };
+  }
+  return { label: "Open", className: "open" };
+}
+
+function applyStatusBadge(element, conference) {
+  const status = getConferenceStatus(conference);
+  element.className = `status-badge ${status.className}`;
+  element.textContent = status.label;
+}
+
+function buildTag(text, className = "") {
+  const tag = document.createElement("span");
+  tag.className = className ? `tag ${className}` : "tag";
+  tag.textContent = text;
+  return tag;
 }
 
 function setLink(anchor, url) {

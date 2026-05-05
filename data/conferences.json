@@ -44,7 +44,6 @@
       "description": "Focused privacy engineering venue, co-located with IEEE EuroS&P 2026.",
       "rank": "",
       "notes": "Strong fit for engineering, requirements, DPIA, PET integration, compliance tooling.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -89,7 +88,6 @@
       "description": "Interdisciplinary European privacy and data protection forum connecting research, policy, and practice.",
       "rank": "",
       "notes": "Community event, not only technical; especially relevant locally for Salzburg.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -134,7 +132,6 @@
       "description": "Policy, regulation, compliance, and technology event with a scientific paper track.",
       "rank": "",
       "notes": "Community and governance oriented; useful for privacy regulation and compliance work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -179,7 +176,6 @@
       "description": "Major multidisciplinary privacy, data protection, and digital rights conference.",
       "rank": "",
       "notes": "More legal/policy/community than classic CS proceedings, but very relevant for privacy groups.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -225,7 +221,6 @@
       "description": "Primary venue for human-centered usable privacy and security research.",
       "rank": "B",
       "notes": "HCI-driven; posters/workshops had later 2026 deadlines than technical papers.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -298,7 +293,6 @@
       "description": "Premier privacy-enhancing technologies venue with four yearly PoPETs submission issues.",
       "rank": "A",
       "notes": "Crypto/privacy-heavy; four issue deadlines per volume. 2027 issue dates follow the official quarterly PoPETs pattern; replace with the official CFP 2027 URL when published.",
-      "auto_check": false,
       "last_checked": "2026-04-21",
       "deadline_confidence": "expected"
     },
@@ -344,7 +338,6 @@
       "description": "European flagship IEEE venue for security and privacy research.",
       "rank": "A",
       "notes": "Main 2026 deadline is closed; useful to track for the 2027 cycle.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -389,7 +382,6 @@
       "description": "Flagship IEEE security and privacy research conference.",
       "rank": "A*",
       "notes": "Very crypto/security-heavy and highly selective; two annual submission cycles.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -436,7 +428,6 @@
       "description": "Privacy and identity management summer school, especially useful for PhD researchers.",
       "rank": "",
       "notes": "Full paper deadline is 2026-07-31; revised full paper deadline is 2026-09-25.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -479,7 +470,6 @@
       "description": "Workshop series on data privacy management, often relevant for privacy policy and assurance work.",
       "rank": "",
       "notes": "No current 2026 CFP found during seeding; keep as a manual follow-up item.",
-      "auto_check": false,
       "last_checked": "2026-04-21",
       "deadline_confidence": "expected"
     },
@@ -526,7 +516,6 @@
       "description": "Top venue for systems, network, software, and applied security and privacy.",
       "rank": "A*",
       "notes": "Multiple cycles in many years; monitor current CFP for next volume.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -587,7 +576,6 @@
       "description": "Top practical network and distributed systems security venue.",
       "rank": "A*",
       "notes": "Two review cycles; good for networked privacy/security systems.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -634,7 +622,6 @@
       "description": "ACM SIGSAC flagship conference for computer and communications security.",
       "rank": "A*",
       "notes": "Cycle B abstract deadline is 2026-04-22; full paper deadline is 2026-04-29.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -679,7 +666,6 @@
       "description": "Strong ACM venue for real-world security and privacy research.",
       "rank": "A",
       "notes": "Two submission rounds; useful alternative to CCS/NDSS/USENIX/S&P.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -723,7 +709,6 @@
       "description": "Security venue focused on attacks, intrusions, defenses, malware, and measurement.",
       "rank": "",
       "notes": "Good fit for empirical security, threat measurement, and defense papers.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -768,7 +753,6 @@
       "description": "Applied security conference with privacy, usable security, CPS/IoT, and real-world security topics.",
       "rank": "B",
       "notes": "Hard topic theme for 2026 includes security and privacy of agentic systems.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -815,7 +799,6 @@
       "description": "Foundational security and privacy venue for rigorous models, proofs, protocols, and formal analysis.",
       "rank": "A",
       "notes": "Rolling yearly deadlines; good for formal privacy/security work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -860,7 +843,6 @@
       "description": "Small, discussion-heavy workshop for unconventional security and privacy ideas.",
       "rank": "",
       "notes": "Great for early, critical, socio-technical, or paradigm-shifting work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -908,7 +890,6 @@
       "description": "Smart grid communications venue with a dedicated Privacy and Security symposium track.",
       "rank": "",
       "notes": "High relevance for smart grids, energy systems, privacy, security, and CPS. The official page renders dates in a way the simple checker misreads, so keep this manual for now.",
-      "auto_check": false,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -957,7 +938,6 @@
       "description": "Energy-systems computing venue that explicitly includes privacy, cybersecurity, and smart-grid resilience.",
       "rank": "",
       "notes": "Good non-security-core venue for smart grid privacy/security work. The site blocks the simple checker, so verify manually or add a custom checker later.",
-      "auto_check": false,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -999,7 +979,6 @@
       "description": "Security informatics venue with current emphasis on AI, cybersecurity, and responsible/security challenges.",
       "rank": "",
       "notes": "Relevant if the group works on AI security, responsible AI, or security analytics.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1044,7 +1023,6 @@
       "description": "Applied cryptography, cybersecurity, network security, and privacy conference with real-world emphasis.",
       "rank": "",
       "notes": "Good fit for applied crypto, privacy protocols, and network security work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1090,7 +1068,6 @@
       "description": "European computer security research venue with security, privacy, usable security, and socio-technical scope.",
       "rank": "A",
       "notes": "Good European venue for privacy/security work, especially usable and human-centered topics in 2026.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1133,7 +1110,6 @@
       "description": "Venue focused on methods, tools, and experience for building secure systems.",
       "rank": "",
       "notes": "Potentially useful for privacy engineering tooling and secure-by-design work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1178,7 +1154,6 @@
       "description": "Edge computing venue relevant for IoT, distributed infrastructure, smart energy, and security/privacy systems.",
       "rank": "",
       "notes": "Not a pure security venue, but relevant for IoT/edge/energy security and privacy systems.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1223,7 +1198,6 @@
       "description": "Cryptography, security, privacy, blockchain, and financial systems security venue.",
       "rank": "B",
       "notes": "Good for applied crypto, PETs, blockchain, DeFi, electronic payments, and security economics.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1265,7 +1239,6 @@
       "description": "Financial technologies venue for digital currencies, blockchains, DeFi, and security analysis.",
       "rank": "",
       "notes": "Useful if the group touches blockchain, cryptographic finance, or decentralized systems.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1310,7 +1283,6 @@
       "description": "ESORICS-affiliated workshop on cryptocurrencies, blockchain technology, privacy, and security.",
       "rank": "",
       "notes": "Good smaller venue for blockchain privacy/security papers. The page lists month/day deadlines without years, so keep this manual for now.",
-      "auto_check": false,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1353,7 +1325,6 @@
       "description": "ACM venue for data security, application security, privacy, access control, and policy work.",
       "rank": "",
       "notes": "Good fit for privacy and data/application security papers.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1416,7 +1387,6 @@
       "description": "Security and privacy venue for wireless, mobile, IoT, and cyber-physical systems.",
       "rank": "",
       "notes": "Highly relevant for IoT, mobile privacy, location privacy, and wireless security.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1460,7 +1430,6 @@
       "description": "IEEE communications-oriented security venue for network, mobile, wireless, and communications security.",
       "rank": "",
       "notes": "Good for network and communications security/privacy work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1507,7 +1476,6 @@
       "description": "IFIP flagship information security and privacy conference with broad security, privacy, and ICT scope.",
       "rank": "",
       "notes": "Good broad security/privacy venue, including privacy-by-design, IoT security, and critical infrastructure.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1569,7 +1537,6 @@
       "description": "Security and privacy conference covering cryptology, privacy, software security, forensics, and network security.",
       "rank": "",
       "notes": "Good Australasian security/privacy venue with crypto, privacy, and CPS/security tracks.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1617,7 +1584,6 @@
       "description": "Networking venue with relevant network security, IoT, autonomous networking, and energy-efficient networking topics.",
       "rank": "",
       "notes": "Not a pure security venue, but useful for networked privacy/security systems and IoT work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1664,7 +1630,6 @@
       "description": "Network and service management venue relevant for security management, IoT, cloud, and resilient infrastructure.",
       "rank": "",
       "notes": "Useful for systems/security management and networked infrastructure work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1710,7 +1675,6 @@
       "description": "IEEE blockchain and cryptocurrency venue covering security, privacy, smart contracts, DeFi, and blockchain for IoT/CPS.",
       "rank": "",
       "notes": "Good crypto/security venue for blockchain, smart contracts, DeFi, and privacy work.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     },
@@ -1753,7 +1717,6 @@
       "description": "Top HCI venue; relevant for usable privacy/security and human-centered data protection work.",
       "rank": "",
       "notes": "Not a security venue, but can be excellent for user-facing privacy/security research.",
-      "auto_check": true,
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
     }

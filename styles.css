@@ -93,9 +93,9 @@ h1 {
 
 .summary-strip {
   display: grid;
-  grid-template-columns: repeat(2, minmax(110px, 1fr));
+  grid-template-columns: repeat(3, minmax(110px, 1fr));
   gap: 10px;
-  min-width: min(100%, 270px);
+  min-width: min(100%, 410px);
 }
 
 .summary-card {
@@ -547,6 +547,45 @@ main {
   overflow-wrap: anywhere;
 }
 
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #f5f7f7;
+  color: var(--graphite);
+  font-size: 0.74rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.status-badge.open {
+  background: #e8f3ea;
+  border-color: rgba(47, 124, 79, 0.24);
+  color: var(--green);
+}
+
+.status-badge.soon {
+  background: #f5ead2;
+  border-color: rgba(193, 135, 24, 0.26);
+  color: #704d0e;
+}
+
+.status-badge.closed {
+  background: #f1dddd;
+  border-color: rgba(183, 67, 67, 0.24);
+  color: #842f2f;
+}
+
+.status-badge.tba {
+  background: #edf1f5;
+  border-color: rgba(102, 112, 122, 0.24);
+  color: #56616c;
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
@@ -728,6 +767,9 @@ main {
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .conference-table tbody tr:hover {
@@ -740,6 +782,10 @@ main {
 
 .deadline-cell {
   min-width: 150px;
+}
+
+.deadline-cell .status-badge {
+  margin-top: 7px;
 }
 
 .table-date {
@@ -811,6 +857,20 @@ main {
   gap: 8px 10px;
   align-items: center;
   min-width: 180px;
+}
+
+.areas-cell {
+  min-width: 220px;
+}
+
+.areas-cell .tag {
+  margin: 0 6px 6px 0;
+}
+
+.table-tag {
+  min-height: 24px;
+  padding: 3px 8px;
+  font-size: 0.74rem;
 }
 
 @media (max-width: 900px) {

@@ -48,6 +48,8 @@ Use ISO dates (`YYYY-MM-DD`) for deadlines and other sortable date fields.
 
 For venues with multiple deadlines, such as PETS/PoPETs issues or multi-cycle security conferences, use `deadline_entries`. The app shows the next upcoming deadline automatically.
 
+The main view can be switched between all matching conferences, deadlines in the next 30 days, and `TBA` venues that still need an exact date.
+
 ## Manual Deadline Review
 
 Conference deadlines are reviewed manually.
