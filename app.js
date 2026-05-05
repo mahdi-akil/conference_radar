@@ -612,7 +612,6 @@ function buildConferenceRecord(formData) {
     expected_deadline_months: expectedDeadlineMonths,
     deadline_kind: "paper",
     deadline_timezone: "AoE",
-    notification_date: clean(formData.get("notification_date")),
     conference_dates: clean(formData.get("conference_dates")),
     expected_conference_months: [],
     location: clean(formData.get("location")) || "TBA",

@@ -12,7 +12,6 @@ Each conference entry can include:
 - research areas
 - detailed topics and keywords
 - submission deadline
-- notification date
 - conference dates
 - location
 - website and CFP links
