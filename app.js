@@ -500,7 +500,8 @@ function isDisplayableConference(conference) {
 }
 
 function isUpcomingConference(conference) {
-  return daysUntil(conference.deadlineDate) >= 0;
+  const days = daysUntil(conference.deadlineDate);
+  return days >= 0 && days <= 30;
 }
 
 function setLink(anchor, url) {
