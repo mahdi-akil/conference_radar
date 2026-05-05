@@ -435,8 +435,17 @@ main {
 
 .results-toolbar {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   min-height: 38px;
+}
+
+.results-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.35;
 }
 
 .view-switch {
@@ -934,6 +943,11 @@ main {
 
   .results {
     grid-template-columns: 1fr;
+  }
+
+  .results-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .conference-table {

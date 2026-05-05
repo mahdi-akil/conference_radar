@@ -31,6 +31,7 @@ const els = {
   viewButtons: document.querySelectorAll(".view-toggle"),
   reset: document.querySelector("#resetButton"),
   results: document.querySelector("#results"),
+  resultsMeta: document.querySelector("#resultsMeta"),
   template: document.querySelector("#conferenceTemplate"),
   summaryAllButton: document.querySelector("#summaryAllButton"),
   summaryUpcomingButton: document.querySelector("#summaryUpcomingButton"),
@@ -309,6 +310,7 @@ function applyFilters() {
   state.filtered = visible;
 
   renderSummary(filtered, upcoming, tba);
+  renderResultsMeta(filtered, visible, upcoming, tba);
   renderResults(visible);
 }
 
@@ -366,6 +368,22 @@ function renderSummary(matchingConferences, upcomingConferences, tbaConferences)
   els.summaryTbaButton.setAttribute("aria-pressed", String(state.summaryMode === "tba"));
   els.summaryUpcomingButton.disabled = upcomingConferences.length === 0;
   els.summaryTbaButton.disabled = tbaConferences.length === 0;
+}
+
+function renderResultsMeta(matchingConferences, visibleConferences, upcomingConferences, tbaConferences) {
+  if (!els.resultsMeta) return;
+
+  if (state.summaryMode === "upcoming") {
+    els.resultsMeta.textContent = `Showing ${visibleConferences.length} of ${matchingConferences.length} conferences with deadlines in the next 30 days.`;
+    return;
+  }
+
+  if (state.summaryMode === "tba") {
+    els.resultsMeta.textContent = `Showing ${visibleConferences.length} of ${matchingConferences.length} conferences with deadline TBA or still expected.`;
+    return;
+  }
+
+  els.resultsMeta.textContent = `Showing ${visibleConferences.length} matching conferences.`;
 }
 
 function renderResults(conferences) {
