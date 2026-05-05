@@ -306,7 +306,7 @@ function applyFilters() {
     return matchesQuery && matchesTopic && matchesType && matchesMonth;
   });
 
-  filtered = sortConferences(filtered, els.sort.value, words);
+  filtered = sortConferences(filtered, els.sort.value);
   const upcoming = filtered.filter(isUpcomingConference);
   const tba = filtered.filter(isTbaConference);
   const visible = pickSummaryResults(filtered, upcoming, tba);
@@ -324,15 +324,11 @@ function pickSummaryResults(allConferences, upcomingConferences, tbaConferences)
   return allConferences;
 }
 
-function sortConferences(conferences, sortMode, words) {
+function sortConferences(conferences, sortMode) {
   const items = [...conferences];
 
   if (sortMode === "name") {
     return items.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  if (sortMode === "relevance" && words.length) {
-    return items.sort((a, b) => score(b, words) - score(a, words) || compareDeadline(a, b));
   }
 
   return items.sort(compareDeadline);
@@ -349,15 +345,6 @@ function compareDeadline(a, b) {
   }
 
   return aClosed ? bTime - aTime : aTime - bTime;
-}
-
-function score(conference, words) {
-  return words.reduce((total, word) => {
-    const acronymHit = conference.acronym?.toLowerCase().includes(word) ? 4 : 0;
-    const topicHit = [...(conference.areas || []), ...(conference.topics || [])].some((topic) => topic.includes(word)) ? 3 : 0;
-    const generalHit = conference.searchText.includes(word) ? 1 : 0;
-    return total + acronymHit + topicHit + generalHit;
-  }, 0);
 }
 
 function renderSummary(matchingConferences, upcomingConferences, tbaConferences) {
