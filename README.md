@@ -27,8 +27,12 @@ Use one or more of these broad areas for filtering:
 - `crypto`
 - `energy`
 - `iot`
+- `systems`
+- `networking`
+- `hci`
+- `policy`
 
-Use `topics` and `keywords` for more specific terms such as `smart grids`, `usable privacy`, `privacy engineering`, `blockchain`, or `cyber-physical systems`.
+Use `topics` and `keywords` for more specific terms such as `smart grids`, `usable privacy`, `privacy engineering`, `blockchain`, `cyber-physical systems`, or `data governance`.
 
 ## Adding Or Updating Conferences
 

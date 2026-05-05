@@ -7,6 +7,10 @@ const CORE_AREAS = [
   { value: "crypto", label: "Crypto", aliases: ["crypto", "cryptography", "blockchain", "zero-knowledge", "financial cryptography"] },
   { value: "energy", label: "Energy", aliases: ["energy", "smart grid", "smart grids", "power systems", "sustainability"] },
   { value: "iot", label: "IoT", aliases: ["iot", "cyber-physical", "embedded", "edge", "sensor", "rfid"] },
+  { value: "systems", label: "Systems", aliases: ["systems", "distributed systems", "operating systems", "software systems", "dependable systems"] },
+  { value: "networking", label: "Networking", aliases: ["networking", "network", "wireless", "communications", "internet", "service management"] },
+  { value: "hci", label: "HCI", aliases: ["hci", "human factors", "human-centered", "usable privacy", "usable security", "user studies"] },
+  { value: "policy", label: "Policy", aliases: ["policy", "law", "regulation", "governance", "compliance", "digital rights"] },
 ];
 const today = startOfDay(new Date());
 
