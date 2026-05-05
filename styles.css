@@ -166,8 +166,8 @@ main {
   position: sticky;
   top: 18px;
   display: grid;
-  gap: 12px;
-  padding: 16px;
+  gap: 10px;
+  padding: 14px;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--surface);
@@ -175,15 +175,15 @@ main {
 
 .field {
   display: grid;
-  gap: 6px;
+  gap: 5px;
 }
 
 .field span {
   color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.74rem;
+  font-weight: 750;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
 }
 
 .required-marker {
@@ -204,13 +204,13 @@ main {
 
 .field input,
 .field select {
-  min-height: 42px;
-  padding: 0 11px;
+  min-height: 40px;
+  padding: 0 10px;
 }
 
 .field textarea {
   min-height: 42px;
-  padding: 10px 11px;
+  padding: 9px 10px;
   resize: vertical;
 }
 
@@ -246,11 +246,11 @@ main {
 }
 
 .secondary-button {
-  min-height: 42px;
+  min-height: 40px;
   border: 1px solid var(--line);
   background: var(--surface);
   color: var(--graphite);
-  padding: 8px 12px;
+  padding: 7px 11px;
 }
 
 .secondary-button:hover {
@@ -306,11 +306,11 @@ main {
 }
 
 .admin-open-button {
-  min-height: 42px;
+  min-height: 40px;
   border: 1px solid var(--graphite);
   background: var(--graphite);
   color: white;
-  padding: 8px 12px;
+  padding: 7px 11px;
 }
 
 .admin-open-button:hover {
@@ -444,7 +444,7 @@ main {
 .results-meta {
   margin: 0;
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   line-height: 1.35;
 }
 
@@ -512,8 +512,8 @@ main {
 
 .results {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 14px;
 }
 
 .results.table-view {
@@ -522,20 +522,20 @@ main {
 
 .conference-card {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   min-height: 100%;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--surface);
-  padding: 15px;
+  padding: 14px;
 }
 
 .card-topline {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-start;
-  min-height: 118px;
+  min-height: 104px;
 }
 
 .card-topline > div:first-child {
@@ -545,20 +545,20 @@ main {
 .acronym {
   margin: 0 0 4px;
   color: var(--teal);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.09em;
+  letter-spacing: 0.11em;
 }
 
 .conference-card h2 {
   margin: 0;
-  font-size: 1.18rem;
-  line-height: 1.2;
+  font-size: 1.12rem;
+  line-height: 1.18;
   overflow-wrap: anywhere;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   overflow: hidden;
 }
 
@@ -566,14 +566,14 @@ main {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
-  padding: 5px 9px;
+  min-height: 24px;
+  padding: 4px 8px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: #f5f7f7;
   color: var(--graphite);
-  font-size: 0.74rem;
-  font-weight: 850;
+  font-size: 0.7rem;
+  font-weight: 800;
   white-space: nowrap;
 }
 
@@ -619,22 +619,24 @@ main {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .date-chip,
 .days-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
+  min-height: 31px;
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 5px 9px;
+  font-size: 0.83rem;
   font-weight: 800;
 }
 
 .date-chip {
   background: var(--graphite);
   color: white;
+  max-width: 100%;
 }
 
 .days-chip {
@@ -660,57 +662,62 @@ main {
 .details {
   margin: 0;
   color: var(--muted);
-  line-height: 1.42;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }
 
 .tag-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: 6px;
 }
 
 .facts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
   margin: 0;
 }
 
 .facts div {
   min-width: 0;
   border-top: 1px solid var(--line);
-  padding-top: 8px;
+  padding-top: 7px;
 }
 
 .facts dt {
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
 }
 
 .facts dd {
   margin: 4px 0 0;
   color: var(--ink);
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   overflow-wrap: anywhere;
 }
 
 .card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
   margin-top: auto;
 }
 
 .calendar-button {
-  min-height: 34px;
+  min-height: 32px;
   border: 1px solid rgba(11, 129, 123, 0.35);
   background: #f4faf9;
   color: #075c58;
-  padding: 6px 11px;
+  padding: 5px 10px;
 }
 
 .calendar-button:hover {
@@ -721,6 +728,11 @@ main {
 
 .calendar-button span {
   white-space: nowrap;
+}
+
+.more-tag {
+  background: transparent;
+  color: var(--muted);
 }
 
 .calendar-button.compact {

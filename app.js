@@ -422,9 +422,13 @@ function renderResults(conferences) {
     card.querySelector(".details").textContent = conference.description || "";
 
     const tagRow = card.querySelector(".tag-row");
-    (conference.topics || []).forEach((topic) => {
-      tagRow.appendChild(buildTag(toTitle(topic)));
+    const tags = getCardTags(conference);
+    tags.visible.forEach((tag) => {
+      tagRow.appendChild(buildTag(tag));
     });
+    if (tags.hiddenCount > 0) {
+      tagRow.appendChild(buildTag(`+${tags.hiddenCount} more`, "more-tag"));
+    }
 
     card.querySelector(".location").textContent = conference.location || "TBA";
     card.querySelector(".conference-date").textContent = conference.conference_dates || "TBA";
@@ -578,6 +582,27 @@ function buildTag(text, className = "") {
   tag.className = className ? `tag ${className}` : "tag";
   tag.textContent = text;
   return tag;
+}
+
+function getCardTags(conference) {
+  const preferred = [
+    ...(conference.areas || []).map(toTitle),
+    ...(conference.topics || []).map(toTitle),
+  ];
+  const unique = [];
+  const seen = new Set();
+
+  preferred.forEach((item) => {
+    const key = item.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    unique.push(item);
+  });
+
+  return {
+    visible: unique.slice(0, 3),
+    hiddenCount: Math.max(0, unique.length - 3),
+  };
 }
 
 function setLink(anchor, url) {
