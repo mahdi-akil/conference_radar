@@ -615,6 +615,10 @@ main {
   white-space: nowrap;
 }
 
+.tag[hidden] {
+  display: none !important;
+}
+
 .deadline-block {
   display: flex;
   flex-wrap: wrap;
@@ -733,6 +737,21 @@ main {
 .more-tag {
   background: transparent;
   color: var(--muted);
+}
+
+.more-tag-button {
+  cursor: pointer;
+}
+
+.more-tag-button:hover {
+  border-color: rgba(15, 109, 103, 0.35);
+  color: var(--teal);
+  background: #f8fbfb;
+}
+
+.more-tag-button:focus {
+  outline: 3px solid rgba(11, 129, 123, 0.16);
+  outline-offset: 2px;
 }
 
 .calendar-button.compact {

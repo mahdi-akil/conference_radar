@@ -426,8 +426,8 @@ function renderResults(conferences) {
     tags.visible.forEach((tag) => {
       tagRow.appendChild(buildTag(tag));
     });
-    if (tags.hiddenCount > 0) {
-      tagRow.appendChild(buildTag(`+${tags.hiddenCount} more`, "more-tag"));
+    if (tags.hidden.length > 0) {
+      tagRow.appendChild(buildMoreTagButton(tags.hidden, tagRow));
     }
 
     card.querySelector(".location").textContent = conference.location || "TBA";
@@ -585,10 +585,9 @@ function buildTag(text, className = "") {
 }
 
 function getCardTags(conference) {
-  const preferred = [
-    ...(conference.areas || []).map(toTitle),
-    ...(conference.topics || []).map(toTitle),
-  ];
+  const preferred = (conference.areas || []).length
+    ? (conference.areas || []).map(toTitle)
+    : (conference.topics || []).map(toTitle);
   const unique = [];
   const seen = new Set();
 
@@ -601,8 +600,40 @@ function getCardTags(conference) {
 
   return {
     visible: unique.slice(0, 3),
-    hiddenCount: Math.max(0, unique.length - 3),
+    hidden: unique.slice(3),
   };
+}
+
+function buildMoreTagButton(hiddenTags, tagRow) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "tag more-tag more-tag-button";
+  button.textContent = `+${hiddenTags.length} more`;
+  button.title = hiddenTags.join(", ");
+  button.setAttribute("aria-expanded", "false");
+  button.setAttribute("aria-label", `Show ${hiddenTags.length} more topics: ${hiddenTags.join(", ")}`);
+
+  let expanded = false;
+  const extraTags = hiddenTags.map((tag) => {
+    const element = buildTag(tag, "extra-tag");
+    element.hidden = true;
+    return element;
+  });
+
+  button.addEventListener("click", () => {
+    expanded = !expanded;
+    extraTags.forEach((tag) => {
+      tag.hidden = !expanded;
+    });
+    button.textContent = expanded ? "Show less" : `+${hiddenTags.length} more`;
+    button.setAttribute("aria-expanded", String(expanded));
+  });
+
+  extraTags.forEach((tag) => {
+    tagRow.appendChild(tag);
+  });
+
+  return button;
 }
 
 function setLink(anchor, url) {
