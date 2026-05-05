@@ -450,7 +450,7 @@ function renderTableResults(conferences) {
     const calendarButton = document.createElement("button");
     calendarButton.className = "calendar-button compact";
     calendarButton.type = "button";
-    calendarButton.textContent = "Add deadline";
+    calendarButton.textContent = "Add to calendar";
     setCalendarButton(calendarButton, conference);
     actions.appendChild(calendarButton);
     appendTableLink(actions, "Website", conference.website_url);
