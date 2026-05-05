@@ -428,7 +428,6 @@ function renderResults(conferences) {
 
     card.querySelector(".location").textContent = conference.location || "TBA";
     card.querySelector(".conference-date").textContent = conference.conference_dates || "TBA";
-    card.querySelector(".checked-date").textContent = conference.last_checked || "Not checked";
 
     setLink(card.querySelector(".website-link"), conference.website_url);
     setLink(card.querySelector(".cfp-link"), conference.cfp_url || conference.website_url);
