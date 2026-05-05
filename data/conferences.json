@@ -7,6 +7,11 @@
       "name": "International Workshop on Privacy Engineering",
       "acronym": "IWPE",
       "type": "workshop",
+      "areas": [
+        "privacy",
+        "security",
+        "policy"
+      ],
       "topics": [
         "privacy",
         "privacy engineering",
@@ -48,6 +53,10 @@
       "name": "Annual Privacy Forum",
       "acronym": "APF",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "policy"
+      ],
       "topics": [
         "privacy",
         "data protection",
@@ -89,6 +98,10 @@
       "name": "Privacy and Data Governance Symposium",
       "acronym": "Privacy Symposium",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "policy"
+      ],
       "topics": [
         "privacy",
         "data protection",
@@ -130,6 +143,10 @@
       "name": "Computers, Privacy and Data Protection",
       "acronym": "CPDP",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "policy"
+      ],
       "topics": [
         "privacy",
         "data protection",
@@ -171,6 +188,11 @@
       "name": "Symposium on Usable Privacy and Security",
       "acronym": "SOUPS",
       "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "hci"
+      ],
       "topics": [
         "usable security",
         "usable privacy",
@@ -212,6 +234,11 @@
       "name": "Privacy Enhancing Technologies Symposium / Proceedings on Privacy Enhancing Technologies",
       "acronym": "PETS/PoPETs",
       "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "crypto"
+      ],
       "topics": [
         "privacy",
         "privacy enhancing technologies",
@@ -280,6 +307,12 @@
       "name": "IEEE European Symposium on Security and Privacy",
       "acronym": "EuroS&P",
       "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "systems",
+        "networking"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -320,6 +353,12 @@
       "name": "IEEE Symposium on Security and Privacy",
       "acronym": "IEEE S&P",
       "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "systems",
+        "networking"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -359,6 +398,11 @@
       "name": "IFIP Summer School on Privacy and Identity Management",
       "acronym": "IFIP Summer School",
       "type": "summer school",
+      "areas": [
+        "privacy",
+        "security",
+        "policy"
+      ],
       "topics": [
         "privacy",
         "identity management",
@@ -401,6 +445,11 @@
       "name": "International Workshop on Data Privacy Management",
       "acronym": "DPM",
       "type": "workshop",
+      "areas": [
+        "privacy",
+        "security",
+        "policy"
+      ],
       "topics": [
         "privacy",
         "data protection",
@@ -439,6 +488,12 @@
       "name": "USENIX Security Symposium",
       "acronym": "USENIX Security",
       "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "systems",
+        "networking"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -480,6 +535,13 @@
       "name": "Network and Distributed System Security Symposium",
       "acronym": "NDSS",
       "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "systems",
+        "networking",
+        "iot"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -534,6 +596,13 @@
       "name": "ACM Conference on Computer and Communications Security",
       "acronym": "ACM CCS",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "crypto",
+        "systems",
+        "networking"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -574,6 +643,12 @@
       "name": "ACM Asia Conference on Computer and Communications Security",
       "acronym": "ASIACCS",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "systems",
+        "networking"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -613,6 +688,11 @@
       "name": "International Symposium on Research in Attacks, Intrusions and Defenses",
       "acronym": "RAID",
       "type": "symposium",
+      "areas": [
+        "security",
+        "systems",
+        "networking"
+      ],
       "topics": [
         "security",
         "intrusion detection",
@@ -652,6 +732,12 @@
       "name": "Annual Computer Security Applications Conference",
       "acronym": "ACSAC",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "systems",
+        "iot"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -691,6 +777,11 @@
       "name": "IEEE Computer Security Foundations Symposium",
       "acronym": "CSF",
       "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "crypto"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -733,6 +824,12 @@
       "name": "New Security Paradigms Workshop",
       "acronym": "NSPW",
       "type": "workshop",
+      "areas": [
+        "privacy",
+        "security",
+        "hci",
+        "policy"
+      ],
       "topics": [
         "security",
         "privacy",
@@ -772,6 +869,14 @@
       "name": "IEEE International Conference on Smart Grid Communications, Control and Computing Technologies",
       "acronym": "SmartGridComm",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "energy",
+        "iot",
+        "systems",
+        "networking"
+      ],
       "topics": [
         "smart grids",
         "security",
@@ -812,6 +917,13 @@
       "name": "ACM International Conference on Future and Sustainable Energy Systems",
       "acronym": "ACM e-Energy",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "energy",
+        "iot",
+        "systems"
+      ],
       "topics": [
         "smart grids",
         "energy",
@@ -854,6 +966,10 @@
       "name": "IEEE International Conference on Intelligence and Security Informatics",
       "acronym": "IEEE ISI",
       "type": "conference",
+      "areas": [
+        "security",
+        "systems"
+      ],
       "topics": [
         "security",
         "AI security",
@@ -895,7 +1011,8 @@
       "areas": [
         "crypto",
         "privacy",
-        "security"
+        "security",
+        "networking"
       ],
       "topics": [
         "applied cryptography",
@@ -939,7 +1056,9 @@
       "areas": [
         "privacy",
         "security",
-        "iot"
+        "iot",
+        "hci",
+        "policy"
       ],
       "topics": [
         "security",
@@ -982,7 +1101,8 @@
       "type": "conference",
       "areas": [
         "security",
-        "privacy"
+        "privacy",
+        "systems"
       ],
       "topics": [
         "secure development",
@@ -1025,7 +1145,9 @@
       "areas": [
         "energy",
         "iot",
-        "security"
+        "security",
+        "systems",
+        "networking"
       ],
       "topics": [
         "edge computing",
@@ -1243,7 +1365,8 @@
       "areas": [
         "privacy",
         "security",
-        "iot"
+        "iot",
+        "networking"
       ],
       "topics": [
         "wireless security",
@@ -1305,7 +1428,8 @@
       "areas": [
         "privacy",
         "security",
-        "iot"
+        "iot",
+        "networking"
       ],
       "topics": [
         "communications security",
@@ -1349,7 +1473,8 @@
         "privacy",
         "security",
         "crypto",
-        "iot"
+        "iot",
+        "networking"
       ],
       "topics": [
         "information security",
@@ -1395,7 +1520,8 @@
         "privacy",
         "security",
         "crypto",
-        "iot"
+        "iot",
+        "networking"
       ],
       "topics": [
         "information security",
@@ -1455,7 +1581,9 @@
       "areas": [
         "security",
         "iot",
-        "energy"
+        "energy",
+        "networking",
+        "systems"
       ],
       "topics": [
         "networking",
@@ -1501,7 +1629,9 @@
       "areas": [
         "security",
         "iot",
-        "energy"
+        "energy",
+        "networking",
+        "systems"
       ],
       "topics": [
         "network management",
@@ -1589,6 +1719,10 @@
       "name": "ACM CHI Conference on Human Factors in Computing Systems",
       "acronym": "CHI",
       "type": "conference",
+      "areas": [
+        "privacy",
+        "hci"
+      ],
       "topics": [
         "HCI",
         "usable privacy",
