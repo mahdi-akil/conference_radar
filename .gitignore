@@ -2,6 +2,3 @@
 __pycache__/
 *.pyc
 .venv/
-deadline-report.md
-data/deadline-candidates.json
-data/deadline-proposals.json

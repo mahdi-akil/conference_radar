@@ -543,7 +543,6 @@ function buildConferenceRecord(formData) {
     description: clean(formData.get("description")),
     rank: clean(formData.get("rank")),
     notes: clean(formData.get("notes")),
-    auto_check: formData.get("auto_check") === "on",
     last_checked: formatIsoDate(new Date()),
     deadline_confidence: deadline ? "manual" : "expected",
   };
