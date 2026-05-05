@@ -792,6 +792,7 @@ function formatDays(date) {
 
 function dayClass(date) {
   const days = daysUntil(date);
+  if (!Number.isFinite(days)) return "tba";
   if (days < 0) return "closed";
   if (days <= 60) return "soon";
   return "";

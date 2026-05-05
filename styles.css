@@ -646,6 +646,11 @@ main {
   color: #842f2f;
 }
 
+.days-chip.tba {
+  background: #edf1f5;
+  color: #56616c;
+}
+
 .details {
   margin: 0;
   color: var(--muted);
@@ -826,6 +831,11 @@ main {
 .table-days.closed {
   background: #f1dddd;
   color: #842f2f;
+}
+
+.table-days.tba {
+  background: #edf1f5;
+  color: #56616c;
 }
 
 .venue-cell {
