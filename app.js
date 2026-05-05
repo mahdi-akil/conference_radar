@@ -144,6 +144,10 @@ function bindAdminHelper() {
   els.addForm.addEventListener("input", updateConferenceJsonOutput);
   els.addForm.addEventListener("submit", (event) => {
     event.preventDefault();
+    if (!els.addForm.reportValidity()) {
+      updateConferenceJsonOutput();
+      return;
+    }
     updateConferenceJsonOutput();
   });
 
@@ -587,6 +591,12 @@ function setLink(anchor, url) {
 
 function updateConferenceJsonOutput() {
   if (!els.addForm || !els.addOutput) return;
+  const isValid = els.addForm.checkValidity();
+  els.copyConferenceJson.disabled = !isValid;
+  if (!isValid) {
+    els.addOutput.value = "Complete the required fields to generate JSON.";
+    return;
+  }
   const record = buildConferenceRecord(new FormData(els.addForm));
   els.addOutput.value = JSON.stringify(record, null, 2);
 }

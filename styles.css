@@ -192,6 +192,12 @@ main {
   letter-spacing: 0.08em;
 }
 
+.required-marker {
+  color: var(--red);
+  font-style: normal;
+  font-weight: 900;
+}
+
 .field input,
 .field select,
 .field textarea {
@@ -418,6 +424,12 @@ main {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
+}
+
+.helper-note {
+  margin: -4px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 
 .admin-output {
@@ -728,6 +740,13 @@ main {
 
 .calendar-button[hidden] {
   display: none;
+}
+
+.calendar-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+  transform: none;
 }
 
 .text-link {

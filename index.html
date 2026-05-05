@@ -104,11 +104,11 @@
 
         <div class="admin-grid">
           <label class="field">
-            <span>Name</span>
+            <span>Name <em class="required-marker" aria-hidden="true">*</em></span>
             <input name="name" required placeholder="Annual Privacy Forum">
           </label>
           <label class="field">
-            <span>Acronym</span>
+            <span>Acronym <em class="required-marker" aria-hidden="true">*</em></span>
             <input name="acronym" required placeholder="APF">
           </label>
           <label class="field">
@@ -176,6 +176,8 @@
           </button>
           <button id="copyConferenceJsonButton" class="calendar-button" type="button">Copy JSON</button>
         </div>
+
+        <p class="helper-note">Fields marked with <span class="required-marker" aria-hidden="true">*</span> are required.</p>
 
         <label class="field wide">
           <span>JSON record</span>
