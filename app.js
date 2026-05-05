@@ -43,6 +43,12 @@ const els = {
   addDialog: document.querySelector("#addConferenceDialog"),
   closeAddDialog: document.querySelector("#closeAddDialogButton"),
   addForm: document.querySelector("#addConferenceForm"),
+  singleDeadlineField: document.querySelector("#singleDeadlineField"),
+  multipleDeadlinesToggle: document.querySelector("#multipleDeadlinesToggle"),
+  deadlineEntriesSection: document.querySelector("#deadlineEntriesSection"),
+  deadlineEntriesList: document.querySelector("#deadlineEntriesList"),
+  addDeadlineEntryButton: document.querySelector("#addDeadlineEntryButton"),
+  deadlineEntryTemplate: document.querySelector("#deadlineEntryTemplate"),
   addOutput: document.querySelector("#conferenceJsonOutput"),
   copyConferenceJson: document.querySelector("#copyConferenceJsonButton"),
 };
@@ -129,6 +135,7 @@ function bindAdminHelper() {
   if (!els.addConference || !els.addDialog || !els.addForm) return;
 
   els.addConference.addEventListener("click", () => {
+    syncDeadlineMode();
     updateConferenceJsonOutput();
     if (typeof els.addDialog.showModal === "function") {
       els.addDialog.showModal();
@@ -151,6 +158,21 @@ function bindAdminHelper() {
     updateConferenceJsonOutput();
   });
 
+  els.multipleDeadlinesToggle?.addEventListener("change", () => {
+    if (els.multipleDeadlinesToggle.checked && !els.deadlineEntriesList.children.length) {
+      addDeadlineEntryRow();
+    }
+    syncDeadlineMode();
+    updateConferenceJsonOutput();
+  });
+
+  els.addDeadlineEntryButton?.addEventListener("click", () => {
+    addDeadlineEntryRow();
+    updateConferenceJsonOutput();
+  });
+
+  syncDeadlineMode();
+
   els.copyConferenceJson.addEventListener("click", async () => {
     updateConferenceJsonOutput();
     const text = els.addOutput.value;
@@ -165,6 +187,28 @@ function bindAdminHelper() {
       document.execCommand("copy");
     }
   });
+}
+
+function syncDeadlineMode() {
+  if (!els.multipleDeadlinesToggle || !els.deadlineEntriesSection || !els.singleDeadlineField) return;
+  const multiple = els.multipleDeadlinesToggle.checked;
+  els.deadlineEntriesSection.hidden = !multiple;
+  els.singleDeadlineField.hidden = multiple;
+}
+
+function addDeadlineEntryRow(entry = {}) {
+  if (!els.deadlineEntryTemplate || !els.deadlineEntriesList) return;
+  const node = els.deadlineEntryTemplate.content.cloneNode(true);
+  const row = node.querySelector(".deadline-entry-row");
+  row.querySelector(".entry-label").value = entry.label || "";
+  row.querySelector(".entry-date").value = entry.date || "";
+  row.querySelector(".entry-kind").value = entry.kind || "paper submission";
+  row.querySelector(".entry-timezone").value = entry.timezone || "AoE";
+  row.querySelector(".remove-deadline-entry").addEventListener("click", () => {
+    row.remove();
+    updateConferenceJsonOutput();
+  });
+  els.deadlineEntriesList.appendChild(row);
 }
 
 function normalizeConference(conference) {
@@ -633,12 +677,6 @@ function setLink(anchor, url) {
 
 function updateConferenceJsonOutput() {
   if (!els.addForm || !els.addOutput) return;
-  const isValid = els.addForm.checkValidity();
-  els.copyConferenceJson.disabled = !isValid;
-  if (!isValid) {
-    els.addOutput.value = "Complete the required fields to generate JSON.";
-    return;
-  }
   const record = buildConferenceRecord(new FormData(els.addForm));
   els.addOutput.value = JSON.stringify(record, null, 2);
 }
@@ -646,13 +684,17 @@ function updateConferenceJsonOutput() {
 function buildConferenceRecord(formData) {
   const name = clean(formData.get("name"));
   const acronym = clean(formData.get("acronym"));
+  const multipleDeadlines = formData.get("has_multiple_deadlines") === "on";
   const deadline = clean(formData.get("submission_deadline"));
   const expectedDeadlineMonths = splitList(formData.get("expected_deadline_months"));
   const areas = formData.getAll("areas").map(clean).filter(Boolean);
   const topics = areas.length ? areas : inferTopicsFromText(`${name} ${acronym} ${clean(formData.get("description"))}`);
-  const idParts = [acronym || name || "conference", deadline ? deadline.slice(0, 4) : new Date().getFullYear()];
+  const deadlineEntries = multipleDeadlines ? collectDeadlineEntries(true) : [];
+  const derivedDeadline = multipleDeadlines ? derivePrimaryDeadline(deadlineEntries) : deadline;
+  const primaryEntry = deadlineEntries.find((entry) => entry.date) || deadlineEntries[0] || null;
+  const idParts = [acronym || name || "conference", derivedDeadline ? derivedDeadline.slice(0, 4) : new Date().getFullYear()];
 
-  return {
+  const record = {
     id: slugify(idParts.join("-")),
     name,
     acronym,
@@ -660,10 +702,10 @@ function buildConferenceRecord(formData) {
     areas,
     topics,
     keywords: [],
-    submission_deadline: deadline,
+    submission_deadline: derivedDeadline,
     expected_deadline_months: expectedDeadlineMonths,
-    deadline_kind: "paper",
-    deadline_timezone: "AoE",
+    deadline_kind: primaryEntry?.kind || "paper",
+    deadline_timezone: primaryEntry?.timezone || "AoE",
     conference_dates: clean(formData.get("conference_dates")),
     expected_conference_months: [],
     location: clean(formData.get("location")) || "TBA",
@@ -673,8 +715,44 @@ function buildConferenceRecord(formData) {
     rank: clean(formData.get("rank")),
     notes: clean(formData.get("notes")),
     last_checked: formatIsoDate(new Date()),
-    deadline_confidence: deadline ? "manual" : "expected",
+    deadline_confidence: derivedDeadline ? "manual" : "expected",
   };
+
+  if (multipleDeadlines) {
+    record.deadline_entries = deadlineEntries;
+  }
+
+  return record;
+}
+
+function collectDeadlineEntries(includeSkeleton = false) {
+  if (!els.deadlineEntriesList) return [];
+  const rows = [...els.deadlineEntriesList.querySelectorAll(".deadline-entry-row")].map((row) => ({
+    label: clean(row.querySelector(".entry-label")?.value),
+    date: clean(row.querySelector(".entry-date")?.value),
+    kind: clean(row.querySelector(".entry-kind")?.value) || "paper submission",
+    timezone: clean(row.querySelector(".entry-timezone")?.value) || "AoE",
+  }));
+
+  const filled = rows.filter((entry) => entry.label || entry.date || entry.kind || entry.timezone);
+  if (filled.length) return filled;
+  if (!includeSkeleton) return [];
+  return [
+    {
+      label: "",
+      date: "",
+      kind: "paper submission",
+      timezone: "AoE",
+    },
+  ];
+}
+
+function derivePrimaryDeadline(deadlineEntries) {
+  const datedEntries = deadlineEntries
+    .map((entry) => entry.date)
+    .filter(Boolean)
+    .sort();
+  return datedEntries[0] || "";
 }
 
 function inferTopicsFromText(text) {

@@ -366,20 +366,10 @@ main {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 0;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--surface);
   padding: 12px;
-}
-
-.area-picker legend {
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0 4px;
 }
 
 .area-picker label,
@@ -407,6 +397,57 @@ main {
   color: var(--ink);
 }
 
+.multiple-toggle {
+  margin-top: -2px;
+}
+
+.deadline-entries {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  padding: 12px;
+}
+
+.deadline-entries[hidden] {
+  display: none !important;
+}
+
+.deadline-entries-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.deadline-entries-header span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.deadline-entries-list {
+  display: grid;
+  gap: 10px;
+}
+
+.deadline-entry-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+  gap: 10px;
+  align-items: end;
+  padding-top: 10px;
+  border-top: 1px solid rgba(215, 221, 228, 0.9);
+}
+
+.deadline-entry-row:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
 .dialog-actions {
   display: flex;
   flex-wrap: wrap;
@@ -424,6 +465,7 @@ main {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
   font-size: 0.82rem;
   line-height: 1.45;
+  min-height: 250px;
 }
 
 .results-panel {
@@ -965,6 +1007,10 @@ main {
   .admin-open-button {
     grid-column: 1 / -1;
   }
+
+  .deadline-entry-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 620px) {
@@ -987,7 +1033,8 @@ main {
   .summary-strip,
   .filters,
   .admin-grid,
-  .facts {
+  .facts,
+  .deadline-entry-row {
     grid-template-columns: 1fr;
   }
 

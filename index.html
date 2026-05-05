@@ -119,19 +119,21 @@
               <option value="summer school">Summer school</option>
             </select>
           </label>
-          <fieldset class="area-picker">
-            <legend>Areas</legend>
-            <label><input type="checkbox" name="areas" value="privacy"> Privacy</label>
-            <label><input type="checkbox" name="areas" value="security"> Security</label>
-            <label><input type="checkbox" name="areas" value="crypto"> Crypto</label>
-            <label><input type="checkbox" name="areas" value="energy"> Energy</label>
-            <label><input type="checkbox" name="areas" value="iot"> IoT</label>
-            <label><input type="checkbox" name="areas" value="systems"> Systems</label>
-            <label><input type="checkbox" name="areas" value="networking"> Networking</label>
-            <label><input type="checkbox" name="areas" value="hci"> HCI</label>
-            <label><input type="checkbox" name="areas" value="policy"> Policy</label>
-          </fieldset>
-          <label class="field">
+          <div class="field wide">
+            <span>Areas</span>
+            <div class="area-picker">
+              <label><input type="checkbox" name="areas" value="privacy"> Privacy</label>
+              <label><input type="checkbox" name="areas" value="security"> Security</label>
+              <label><input type="checkbox" name="areas" value="crypto"> Crypto</label>
+              <label><input type="checkbox" name="areas" value="energy"> Energy</label>
+              <label><input type="checkbox" name="areas" value="iot"> IoT</label>
+              <label><input type="checkbox" name="areas" value="systems"> Systems</label>
+              <label><input type="checkbox" name="areas" value="networking"> Networking</label>
+              <label><input type="checkbox" name="areas" value="hci"> HCI</label>
+              <label><input type="checkbox" name="areas" value="policy"> Policy</label>
+            </div>
+          </div>
+          <label class="field" id="singleDeadlineField">
             <span>Deadline</span>
             <input name="submission_deadline" type="date">
           </label>
@@ -139,6 +141,17 @@
             <span>Expected Months</span>
             <input name="expected_deadline_months" placeholder="april, september">
           </label>
+          <label class="checkbox-field wide multiple-toggle">
+            <input id="multipleDeadlinesToggle" name="has_multiple_deadlines" type="checkbox">
+            <span>Conference has multiple submission deadlines</span>
+          </label>
+          <section id="deadlineEntriesSection" class="deadline-entries wide" hidden>
+            <div class="deadline-entries-header">
+              <span>Deadline entries</span>
+              <button id="addDeadlineEntryButton" class="secondary-button compact has-symbol" data-symbol="plus" type="button">Add deadline</button>
+            </div>
+            <div id="deadlineEntriesList" class="deadline-entries-list"></div>
+          </section>
           <label class="field">
             <span>Conference Dates</span>
             <input name="conference_dates" placeholder="2026-09-09 to 2026-09-10">
@@ -184,6 +197,28 @@
         </label>
       </form>
     </dialog>
+
+    <template id="deadlineEntryTemplate">
+      <div class="deadline-entry-row">
+        <label class="field">
+          <span>Label</span>
+          <input class="entry-label" placeholder="Summer cycle">
+        </label>
+        <label class="field">
+          <span>Date</span>
+          <input class="entry-date" type="date">
+        </label>
+        <label class="field">
+          <span>Deadline type</span>
+          <input class="entry-kind" placeholder="paper submission">
+        </label>
+        <label class="field">
+          <span>Timezone</span>
+          <input class="entry-timezone" placeholder="AoE">
+        </label>
+        <button class="secondary-button compact has-symbol remove-deadline-entry" data-symbol="close" type="button">Remove</button>
+      </div>
+    </template>
 
     <template id="conferenceTemplate">
       <article class="conference-card">
