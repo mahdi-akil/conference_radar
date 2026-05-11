@@ -449,7 +449,10 @@ function renderResults(conferences) {
     card.querySelector(".date-chip").textContent = formatDeadline(conference);
     const daysChip = card.querySelector(".days-chip");
     daysChip.textContent = formatDays(conference.deadlineDate);
-    daysChip.classList.add(dayClass(conference.deadlineDate));
+    const dayState = dayClass(conference.deadlineDate);
+    if (dayState) {
+      daysChip.classList.add(dayState);
+    }
     card.querySelector(".details").textContent = conference.description || "";
 
     const tagRow = card.querySelector(".tag-row");
