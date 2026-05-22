@@ -66,6 +66,11 @@
             </select>
           </label>
 
+          <label class="checkbox-field favorite-filter">
+            <input id="favoritesOnlyToggle" type="checkbox">
+            <span>Favorites only</span>
+          </label>
+
           <button id="resetButton" class="secondary-button has-symbol" data-symbol="reset" type="button">Reset filters</button>
 
           <button id="addConferenceButton" class="admin-open-button has-symbol" data-symbol="plus" type="button">
@@ -227,7 +232,12 @@
             <p class="acronym"></p>
             <h2></h2>
           </div>
-          <div class="status-badge"></div>
+          <div class="card-badges">
+            <button class="favorite-button" type="button" aria-pressed="false">
+              <span aria-hidden="true">☆</span>
+            </button>
+            <div class="status-badge"></div>
+          </div>
         </div>
         <div class="deadline-block">
           <span class="date-chip"></span>

@@ -1,5 +1,6 @@
 const DATA_URL = "data/conferences.json";
 const VIEW_STORAGE_KEY = "conference-radar-view";
+const FAVORITES_STORAGE_KEY = "conference-radar-favorites";
 const STOP_WORDS = new Set(["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with"]);
 const CORE_AREAS = [
   { value: "privacy", label: "Privacy", aliases: ["privacy", "data protection", "gdpr", "identity", "anonymity"] },
@@ -20,6 +21,7 @@ const state = {
   matching: [],
   summaryMode: "all",
   view: loadSavedView(),
+  favorites: loadSavedFavorites(),
 };
 
 const els = {
@@ -28,6 +30,7 @@ const els = {
   month: document.querySelector("#monthFilter"),
   type: document.querySelector("#typeFilter"),
   sort: document.querySelector("#sortSelect"),
+  favoritesOnly: document.querySelector("#favoritesOnlyToggle"),
   viewButtons: document.querySelectorAll(".view-toggle"),
   reset: document.querySelector("#resetButton"),
   results: document.querySelector("#results"),
@@ -74,7 +77,7 @@ async function init() {
 }
 
 function bindEvents() {
-  [els.search, els.topic, els.month, els.type, els.sort].forEach((input) => {
+  [els.search, els.topic, els.month, els.type, els.sort, els.favoritesOnly].forEach((input) => {
     input.addEventListener("input", applyFilters);
   });
 
@@ -108,6 +111,7 @@ function bindEvents() {
     els.month.value = "";
     els.type.value = "";
     els.sort.value = "deadline";
+    els.favoritesOnly.checked = false;
     state.summaryMode = "all";
     applyFilters();
   });
@@ -128,6 +132,23 @@ function saveView(view) {
     localStorage.setItem(VIEW_STORAGE_KEY, view);
   } catch {
     // The view switch still works if the browser blocks local storage.
+  }
+}
+
+function loadSavedFavorites() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(FAVORITES_STORAGE_KEY) || "[]");
+    return new Set(Array.isArray(parsed) ? parsed.filter(Boolean) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveFavorites() {
+  try {
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify([...state.favorites]));
+  } catch {
+    // Favorites still work for this page session if the browser blocks local storage.
   }
 }
 
@@ -341,13 +362,15 @@ function applyFilters() {
   const selectedTopic = els.topic.value;
   const selectedMonth = els.month.value;
   const selectedType = els.type.value;
+  const favoritesOnly = els.favoritesOnly.checked;
 
   let filtered = state.conferences.filter((conference) => {
     const matchesQuery = words.every((word) => conference.searchText.includes(word));
     const matchesTopic = !selectedTopic || (conference.areas || []).includes(selectedTopic);
     const matchesType = !selectedType || conference.type === selectedType;
     const matchesMonth = !selectedMonth || monthKey(conference.deadlineDate) === selectedMonth;
-    return matchesQuery && matchesTopic && matchesType && matchesMonth;
+    const matchesFavorite = !favoritesOnly || state.favorites.has(conference.id);
+    return matchesQuery && matchesTopic && matchesType && matchesMonth && matchesFavorite;
   });
 
   filtered = sortConferences(filtered, els.sort.value);
@@ -445,6 +468,7 @@ function renderResults(conferences) {
     card.querySelector(".acronym").textContent = conference.acronym || "Conference";
     card.querySelector("h2").textContent = conference.name;
     applyStatusBadge(card.querySelector(".status-badge"), conference);
+    setFavoriteButton(card.querySelector(".favorite-button"), conference);
 
     card.querySelector(".date-chip").textContent = formatDeadline(conference);
     const daysChip = card.querySelector(".days-chip");
@@ -535,6 +559,12 @@ function renderTableResults(conferences) {
     const linksCell = tableCell();
     const actions = document.createElement("div");
     actions.className = "table-actions";
+    const favoriteButton = document.createElement("button");
+    favoriteButton.className = "favorite-button compact";
+    favoriteButton.type = "button";
+    favoriteButton.innerHTML = `<span aria-hidden="true">☆</span>`;
+    setFavoriteButton(favoriteButton, conference);
+    actions.appendChild(favoriteButton);
     const calendarButton = document.createElement("button");
     calendarButton.className = "calendar-button compact";
     calendarButton.type = "button";
@@ -552,6 +582,29 @@ function renderTableResults(conferences) {
   table.append(thead, tbody);
   shell.appendChild(table);
   els.results.appendChild(shell);
+}
+
+function setFavoriteButton(button, conference) {
+  const isFavorite = state.favorites.has(conference.id);
+  button.classList.toggle("active", isFavorite);
+  button.setAttribute("aria-pressed", String(isFavorite));
+  button.setAttribute("aria-label", `${isFavorite ? "Remove" : "Add"} ${conference.acronym || conference.name} ${isFavorite ? "from" : "to"} favorites`);
+  button.title = isFavorite ? "Remove from favorites" : "Add to favorites";
+  button.querySelector("span").textContent = isFavorite ? "★" : "☆";
+
+  button.addEventListener("click", () => {
+    toggleFavorite(conference.id);
+  });
+}
+
+function toggleFavorite(conferenceId) {
+  if (state.favorites.has(conferenceId)) {
+    state.favorites.delete(conferenceId);
+  } else {
+    state.favorites.add(conferenceId);
+  }
+  saveFavorites();
+  applyFilters();
 }
 
 function tableCell(className = "") {

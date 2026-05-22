@@ -391,6 +391,14 @@ main {
   min-height: 42px;
 }
 
+.favorite-filter {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #f8fafb;
+  padding: 8px 10px;
+}
+
 .checkbox-field span {
   text-transform: none;
   letter-spacing: 0;
@@ -584,6 +592,12 @@ main {
   min-width: 0;
 }
 
+.card-badges {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+}
+
 .acronym {
   margin: 0 0 4px;
   color: var(--teal);
@@ -641,6 +655,51 @@ main {
   background: #edf1f5;
   border-color: rgba(102, 112, 122, 0.24);
   color: #56616c;
+}
+
+.favorite-button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.favorite-button:hover {
+  border-color: rgba(185, 140, 44, 0.5);
+  background: #fff9eb;
+  color: #8a6417;
+}
+
+.favorite-button:focus {
+  outline: 3px solid rgba(185, 140, 44, 0.22);
+  outline-offset: 2px;
+}
+
+.favorite-button.active {
+  border-color: rgba(185, 140, 44, 0.52);
+  background: #fff4d7;
+  color: var(--gold);
+}
+
+.favorite-button.compact {
+  width: 30px;
+  height: 30px;
+  font-size: 1rem;
 }
 
 .tag {
