@@ -1,6 +1,7 @@
 const DATA_URL = "data/conferences.json";
 const VIEW_STORAGE_KEY = "conference-radar-view";
 const FAVORITES_STORAGE_KEY = "conference-radar-favorites";
+const NO_RANK_FILTER_VALUE = "__no_rank__";
 const STOP_WORDS = new Set(["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with"]);
 const CORE_AREAS = [
   { value: "privacy", label: "Privacy", aliases: ["privacy", "data protection", "gdpr", "identity", "anonymity"] },
@@ -29,6 +30,7 @@ const els = {
   topic: document.querySelector("#topicFilter"),
   month: document.querySelector("#monthFilter"),
   type: document.querySelector("#typeFilter"),
+  rank: document.querySelector("#rankFilter"),
   sort: document.querySelector("#sortSelect"),
   viewButtons: document.querySelectorAll(".view-toggle"),
   reset: document.querySelector("#resetButton"),
@@ -78,7 +80,7 @@ async function init() {
 }
 
 function bindEvents() {
-  [els.search, els.topic, els.month, els.type, els.sort].forEach((input) => {
+  [els.search, els.topic, els.month, els.type, els.rank, els.sort].forEach((input) => {
     input.addEventListener("input", applyFilters);
   });
 
@@ -116,6 +118,7 @@ function bindEvents() {
     els.topic.value = "";
     els.month.value = "";
     els.type.value = "";
+    els.rank.value = "";
     els.sort.value = "deadline";
     state.summaryMode = "all";
     applyFilters();
@@ -338,9 +341,12 @@ function normalizeAreas(existingAreas, sourceText) {
 
 function hydrateFilters(conferences) {
   const types = uniqueSorted(conferences.map((item) => item.type).filter(Boolean));
+  const ranks = uniqueSorted(conferences.map((item) => item.rank).filter(Boolean));
 
   addAreaOptions(els.topic);
   addOptions(els.type, types);
+  addOptions(els.rank, ranks, formatRank);
+  addOptions(els.rank, [NO_RANK_FILTER_VALUE], () => "No rank");
 }
 
 function addAreaOptions(select) {
@@ -352,11 +358,11 @@ function addAreaOptions(select) {
   });
 }
 
-function addOptions(select, values) {
+function addOptions(select, values, formatter = toTitle) {
   values.forEach((value) => {
     const option = document.createElement("option");
     option.value = value;
-    option.textContent = toTitle(value);
+    option.textContent = formatter(value);
     select.appendChild(option);
   });
 }
@@ -367,13 +373,17 @@ function applyFilters() {
   const selectedTopic = els.topic.value;
   const selectedMonth = els.month.value;
   const selectedType = els.type.value;
+  const selectedRank = els.rank.value;
 
   let filtered = state.conferences.filter((conference) => {
     const matchesQuery = words.every((word) => conference.searchText.includes(word));
     const matchesTopic = !selectedTopic || (conference.areas || []).includes(selectedTopic);
     const matchesType = !selectedType || conference.type === selectedType;
+    const matchesRank =
+      !selectedRank ||
+      (selectedRank === NO_RANK_FILTER_VALUE ? !conference.rank : conference.rank === selectedRank);
     const matchesMonth = !selectedMonth || monthKey(conference.deadlineDate) === selectedMonth;
-    return matchesQuery && matchesTopic && matchesType && matchesMonth;
+    return matchesQuery && matchesTopic && matchesType && matchesRank && matchesMonth;
   });
 
   filtered = sortConferences(filtered, els.sort.value);
@@ -483,6 +493,7 @@ function renderResults(conferences) {
     card.querySelector(".acronym").textContent = conference.acronym || "Conference";
     card.querySelector("h2").textContent = conference.name;
     applyStatusBadge(card.querySelector(".status-badge"), conference);
+    applyRankBadge(card.querySelector(".rank-badge"), conference);
     setFavoriteButton(card.querySelector(".favorite-button"), conference);
 
     card.querySelector(".date-chip").textContent = formatDeadline(conference);
@@ -522,7 +533,7 @@ function renderTableResults(conferences) {
 
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
-  ["Deadline", "Venue", "Areas", "Location", "Links"].forEach((heading) => {
+  ["Deadline", "Venue", "Rank", "Areas", "Location", "Links"].forEach((heading) => {
     const th = document.createElement("th");
     th.scope = "col";
     th.textContent = heading;
@@ -568,6 +579,9 @@ function renderTableResults(conferences) {
       areasCell.textContent = "TBA";
     }
 
+    const rankCell = tableCell("rank-cell");
+    rankCell.appendChild(buildTag(formatRank(conference.rank), "rank-tag table-rank-tag"));
+
     const locationCell = tableCell();
     locationCell.textContent = conference.location || "TBA";
 
@@ -590,7 +604,7 @@ function renderTableResults(conferences) {
     appendTableLink(actions, "CFP", conference.cfp_url || conference.website_url);
     linksCell.appendChild(actions);
 
-    row.append(deadlineCell, venueCell, areasCell, locationCell, linksCell);
+    row.append(deadlineCell, venueCell, rankCell, areasCell, locationCell, linksCell);
     tbody.appendChild(row);
   });
 
@@ -709,6 +723,11 @@ function applyStatusBadge(element, conference) {
   const status = getConferenceStatus(conference);
   element.className = `status-badge ${status.className}`;
   element.textContent = status.label;
+}
+
+function applyRankBadge(element, conference) {
+  element.hidden = false;
+  element.textContent = `Rank ${formatRank(conference.rank)}`;
 }
 
 function buildTag(text, className = "") {
@@ -958,6 +977,10 @@ function buildAlarm(trigger, description) {
 
 function uniqueSorted(values) {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b));
+}
+
+function formatRank(value) {
+  return String(value || "").trim().toUpperCase() || "N/A";
 }
 
 function toTitle(value) {

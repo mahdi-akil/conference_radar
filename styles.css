@@ -586,6 +586,13 @@ main {
 
 .card-badges {
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+.card-action-badges {
+  display: flex;
   align-items: flex-start;
   gap: 7px;
 }
@@ -709,6 +716,32 @@ main {
 }
 
 .tag[hidden] {
+  display: none !important;
+}
+
+.rank-tag {
+  border-color: rgba(185, 140, 44, 0.34);
+  background: #fff7e4;
+  color: #725016;
+  font-weight: 850;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  border: 1px solid rgba(185, 140, 44, 0.34);
+  border-radius: 999px;
+  background: #fff7e4;
+  color: #725016;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.rank-badge[hidden] {
   display: none !important;
 }
 
@@ -894,7 +927,7 @@ main {
 
 .conference-table {
   width: 100%;
-  min-width: 760px;
+  min-width: 830px;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
@@ -1015,6 +1048,10 @@ main {
   min-width: 220px;
 }
 
+.rank-cell {
+  min-width: 84px;
+}
+
 .areas-cell .tag {
   margin: 0 6px 6px 0;
 }
@@ -1023,6 +1060,11 @@ main {
   min-height: 24px;
   padding: 3px 8px;
   font-size: 0.74rem;
+}
+
+.table-rank-tag {
+  min-width: 42px;
+  justify-content: center;
 }
 
 @media (max-width: 900px) {
@@ -1103,6 +1145,6 @@ main {
   }
 
   .conference-table {
-    min-width: 720px;
+    min-width: 830px;
   }
 }

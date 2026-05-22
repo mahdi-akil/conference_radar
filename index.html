@@ -63,6 +63,13 @@
           </label>
 
           <label class="field">
+            <span>Rank</span>
+            <select id="rankFilter">
+              <option value="">All ranks</option>
+            </select>
+          </label>
+
+          <label class="field">
             <span>Sort</span>
             <select id="sortSelect">
               <option value="deadline">Deadline</option>
@@ -232,10 +239,13 @@
             <h2></h2>
           </div>
           <div class="card-badges">
-            <button class="favorite-button" type="button" aria-pressed="false">
-              <span aria-hidden="true">☆</span>
-            </button>
-            <div class="status-badge"></div>
+            <div class="card-action-badges">
+              <button class="favorite-button" type="button" aria-pressed="false">
+                <span aria-hidden="true">☆</span>
+              </button>
+              <div class="status-badge"></div>
+            </div>
+            <div class="rank-badge"></div>
           </div>
         </div>
         <div class="deadline-block">
