@@ -30,7 +30,6 @@ const els = {
   month: document.querySelector("#monthFilter"),
   type: document.querySelector("#typeFilter"),
   sort: document.querySelector("#sortSelect"),
-  favoritesOnly: document.querySelector("#favoritesOnlyToggle"),
   viewButtons: document.querySelectorAll(".view-toggle"),
   reset: document.querySelector("#resetButton"),
   results: document.querySelector("#results"),
@@ -39,9 +38,11 @@ const els = {
   summaryAllButton: document.querySelector("#summaryAllButton"),
   summaryUpcomingButton: document.querySelector("#summaryUpcomingButton"),
   summaryTbaButton: document.querySelector("#summaryTbaButton"),
+  summaryFavoritesButton: document.querySelector("#summaryFavoritesButton"),
   summaryTotal: document.querySelector("#summaryTotal"),
   summaryUpcoming: document.querySelector("#summaryUpcoming"),
   summaryTba: document.querySelector("#summaryTba"),
+  summaryFavorites: document.querySelector("#summaryFavorites"),
   addConference: document.querySelector("#addConferenceButton"),
   addDialog: document.querySelector("#addConferenceDialog"),
   closeAddDialog: document.querySelector("#closeAddDialogButton"),
@@ -77,7 +78,7 @@ async function init() {
 }
 
 function bindEvents() {
-  [els.search, els.topic, els.month, els.type, els.sort, els.favoritesOnly].forEach((input) => {
+  [els.search, els.topic, els.month, els.type, els.sort].forEach((input) => {
     input.addEventListener("input", applyFilters);
   });
 
@@ -105,13 +106,17 @@ function bindEvents() {
     applyFilters();
   });
 
+  els.summaryFavoritesButton.addEventListener("click", () => {
+    state.summaryMode = "favorites";
+    applyFilters();
+  });
+
   els.reset.addEventListener("click", () => {
     els.search.value = "";
     els.topic.value = "";
     els.month.value = "";
     els.type.value = "";
     els.sort.value = "deadline";
-    els.favoritesOnly.checked = false;
     state.summaryMode = "all";
     applyFilters();
   });
@@ -362,32 +367,32 @@ function applyFilters() {
   const selectedTopic = els.topic.value;
   const selectedMonth = els.month.value;
   const selectedType = els.type.value;
-  const favoritesOnly = els.favoritesOnly.checked;
 
   let filtered = state.conferences.filter((conference) => {
     const matchesQuery = words.every((word) => conference.searchText.includes(word));
     const matchesTopic = !selectedTopic || (conference.areas || []).includes(selectedTopic);
     const matchesType = !selectedType || conference.type === selectedType;
     const matchesMonth = !selectedMonth || monthKey(conference.deadlineDate) === selectedMonth;
-    const matchesFavorite = !favoritesOnly || state.favorites.has(conference.id);
-    return matchesQuery && matchesTopic && matchesType && matchesMonth && matchesFavorite;
+    return matchesQuery && matchesTopic && matchesType && matchesMonth;
   });
 
   filtered = sortConferences(filtered, els.sort.value);
   const upcoming = filtered.filter(isUpcomingConference);
   const tba = filtered.filter(isTbaConference);
-  const visible = pickSummaryResults(filtered, upcoming, tba);
+  const favorites = filtered.filter(isFavoriteConference);
+  const visible = pickSummaryResults(filtered, upcoming, tba, favorites);
   state.matching = filtered;
   state.filtered = visible;
 
-  renderSummary(filtered, upcoming, tba);
-  renderResultsMeta(filtered, visible, upcoming, tba);
+  renderSummary(filtered, upcoming, tba, favorites);
+  renderResultsMeta(filtered, visible, upcoming, tba, favorites);
   renderResults(visible);
 }
 
-function pickSummaryResults(allConferences, upcomingConferences, tbaConferences) {
+function pickSummaryResults(allConferences, upcomingConferences, tbaConferences, favoriteConferences) {
   if (state.summaryMode === "upcoming") return upcomingConferences;
   if (state.summaryMode === "tba") return tbaConferences;
+  if (state.summaryMode === "favorites") return favoriteConferences;
   return allConferences;
 }
 
@@ -414,21 +419,25 @@ function compareDeadline(a, b) {
   return aClosed ? bTime - aTime : aTime - bTime;
 }
 
-function renderSummary(matchingConferences, upcomingConferences, tbaConferences) {
+function renderSummary(matchingConferences, upcomingConferences, tbaConferences, favoriteConferences) {
   els.summaryTotal.textContent = matchingConferences.length;
   els.summaryUpcoming.textContent = upcomingConferences.length;
   els.summaryTba.textContent = tbaConferences.length;
+  els.summaryFavorites.textContent = favoriteConferences.length;
   els.summaryAllButton.classList.toggle("active", state.summaryMode === "all");
   els.summaryUpcomingButton.classList.toggle("active", state.summaryMode === "upcoming");
   els.summaryTbaButton.classList.toggle("active", state.summaryMode === "tba");
+  els.summaryFavoritesButton.classList.toggle("active", state.summaryMode === "favorites");
   els.summaryAllButton.setAttribute("aria-pressed", String(state.summaryMode === "all"));
   els.summaryUpcomingButton.setAttribute("aria-pressed", String(state.summaryMode === "upcoming"));
   els.summaryTbaButton.setAttribute("aria-pressed", String(state.summaryMode === "tba"));
+  els.summaryFavoritesButton.setAttribute("aria-pressed", String(state.summaryMode === "favorites"));
   els.summaryUpcomingButton.disabled = upcomingConferences.length === 0;
   els.summaryTbaButton.disabled = tbaConferences.length === 0;
+  els.summaryFavoritesButton.disabled = favoriteConferences.length === 0;
 }
 
-function renderResultsMeta(matchingConferences, visibleConferences, upcomingConferences, tbaConferences) {
+function renderResultsMeta(matchingConferences, visibleConferences, upcomingConferences, tbaConferences, favoriteConferences) {
   if (!els.resultsMeta) return;
 
   if (state.summaryMode === "upcoming") {
@@ -438,6 +447,12 @@ function renderResultsMeta(matchingConferences, visibleConferences, upcomingConf
 
   if (state.summaryMode === "tba") {
     els.resultsMeta.textContent = `Showing ${visibleConferences.length} of ${matchingConferences.length} conferences with deadline TBA or still expected.`;
+    return;
+  }
+
+  if (state.summaryMode === "favorites") {
+    const label = visibleConferences.length === 1 ? "favorite conference" : "favorite conferences";
+    els.resultsMeta.textContent = `Showing ${visibleConferences.length} ${label} out of ${matchingConferences.length} matching conferences.`;
     return;
   }
 
@@ -585,16 +600,21 @@ function renderTableResults(conferences) {
 }
 
 function setFavoriteButton(button, conference) {
+  button.dataset.conferenceId = conference.id;
+  setFavoriteButtonState(button, conference);
+
+  button.addEventListener("click", () => {
+    toggleFavorite(conference.id);
+  });
+}
+
+function setFavoriteButtonState(button, conference) {
   const isFavorite = state.favorites.has(conference.id);
   button.classList.toggle("active", isFavorite);
   button.setAttribute("aria-pressed", String(isFavorite));
   button.setAttribute("aria-label", `${isFavorite ? "Remove" : "Add"} ${conference.acronym || conference.name} ${isFavorite ? "from" : "to"} favorites`);
   button.title = isFavorite ? "Remove from favorites" : "Add to favorites";
   button.querySelector("span").textContent = isFavorite ? "★" : "☆";
-
-  button.addEventListener("click", () => {
-    toggleFavorite(conference.id);
-  });
 }
 
 function toggleFavorite(conferenceId) {
@@ -604,7 +624,30 @@ function toggleFavorite(conferenceId) {
     state.favorites.add(conferenceId);
   }
   saveFavorites();
-  applyFilters();
+
+  if (state.summaryMode === "favorites") {
+    applyFilters();
+    return;
+  }
+
+  updateFavoriteControls();
+  renderCurrentSummary();
+}
+
+function updateFavoriteControls() {
+  document.querySelectorAll(".favorite-button[data-conference-id]").forEach((button) => {
+    const conference = state.conferences.find((item) => item.id === button.dataset.conferenceId);
+    if (conference) {
+      setFavoriteButtonState(button, conference);
+    }
+  });
+}
+
+function renderCurrentSummary() {
+  const upcoming = state.matching.filter(isUpcomingConference);
+  const tba = state.matching.filter(isTbaConference);
+  const favorites = state.matching.filter(isFavoriteConference);
+  renderSummary(state.matching, upcoming, tba, favorites);
 }
 
 function tableCell(className = "") {
@@ -639,6 +682,10 @@ function isUpcomingConference(conference) {
 
 function isTbaConference(conference) {
   return !conference.deadlineDate;
+}
+
+function isFavoriteConference(conference) {
+  return state.favorites.has(conference.id);
 }
 
 function getConferenceStatus(conference) {

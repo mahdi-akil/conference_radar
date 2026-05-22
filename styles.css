@@ -89,9 +89,9 @@ h1 {
 
 .summary-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(110px, 1fr));
+  grid-template-columns: repeat(4, minmax(96px, 1fr));
   gap: 10px;
-  min-width: min(100%, 410px);
+  min-width: min(100%, 540px);
 }
 
 .summary-card {
@@ -389,14 +389,6 @@ main {
 .checkbox-field {
   align-self: end;
   min-height: 42px;
-}
-
-.favorite-filter {
-  min-height: 40px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #f8fafb;
-  padding: 8px 10px;
 }
 
 .checkbox-field span {
