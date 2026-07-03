@@ -1,0 +1,65 @@
+name: Deadline check
+
+on:
+  schedule:
+    - cron: "15 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-deadlines:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore previous page state
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/deadline-page-state.json
+          key: deadline-page-state-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            deadline-page-state-
+
+      - name: Scan conference pages
+        id: scan
+        run: >-
+          python scripts/check_deadlines.py
+          --data data/conferences.json
+          --state .cache/deadline-page-state.json
+          --candidates data/deadline-candidates.json
+          --proposals data/deadline-proposals.json
+          --report deadline-report.md
+
+      - name: Save current page state
+        if: always() && hashFiles('.cache/deadline-page-state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/deadline-page-state.json
+          key: deadline-page-state-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Upload review artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deadline-review-artifacts
+          path: |
+            deadline-report.md
+            data/deadline-candidates.json
+            data/deadline-proposals.json
+
+      - name: Open review issue
+        if: steps.scan.outputs.has_notifications == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue create --title "Conference deadline check $(date -u +%Y-%m-%d)" --body-file deadline-report.md
