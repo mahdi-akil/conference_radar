@@ -360,6 +360,7 @@ def known_deadlines(conference: dict) -> list[str]:
     for entry in conference.get("deadline_entries") or []:
         if isinstance(entry, dict) and entry.get("date"):
             values.append(entry["date"])
+    values.extend(conference.get("ignored_deadline_dates") or [])
     return sorted(set(values))
 
 
@@ -450,6 +451,13 @@ def classify_confidence(snippet: str, candidate: str, known: list[str]) -> str:
             "paper registration",
             "abstract registration",
             "revision deadline",
+            "meta-review",
+            "reviews due",
+            "review due",
+            "paper bidding",
+            "poster submission",
+            "poster deadline",
+            "workshop proposal",
             "final paper due",
             "final revised paper",
             "resubmission",

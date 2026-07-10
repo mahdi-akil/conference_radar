@@ -2,7 +2,7 @@
 
 Conference Radar helps the #PEPSys group keep track of interesting conferences, workshops, symposiums, and summer schools where we may want to publish.
 
-The focus is on venues related to privacy, security, cryptography, energy systems...
+The focus is on venues related to privacy, security, cryptography, energy systems, software engineering, and AI/ML.
 
 ## What We Track
 
@@ -24,6 +24,12 @@ Use one or more of these broad areas for filtering:
 - `crypto`
 - `energy`
 - `iot`
+- `systems`
+- `software`
+- `ai`
+- `networking`
+- `hci`
+- `policy`
 
 ## Adding Or Updating Conferences
 
@@ -36,6 +42,8 @@ data/conferences.json
 Anyone with repository access can update that file directly. The app also has an `Add conference` helper that generates a JSON entry you can copy into the file.
 
 For venues with multiple deadlines, such as PETS/PoPETs issues or multi-cycle security conferences, use `deadline_entries`. The app shows the next upcoming deadline automatically. :)
+
+If an official page also lists unrelated dates that repeatedly confuse the deadline checker, add those exact dates to `ignored_deadline_dates`. They remain hidden from the website and calendar exports.
 
 ## Automated Deadline Checks
 

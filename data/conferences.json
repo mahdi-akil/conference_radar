@@ -1761,6 +1761,592 @@
       "notes": "Not a security venue, but can be excellent for user-facing privacy/security research.",
       "last_checked": "2026-04-21",
       "deadline_confidence": "official"
+    },
+    {
+      "id": "fse-2027",
+      "name": "ACM International Conference on the Foundations of Software Engineering",
+      "acronym": "FSE",
+      "type": "conference",
+      "areas": [
+        "software",
+        "ai",
+        "systems"
+      ],
+      "topics": [
+        "software engineering",
+        "AI for software engineering",
+        "empirical software engineering",
+        "software testing"
+      ],
+      "keywords": [
+        "LLM for code",
+        "code generation",
+        "program repair",
+        "developer tools",
+        "software quality"
+      ],
+      "submission_deadline": "2026-10-02",
+      "expected_deadline_months": [],
+      "deadline_kind": "research paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2027-01-22",
+      "conference_dates": "2027-07-12 to 2027-07-16",
+      "expected_conference_months": [
+        "july"
+      ],
+      "location": "Shenzhen, China",
+      "website_url": "https://conf.researchr.org/home/fse-2027",
+      "cfp_url": "https://conf.researchr.org/track/fse-2027/fse-2027-papers",
+      "description": "Major software engineering venue covering technical, empirical, and emerging research, including AI-assisted software development.",
+      "rank": "A*",
+      "notes": "Strong general venue for substantial LLM-for-code work with a rigorous software engineering contribution.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "msr-2027",
+      "name": "International Conference on Mining Software Repositories",
+      "acronym": "MSR",
+      "type": "conference",
+      "areas": [
+        "software",
+        "ai",
+        "systems"
+      ],
+      "topics": [
+        "mining software repositories",
+        "empirical software engineering",
+        "developer behavior",
+        "AI for code"
+      ],
+      "keywords": [
+        "repository mining",
+        "datasets",
+        "code models",
+        "GitHub",
+        "empirical evaluation"
+      ],
+      "submission_deadline": "2026-10-23",
+      "deadline_entries": [
+        {
+          "label": "Abstract",
+          "date": "2026-10-20",
+          "kind": "mandatory abstract",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Technical paper",
+          "date": "2026-10-23",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        }
+      ],
+      "expected_deadline_months": [],
+      "deadline_kind": "technical paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2027-01-08",
+      "conference_dates": "With ICSE 2027 (dates TBA)",
+      "expected_conference_months": [
+        "april",
+        "may"
+      ],
+      "location": "Dublin, Ireland",
+      "website_url": "https://conf.researchr.org/home/msr-2027",
+      "cfp_url": "https://conf.researchr.org/track/msr-2027/msr-2027-technical-papers",
+      "description": "Empirical software engineering venue for repository mining, datasets, developer studies, and evaluation of code-focused AI systems.",
+      "rank": "A",
+      "notes": "Especially relevant when an LLM-for-code paper contributes a dataset, benchmark, mining study, or empirical evaluation.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "llm4code-2027",
+      "name": "International Workshop on Large Language Models for Code",
+      "acronym": "LLM4Code",
+      "type": "workshop",
+      "areas": [
+        "software",
+        "ai"
+      ],
+      "topics": [
+        "large language models for code",
+        "code generation",
+        "code comprehension",
+        "program repair",
+        "software testing"
+      ],
+      "keywords": [
+        "LLM4Code",
+        "foundation models",
+        "code benchmarks",
+        "developer tools",
+        "AI for software engineering"
+      ],
+      "submission_deadline": "",
+      "expected_deadline_months": [
+        "october"
+      ],
+      "deadline_kind": "workshop paper",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "2027 edition TBA",
+      "expected_conference_months": [
+        "april",
+        "may"
+      ],
+      "location": "TBA",
+      "website_url": "https://llm4code.github.io/",
+      "cfp_url": "https://llm4code.github.io/",
+      "description": "Focused workshop for applying, designing, benchmarking, and evaluating large language models for code-related tasks.",
+      "rank": "",
+      "notes": "Watch record: the 2027 edition has not been announced. The series ran with ICSE in 2024, 2025, and 2026.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "expected",
+      "auto_check": false
+    },
+    {
+      "id": "cain-2027",
+      "name": "International Conference on AI Engineering - Software Engineering for AI",
+      "acronym": "CAIN",
+      "type": "conference",
+      "areas": [
+        "ai",
+        "software",
+        "systems"
+      ],
+      "topics": [
+        "AI engineering",
+        "agentic software",
+        "software engineering for AI",
+        "AI system quality",
+        "foundation model systems"
+      ],
+      "keywords": [
+        "AI-enabled systems",
+        "AI agents",
+        "MLOps",
+        "monitoring",
+        "reliability"
+      ],
+      "submission_deadline": "",
+      "expected_deadline_months": [],
+      "deadline_kind": "research paper",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "With ICSE 2027 (dates TBA)",
+      "expected_conference_months": [
+        "april",
+        "may"
+      ],
+      "location": "Dublin, Ireland",
+      "website_url": "https://conf.researchr.org/home/cain-2027",
+      "cfp_url": "https://conf.researchr.org/track/cain-2027/cain-2027-call-for-papers",
+      "description": "AI engineering venue focused on software engineering principles for building dependable AI-enabled and agentic systems.",
+      "rank": "",
+      "notes": "Best fit when the contribution is about engineering an AI-enabled system, rather than only improving an ML algorithm.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "expected"
+    },
+    {
+      "id": "nordsec-2026",
+      "name": "Nordic Conference on Secure IT Systems",
+      "acronym": "NordSec",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "ai",
+        "systems"
+      ],
+      "topics": [
+        "privacy-enhancing technologies",
+        "security and privacy engineering",
+        "agentic AI security",
+        "usable security and privacy"
+      ],
+      "keywords": [
+        "human-AI systems",
+        "trustworthy AI",
+        "identity management",
+        "critical infrastructure",
+        "Nordic security"
+      ],
+      "submission_deadline": "2026-08-17",
+      "expected_deadline_months": [],
+      "deadline_kind": "full paper",
+      "deadline_timezone": "",
+      "notification_date": "2026-09-19",
+      "conference_dates": "2026-11-11 to 2026-11-12",
+      "expected_conference_months": [
+        "november"
+      ],
+      "location": "Aarhus, Denmark",
+      "website_url": "https://nordsec2026.au.dk/",
+      "cfp_url": "https://nordsec2026.dk/cfp.pdf",
+      "description": "Established Nordic security conference covering privacy engineering, PETs, usable privacy, AI security, and secure systems.",
+      "rank": "",
+      "notes": "The 2026 edition emphasizes security and privacy of agentic AI and human-AI systems.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "wpes-2026",
+      "name": "Workshop on Privacy in the Electronic Society",
+      "acronym": "WPES",
+      "type": "workshop",
+      "areas": [
+        "privacy",
+        "security",
+        "policy"
+      ],
+      "topics": [
+        "electronic privacy",
+        "privacy-aware policies",
+        "privacy-enhancing technologies",
+        "privacy measurement"
+      ],
+      "keywords": [
+        "online privacy",
+        "privacy regulation",
+        "experimental privacy",
+        "fielded systems",
+        "ACM CCS workshop"
+      ],
+      "submission_deadline": "2026-07-17",
+      "expected_deadline_months": [],
+      "deadline_kind": "paper submission",
+      "deadline_timezone": "",
+      "notification_date": "2026-09-04",
+      "conference_dates": "2026-11-16",
+      "expected_conference_months": [
+        "november"
+      ],
+      "location": "The Hague, Netherlands",
+      "website_url": "https://wpes2026.github.io/",
+      "cfp_url": "https://wpes2026.github.io/",
+      "description": "Long-running ACM CCS workshop for theoretical, practical, experimental, legal, and policy perspectives on electronic privacy.",
+      "rank": "",
+      "notes": "A focused privacy venue with regular and interdisciplinary submissions, co-located with ACM CCS 2026.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "ieee-sp-2027",
+      "name": "IEEE Symposium on Security and Privacy",
+      "acronym": "IEEE S&P",
+      "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "ai",
+        "systems"
+      ],
+      "topics": [
+        "computer security",
+        "privacy-enhancing technologies",
+        "human-centered privacy",
+        "ML security and privacy"
+      ],
+      "keywords": [
+        "Oakland",
+        "web privacy",
+        "privacy measurement",
+        "anonymity",
+        "system security"
+      ],
+      "submission_deadline": "2026-06-11",
+      "deadline_entries": [
+        {
+          "label": "First cycle",
+          "date": "2026-06-11",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Second cycle",
+          "date": "2026-11-17",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        }
+      ],
+      "expected_deadline_months": [],
+      "deadline_kind": "research paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2027-03-05",
+      "conference_dates": "May 2027",
+      "expected_conference_months": [
+        "may"
+      ],
+      "location": "Montreal, Canada",
+      "website_url": "https://www.ieee-security.org/TC/SP2027/",
+      "cfp_url": "https://www.ieee-security.org/TC/SP2027/cfpapers.html",
+      "description": "Premier security and privacy symposium covering systems, PETs, human-centered privacy, measurement, and privacy in ML systems.",
+      "rank": "A*",
+      "notes": "The first cycle is closed; the displayed deadline advances to the second submission cycle.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "csf-2027",
+      "name": "IEEE Computer Security Foundations Symposium",
+      "acronym": "CSF",
+      "type": "symposium",
+      "areas": [
+        "privacy",
+        "security",
+        "crypto",
+        "ai"
+      ],
+      "topics": [
+        "foundational security and privacy",
+        "formal methods",
+        "information flow",
+        "privacy foundations"
+      ],
+      "keywords": [
+        "formal verification",
+        "security models",
+        "privacy models",
+        "ML privacy",
+        "usable security"
+      ],
+      "submission_deadline": "2026-08-03",
+      "deadline_entries": [
+        {
+          "label": "Summer cycle",
+          "date": "2026-08-03",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Fall cycle",
+          "date": "2026-10-15",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Winter cycle",
+          "date": "2027-01-28",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        }
+      ],
+      "expected_deadline_months": [],
+      "deadline_kind": "research paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "",
+      "conference_dates": "2027 (dates TBA)",
+      "expected_conference_months": [],
+      "location": "Tokyo, Japan",
+      "website_url": "https://www.ieee-security.org/TC/CSF2027/",
+      "cfp_url": "https://www.ieee-security.org/TC/CSF2027/cfp.html",
+      "description": "Foundational security and privacy venue for formal models, principled analysis, verification, privacy, and ML security foundations.",
+      "rank": "A",
+      "notes": "Three rolling submission cycles are available for the 2027 symposium.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "acns-2027",
+      "name": "Applied Cryptography and Network Security",
+      "acronym": "ACNS",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "security",
+        "crypto",
+        "networking"
+      ],
+      "topics": [
+        "applied cryptography",
+        "network security",
+        "privacy",
+        "secure systems"
+      ],
+      "keywords": [
+        "cryptographic protocols",
+        "privacy technologies",
+        "implementations",
+        "deployment",
+        "usability"
+      ],
+      "submission_deadline": "2026-09-24",
+      "deadline_entries": [
+        {
+          "label": "Cycle 1",
+          "date": "2026-09-24",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        },
+        {
+          "label": "Cycle 2",
+          "date": "2027-01-21",
+          "kind": "paper submission",
+          "timezone": "AoE"
+        }
+      ],
+      "expected_deadline_months": [],
+      "deadline_kind": "research paper",
+      "deadline_timezone": "AoE",
+      "notification_date": "2026-11-26",
+      "ignored_deadline_dates": [
+        "2026-09-22",
+        "2027-03-12"
+      ],
+      "conference_dates": "2027-06-28 to 2027-07-01",
+      "expected_conference_months": [
+        "june",
+        "july"
+      ],
+      "location": "Egham, United Kingdom",
+      "website_url": "https://acns2027.isg.rhul.ac.uk/",
+      "cfp_url": "https://acns2027.isg.rhul.ac.uk/",
+      "description": "Applied cryptography, network security, and privacy venue spanning models, protocols, implementations, deployment, and evaluation.",
+      "rank": "",
+      "notes": "Two paper cycles are available; hosted by Royal Holloway, University of London.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "cpdp-2027",
+      "name": "Computers, Privacy and Data Protection",
+      "acronym": "CPDP",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "policy",
+        "ai"
+      ],
+      "topics": [
+        "data protection",
+        "privacy law",
+        "AI governance",
+        "digital rights"
+      ],
+      "keywords": [
+        "GDPR",
+        "regulation",
+        "digital governance",
+        "policy",
+        "interdisciplinary privacy"
+      ],
+      "submission_deadline": "",
+      "expected_deadline_months": [
+        "november"
+      ],
+      "deadline_kind": "papers, panels, and workshops",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "2027-03-08 to 2027-03-11",
+      "expected_conference_months": [
+        "march"
+      ],
+      "location": "Brussels, Belgium",
+      "website_url": "https://www.cpdpconferences.org/news/cpdp-2027-anniversary-edition",
+      "cfp_url": "https://www.cpdpconferences.org/news/cpdp-2027-anniversary-edition",
+      "description": "Major interdisciplinary privacy and data protection conference spanning technology, law, policy, AI, and digital governance.",
+      "rank": "",
+      "notes": "The 2027 calls will open in September 2026 and close in November; the exact deadline is not yet published.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "expected"
+    },
+    {
+      "id": "pepr-2027",
+      "name": "USENIX Conference on Privacy Engineering Practice and Respect",
+      "acronym": "PEPR",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "software",
+        "policy"
+      ],
+      "topics": [
+        "privacy engineering",
+        "privacy practice",
+        "respectful systems",
+        "privacy governance"
+      ],
+      "keywords": [
+        "privacy by design",
+        "deployed systems",
+        "privacy reviews",
+        "data deletion",
+        "consent engineering"
+      ],
+      "submission_deadline": "",
+      "expected_deadline_months": [
+        "january"
+      ],
+      "deadline_kind": "talk or panel proposal",
+      "deadline_timezone": "",
+      "notification_date": "",
+      "conference_dates": "2027-06-07 to 2027-06-08",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Santa Clara, California, USA",
+      "website_url": "https://www.usenix.org/conferences/by-name",
+      "cfp_url": "https://www.usenix.org/conferences/by-name",
+      "description": "Practitioner-focused privacy engineering conference for deployed systems, organizational practice, governance, and applied research.",
+      "rank": "",
+      "notes": "PEPR is a reviewed presentation venue without archival proceedings. The 2027 event is announced; its participation deadline is still TBA.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "expected",
+      "auto_check": false
+    },
+    {
+      "id": "cysep-2026",
+      "name": "Cybersecurity and Privacy Summer School",
+      "acronym": "CySeP",
+      "type": "summer school",
+      "areas": [
+        "privacy",
+        "security"
+      ],
+      "topics": [
+        "cybersecurity",
+        "privacy",
+        "security education",
+        "research posters"
+      ],
+      "keywords": [
+        "PhD summer school",
+        "seminars",
+        "poster session",
+        "demo session",
+        "ECTS"
+      ],
+      "submission_deadline": "2026-05-27",
+      "deadline_entries": [
+        {
+          "label": "Early registration",
+          "date": "2026-05-15",
+          "kind": "registration",
+          "timezone": ""
+        },
+        {
+          "label": "Poster and demo",
+          "date": "2026-05-27",
+          "kind": "poster/demo submission",
+          "timezone": "CEST"
+        }
+      ],
+      "expected_deadline_months": [],
+      "deadline_kind": "poster/demo submission",
+      "deadline_timezone": "CEST",
+      "notification_date": "2026-06-03",
+      "conference_dates": "2026-06-15 to 2026-06-18",
+      "expected_conference_months": [
+        "june"
+      ],
+      "location": "Stockholm, Sweden",
+      "website_url": "https://cysep.conf.kth.se/",
+      "cfp_url": "https://cysep.conf.kth.se/",
+      "description": "ACM Europe summer school at KTH covering real-world cybersecurity and privacy, with seminars and a research poster/demo session.",
+      "rank": "",
+      "notes": "Useful recurring summer school for PhD students; the 2026 edition offered attendance certification and optional ECTS credit.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "official"
     }
   ]
 }

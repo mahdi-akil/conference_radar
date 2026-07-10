@@ -1304,6 +1304,9 @@ function formatRank(value) {
 }
 
 function toTitle(value) {
+  const area = CORE_AREAS.find((item) => item.value === value);
+  if (area) return area.label;
+
   return value
     .split(/[-_ ]+/)
     .filter(Boolean)
