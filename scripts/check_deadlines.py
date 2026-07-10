@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Check conference pages for deadline-related changes.
+"""Check conference pages and write one human-readable review report.
 
-The checker is deliberately conservative: it writes review artifacts and a report,
-but never edits the conference database. A small state file records the last
-deadline-related content seen on each page so unchanged findings do not create a
-new notification every week.
+The checker never edits conference data. It remembers the last deadline-related
+content seen on each page, reports credible new dates, and distinguishes likely
+same-edition extensions from likely new conference editions.
 """
 
 from __future__ import annotations
@@ -18,7 +17,7 @@ import re
 import sys
 import urllib.error
 import urllib.request
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import date, datetime, timedelta, timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -26,8 +25,9 @@ from typing import Iterable, Optional
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-STATE_SCHEMA_VERSION = 3
+STATE_SCHEMA_VERSION = 4
 REVIEW_GRACE_DAYS = 14
+FAILURE_NOTIFY_AFTER = 2
 
 
 KEYWORDS = (
@@ -94,6 +94,7 @@ class Candidate:
     conference_id: str
     acronym: str
     name: str
+    conference_dates: str
     current_deadline: str
     current_deadlines: list[str]
     candidate_deadline: str
@@ -143,8 +144,6 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Scan conference pages for deadline changes.")
     parser.add_argument("--data", default=str(REPO_ROOT / "data/conferences.json"))
     parser.add_argument("--state", default=str(REPO_ROOT / ".cache/deadline-page-state.json"))
-    parser.add_argument("--candidates", default=str(REPO_ROOT / "data/deadline-candidates.json"))
-    parser.add_argument("--proposals", default=str(REPO_ROOT / "data/deadline-proposals.json"))
     parser.add_argument("--report", default=str(REPO_ROOT / "deadline-report.md"))
     parser.add_argument("--github-output", default=os.environ.get("GITHUB_OUTPUT"))
     args = parser.parse_args()
@@ -157,7 +156,8 @@ def main() -> int:
     alert_candidates: list[Candidate] = []
     page_changes: list[PageChange] = []
     errors: list[str] = []
-    new_errors: list[str] = []
+    persistent_errors: list[str] = []
+    configuration_errors: list[str] = []
     next_pages: dict[str, dict] = {}
     checked = 0
     skipped = 0
@@ -176,8 +176,8 @@ def main() -> int:
             message = f"{label(conference)} has no CFP or website URL."
             errors.append(message)
             if previous.get("error") != message:
-                new_errors.append(message)
-            next_pages[conference_id] = state_entry(source_url="", error=message)
+                configuration_errors.append(message)
+            next_pages[conference_id] = state_entry(source_url="", error=message, error_count=1)
             continue
 
         checked += 1
@@ -195,13 +195,15 @@ def main() -> int:
         if not source_url:
             message = f"{label(conference)} could not be fetched: {'; '.join(fetch_failures)}"
             errors.append(message)
-            if previous.get("error") != message:
-                new_errors.append(message)
+            error_count = int(previous.get("error_count", 0)) + 1
+            if error_count == FAILURE_NOTIFY_AFTER:
+                persistent_errors.append(message)
             next_pages[conference_id] = state_entry(
                 source_url=urls[0],
                 relevant_hash=previous.get("relevant_hash", ""),
                 observed_dates=previous.get("observed_dates", []),
                 error=message,
+                error_count=error_count,
             )
             continue
 
@@ -218,11 +220,10 @@ def main() -> int:
         )
         relevant_hash = fingerprint(snippets)
         source_changed = bool(previous) and previous.get("source_url") != source_url
-        text_changed = bool(previous) and previous.get("relevant_hash") != relevant_hash
         dates_changed = bool(previous) and previous.get("observed_dates", []) != observed_dates
-        changed = source_changed or text_changed or dates_changed
+        meaningful_change = source_changed or dates_changed
 
-        if changed:
+        if meaningful_change:
             page_changes.append(
                 PageChange(
                     conference_id=conference_id,
@@ -231,12 +232,12 @@ def main() -> int:
                     previous_dates=previous.get("observed_dates", []),
                     observed_dates=observed_dates,
                     source_changed=source_changed,
-                    text_changed=text_changed,
+                    text_changed=previous.get("relevant_hash") != relevant_hash,
                 )
             )
 
         different = [candidate for candidate in page_candidates if is_reviewable_candidate(candidate)]
-        if not previous or changed:
+        if not previous or meaningful_change:
             alert_candidates.extend(different)
 
         next_pages[conference_id] = state_entry(
@@ -253,8 +254,6 @@ def main() -> int:
             "conferences": next_pages,
         },
     )
-    write_candidates(Path(args.candidates), candidates)
-    write_proposals(Path(args.proposals), candidates)
     write_report(
         Path(args.report),
         checked=checked,
@@ -263,16 +262,24 @@ def main() -> int:
         alert_candidates=alert_candidates,
         page_changes=page_changes,
         errors=errors,
-        new_errors=new_errors,
+        persistent_errors=persistent_errors,
+        configuration_errors=configuration_errors,
         first_run=not bool(previous_pages),
     )
 
-    has_notifications = bool(alert_candidates or page_changes or new_errors)
+    has_notifications = bool(
+        alert_candidates or page_changes or persistent_errors or configuration_errors
+    )
     write_github_output(
         args.github_output,
         checked=checked,
         candidate_count=len(candidates),
-        notification_count=len(alert_candidates) + len(page_changes) + len(new_errors),
+        notification_count=(
+            len(alert_candidates)
+            + len(page_changes)
+            + len(persistent_errors)
+            + len(configuration_errors)
+        ),
         has_notifications=has_notifications,
     )
 
@@ -280,10 +287,14 @@ def main() -> int:
     review_count = sum(is_reviewable_candidate(item) for item in candidates)
     print(
         f"Extracted {len(candidates)} dated references; "
-        f"{review_count} require review; {len(page_changes)} pages changed."
+        f"{review_count} require review; {len(page_changes)} deadline pages changed."
     )
     if errors:
-        print(f"Encountered {len(errors)} fetch or configuration issue(s).", file=sys.stderr)
+        print(
+            f"Encountered {len(errors)} fetch or configuration issue(s); "
+            f"{len(persistent_errors) + len(configuration_errors)} require attention.",
+            file=sys.stderr,
+        )
     return 0
 
 
@@ -322,6 +333,7 @@ def find_candidates(conference: dict, source_url: str, snippets: list[str]) -> l
                 conference_id=conference.get("id", ""),
                 acronym=conference.get("acronym", ""),
                 name=conference.get("name", ""),
+                conference_dates=conference.get("conference_dates") or "",
                 current_deadline=conference.get("submission_deadline") or "",
                 current_deadlines=known,
                 candidate_deadline=iso_date,
@@ -474,6 +486,47 @@ def is_reviewable_candidate(candidate: Candidate) -> bool:
     return date.fromisoformat(candidate.candidate_deadline) >= cutoff
 
 
+def classify_finding(candidate: Candidate) -> tuple[str, str]:
+    """Return a human-facing finding type and recommended action."""
+    candidate_date = date.fromisoformat(candidate.candidate_deadline)
+    bounds = conference_date_bounds(candidate.conference_dates)
+    current = parse_iso_date(candidate.current_deadline)
+
+    if bounds and candidate_date > bounds[1]:
+        next_year = bounds[1].year + 1
+        return (
+            "Likely new edition",
+            f"Add a new {next_year} conference record; do not overwrite the current edition.",
+        )
+    if bounds and current and current < candidate_date <= bounds[0]:
+        return (
+            "Likely deadline extension",
+            "After verifying the source, update the existing submission deadline.",
+        )
+    return (
+        "Manual review",
+        "Check the official page and decide whether this belongs to the current edition, another track, or a new edition.",
+    )
+
+
+def conference_date_bounds(value: str) -> Optional[tuple[date, date]]:
+    dates = []
+    for match in re.finditer(r"\b20\d{2}-\d{2}-\d{2}\b", value or ""):
+        parsed = parse_iso_date(match.group(0))
+        if parsed:
+            dates.append(parsed)
+    return (min(dates), max(dates)) if dates else None
+
+
+def parse_iso_date(value: str) -> Optional[date]:
+    if not value:
+        return None
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
 def fingerprint(snippets: list[str]) -> str:
     normalized = "\n".join(sorted(normalize_space(item).lower() for item in snippets))
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
@@ -485,6 +538,7 @@ def state_entry(
     relevant_hash: str = "",
     observed_dates: Optional[list[str]] = None,
     error: str = "",
+    error_count: int = 0,
 ) -> dict:
     return {
         "source_url": source_url,
@@ -492,43 +546,8 @@ def state_entry(
         "observed_dates": observed_dates or [],
         "checked_at": now_iso(),
         "error": error,
+        "error_count": error_count,
     }
-
-
-def write_candidates(path: Path, candidates: list[Candidate]) -> None:
-    write_json(path, {"generated_at": now_iso(), "candidates": [asdict(item) for item in candidates]})
-
-
-def write_proposals(path: Path, candidates: list[Candidate]) -> None:
-    proposals = []
-    for candidate in candidates:
-        if not is_reviewable_candidate(candidate):
-            continue
-        proposals.append(
-            {
-                "conference_id": candidate.conference_id,
-                "acronym": candidate.acronym,
-                "name": candidate.name,
-                "field": "submission_deadline",
-                "current_value": candidate.current_deadline,
-                "proposed_value": candidate.candidate_deadline,
-                "confidence": candidate.confidence,
-                "source_url": candidate.source_url,
-                "snippet": candidate.snippet,
-                "apply": False,
-            }
-        )
-    write_json(
-        path,
-        {
-            "generated_at": now_iso(),
-            "instructions": (
-                "Verify each proposal against the official CFP. Set apply=true only for a correct "
-                "submission deadline, then run python3 scripts/update_dates.py."
-            ),
-            "proposals": proposals,
-        },
-    )
 
 
 def write_report(
@@ -540,7 +559,8 @@ def write_report(
     alert_candidates: list[Candidate],
     page_changes: list[PageChange],
     errors: list[str],
-    new_errors: list[str],
+    persistent_errors: list[str],
+    configuration_errors: list[str],
     first_run: bool,
 ) -> None:
     review_candidate_count = sum(is_reviewable_candidate(item) for item in candidates)
@@ -550,8 +570,10 @@ def write_report(
         f"- Checked pages: {checked}",
         f"- Explicitly skipped: {skipped}",
         f"- Dated references extracted: {len(candidates)}",
-        f"- Review proposals generated: {review_candidate_count}",
+        f"- Reviewable dates observed: {review_candidate_count}",
+        f"- New findings requiring review: {len(alert_candidates)}",
         f"- Deadline-related page changes: {len(page_changes)}",
+        f"- Pages currently unreachable: {len(errors)}",
         "",
     ]
     if first_run:
@@ -589,46 +611,59 @@ def write_report(
     else:
         lines.extend(["None found.", ""])
 
-    lines.extend(["## New deadline candidates to review", ""])
+    lines.extend(["## Findings requiring review", ""])
     if alert_candidates:
         for candidate in alert_candidates[:40]:
+            finding_type, action = classify_finding(candidate)
             lines.extend(
                 [
                     f"### {candidate.acronym or candidate.name}",
                     "",
+                    f"- Type: **{finding_type}**",
                     f"- Stored deadline(s): `{', '.join(candidate.current_deadlines) or 'TBA'}`",
                     f"- Candidate: `{candidate.candidate_deadline}`",
+                    f"- Conference dates: `{candidate.conference_dates or 'TBA'}`",
                     f"- Confidence: `{candidate.confidence}`",
                     f"- Source: {candidate.source_url}",
                     f"- Snippet: {candidate.snippet}",
+                    f"- Recommended action: {action}",
                     "",
                 ]
             )
         if len(alert_candidates) > 40:
             lines.extend(
                 [
-                    f"_Another {len(alert_candidates) - 40} candidates are available in `data/deadline-proposals.json`._",
+                    f"_Another {len(alert_candidates) - 40} findings were omitted from this summary._",
                     "",
                 ]
             )
     else:
         lines.extend(["None found.", ""])
 
-    if errors:
-        lines.extend(["## Fetch or configuration issues", ""])
-        new_error_set = set(new_errors)
-        for error in errors:
-            prefix = "NEW: " if error in new_error_set else ""
-            lines.append(f"- {prefix}{error}")
+    attention_errors = configuration_errors + persistent_errors
+    if attention_errors:
+        lines.extend(["## Pages requiring attention", ""])
+        lines.extend(f"- {error}" for error in attention_errors)
         lines.append("")
+
+    if alert_candidates or page_changes or attention_errors:
+        lines.extend(
+            [
+                "## What to do",
+                "",
+                "1. Open each source link above and verify the date.",
+                "2. Edit `data/conferences.json` directly on GitHub.",
+                "3. Commit the verified change and close this issue with a short note.",
+                "",
+            ]
+        )
+    else:
+        lines.extend(["## Result", "", "No action needed.", ""])
 
     lines.extend(
         [
-            "## Review workflow",
-            "",
-            "Download `deadline-review-artifacts` from this workflow run. Review",
-            "`data/deadline-proposals.json` against the official CFP, set `apply` to `true` only",
-            "for approved changes, then run `python3 scripts/update_dates.py` locally.",
+            "Transient fetch failures are shown in the Actions summary but only appear here after",
+            f"{FAILURE_NOTIFY_AFTER} consecutive failed scans.",
             "",
         ]
     )

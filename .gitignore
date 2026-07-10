@@ -3,6 +3,6 @@ __pycache__/
 *.pyc
 .venv/
 deadline-report.md
-data/deadline-candidates.json
-data/deadline-proposals.json
 .cache/deadline-page-state.json
+deadline-review-artifacts/
+deadline-review-artifacts.zip

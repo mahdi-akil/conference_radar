@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-04-21",
+  "updated_at": "2026-07-10",
   "conferences": [
     {
       "id": "iwpe-2026",
@@ -129,10 +129,54 @@
       "location": "Venice, Italy",
       "website_url": "https://privacysymposium.org/",
       "cfp_url": "https://privacysymposium.org/call-for-papers/",
+      "auto_check": false,
       "description": "Policy, regulation, compliance, and technology event with a scientific paper track.",
       "rank": "",
       "notes": "Community and governance oriented; useful for privacy regulation and compliance work.",
       "last_checked": "2026-04-21",
+      "deadline_confidence": "official"
+    },
+    {
+      "id": "privacy-symposium-2027",
+      "name": "Privacy and Data Governance Symposium",
+      "acronym": "Privacy Symposium",
+      "type": "conference",
+      "areas": [
+        "privacy",
+        "policy"
+      ],
+      "topics": [
+        "privacy",
+        "data protection",
+        "data governance",
+        "law",
+        "policy"
+      ],
+      "keywords": [
+        "GDPR",
+        "regulatory compliance",
+        "data governance",
+        "privacy engineering",
+        "Springer"
+      ],
+      "submission_deadline": "2026-10-25",
+      "expected_deadline_months": [
+        "october"
+      ],
+      "deadline_kind": "scientific paper",
+      "deadline_timezone": "",
+      "notification_date": "2027-01-19",
+      "conference_dates": "2027-04-26 to 2027-04-30",
+      "expected_conference_months": [
+        "april"
+      ],
+      "location": "Venice, Italy",
+      "website_url": "https://privacysymposium.org/",
+      "cfp_url": "https://privacysymposium.org/call-for-papers/",
+      "description": "Policy, regulation, compliance, and technology event with a scientific paper track.",
+      "rank": "",
+      "notes": "Community and governance oriented; useful for privacy regulation and compliance work.",
+      "last_checked": "2026-07-10",
       "deadline_confidence": "official"
     },
     {
