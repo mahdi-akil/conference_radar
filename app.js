@@ -10,11 +10,14 @@ const CORE_AREAS = [
   { value: "energy", label: "Energy", aliases: ["energy", "smart grid", "smart grids", "power systems", "sustainability"] },
   { value: "iot", label: "IoT", aliases: ["iot", "cyber-physical", "embedded", "edge", "sensor", "rfid"] },
   { value: "systems", label: "Systems", aliases: ["systems", "distributed systems", "operating systems", "software systems", "dependable systems"] },
+  { value: "software", label: "Software Engineering", aliases: ["software engineering", "program repair", "code generation", "code comprehension", "software testing", "repository mining", "software maintenance", "developer tools"] },
+  { value: "ai", label: "AI / ML", aliases: ["artificial intelligence", "machine learning", "large language model", "llm", "foundation model", "agentic"] },
   { value: "networking", label: "Networking", aliases: ["networking", "network", "wireless", "communications", "internet", "service management"] },
   { value: "hci", label: "HCI", aliases: ["hci", "human factors", "human-centered", "usable privacy", "usable security", "user studies"] },
   { value: "policy", label: "Policy", aliases: ["policy", "law", "regulation", "governance", "compliance", "digital rights"] },
 ];
 const today = startOfDay(new Date());
+let favoritesCalendarUrl = "";
 
 const state = {
   conferences: [],
@@ -95,7 +98,11 @@ function bindEvents() {
     input.addEventListener("input", applyFilters);
   });
 
-  els.exportFavorites.addEventListener("click", downloadFavoritesCalendar);
+  els.exportFavorites.addEventListener("click", (event) => {
+    if (els.exportFavorites.getAttribute("aria-disabled") === "true") {
+      event.preventDefault();
+    }
+  });
 
   els.viewButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -1166,10 +1173,30 @@ function downloadCalendarEvent(conference) {
 function updateFavoriteExportButton() {
   const items = getFavoriteCalendarItems();
   const favoriteCount = new Set(items.map((item) => item.conference.id)).size;
-  els.exportFavorites.disabled = items.length === 0;
+  const isDisabled = items.length === 0;
+
+  if (favoritesCalendarUrl) {
+    URL.revokeObjectURL(favoritesCalendarUrl);
+    favoritesCalendarUrl = "";
+  }
+
+  if (isDisabled) {
+    els.exportFavorites.removeAttribute("href");
+    els.exportFavorites.removeAttribute("download");
+  } else {
+    const blob = new Blob([buildFavoritesCalendar(items)], {
+      type: "text/calendar;charset=utf-8",
+    });
+    favoritesCalendarUrl = URL.createObjectURL(blob);
+    els.exportFavorites.href = favoritesCalendarUrl;
+    els.exportFavorites.download = "conference-radar-favorites.ics";
+  }
+
+  els.exportFavorites.classList.toggle("disabled", isDisabled);
+  els.exportFavorites.setAttribute("aria-disabled", String(isDisabled));
   els.exportFavorites.title = items.length
-    ? `Download ${items.length} upcoming deadline${items.length === 1 ? "" : "s"} from ${favoriteCount} favorite conference${favoriteCount === 1 ? "" : "s"}`
-    : "Favorite conferences with exact upcoming deadlines can be exported";
+    ? `Download ${items.length} deadline${items.length === 1 ? "" : "s"} from ${favoriteCount} favorite conference${favoriteCount === 1 ? "" : "s"}`
+    : "Favorite conferences with exact deadlines can be exported";
   els.exportFavorites.setAttribute("aria-label", els.exportFavorites.title);
 }
 
@@ -1178,15 +1205,8 @@ function getFavoriteCalendarItems() {
     .filter(isFavoriteConference)
     .flatMap((conference) =>
       conference.deadlineEntries
-        .filter((entry) => daysUntil(entry.date) >= 0)
         .map((entry) => ({ conference, entry })),
     );
-}
-
-function downloadFavoritesCalendar() {
-  const items = getFavoriteCalendarItems();
-  if (!items.length) return;
-  downloadCalendarFile("conference-radar-favorites.ics", buildFavoritesCalendar(items));
 }
 
 function downloadCalendarFile(filename, contents) {
@@ -1200,7 +1220,7 @@ function downloadCalendarFile(filename, contents) {
   document.body.appendChild(anchor);
   anchor.click();
   anchor.remove();
-  URL.revokeObjectURL(url);
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function buildCalendarEvent(conference) {
