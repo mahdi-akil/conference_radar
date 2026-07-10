@@ -43,6 +43,14 @@
             <input id="searchInput" type="search" autocomplete="off" placeholder="smart grids September 2026">
           </label>
 
+          <label class="checkbox-field filter-toggle wide">
+            <input id="includeClosedToggle" type="checkbox">
+            <span class="filter-toggle-copy">
+              <strong id="includeClosedTitle">Show expired conferences</strong>
+              <small id="includeClosedCount">Older deadlines are hidden by default</small>
+            </span>
+          </label>
+
           <label class="field">
             <span>Area</span>
             <select id="topicFilter">
@@ -78,6 +86,10 @@
           </label>
 
           <button id="resetButton" class="secondary-button has-symbol" data-symbol="reset" type="button">Reset filters</button>
+
+          <button id="exportFavoritesButton" class="secondary-button has-symbol" data-symbol="calendar" type="button">
+            Export favorites
+          </button>
 
           <button id="addConferenceButton" class="admin-open-button has-symbol" data-symbol="plus" type="button">
             <span>Add conference</span>
@@ -209,6 +221,19 @@
       </form>
     </dialog>
 
+    <dialog id="conferenceDetailsDialog" class="details-dialog" aria-labelledby="conferenceDetailsTitle">
+      <article class="details-panel">
+        <header class="dialog-heading details-heading">
+          <div>
+            <p id="conferenceDetailsAcronym" class="acronym"></p>
+            <h2 id="conferenceDetailsTitle"></h2>
+          </div>
+          <button id="closeConferenceDetailsButton" class="secondary-button compact has-symbol" data-symbol="close" type="button">Close</button>
+        </header>
+        <div id="conferenceDetailsContent" class="details-content"></div>
+      </article>
+    </dialog>
+
     <template id="deadlineEntryTemplate">
       <div class="deadline-entry-row">
         <label class="field">
@@ -252,6 +277,10 @@
           <span class="date-chip"></span>
           <span class="days-chip"></span>
         </div>
+        <div class="trust-row">
+          <span class="confidence-badge"></span>
+          <span class="freshness-label"></span>
+        </div>
         <p class="details"></p>
         <div class="tag-row"></div>
         <dl class="facts">
@@ -265,6 +294,7 @@
           </div>
         </dl>
         <div class="card-actions">
+          <button class="secondary-button compact details-button" type="button">Details</button>
           <button class="calendar-button has-symbol" data-symbol="calendar" type="button" title="Download calendar event">
             <span>Add to calendar</span>
           </button>

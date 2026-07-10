@@ -20,6 +20,8 @@ const state = {
   conferences: [],
   filtered: [],
   matching: [],
+  matchingWithClosed: [],
+  hiddenClosed: 0,
   summaryMode: "all",
   view: loadSavedView(),
   favorites: loadSavedFavorites(),
@@ -32,6 +34,10 @@ const els = {
   type: document.querySelector("#typeFilter"),
   rank: document.querySelector("#rankFilter"),
   sort: document.querySelector("#sortSelect"),
+  includeClosed: document.querySelector("#includeClosedToggle"),
+  includeClosedTitle: document.querySelector("#includeClosedTitle"),
+  includeClosedCount: document.querySelector("#includeClosedCount"),
+  exportFavorites: document.querySelector("#exportFavoritesButton"),
   viewButtons: document.querySelectorAll(".view-toggle"),
   reset: document.querySelector("#resetButton"),
   results: document.querySelector("#results"),
@@ -57,6 +63,11 @@ const els = {
   deadlineEntryTemplate: document.querySelector("#deadlineEntryTemplate"),
   addOutput: document.querySelector("#conferenceJsonOutput"),
   copyConferenceJson: document.querySelector("#copyConferenceJsonButton"),
+  detailsDialog: document.querySelector("#conferenceDetailsDialog"),
+  detailsAcronym: document.querySelector("#conferenceDetailsAcronym"),
+  detailsTitle: document.querySelector("#conferenceDetailsTitle"),
+  detailsContent: document.querySelector("#conferenceDetailsContent"),
+  closeDetails: document.querySelector("#closeConferenceDetailsButton"),
 };
 
 init();
@@ -80,9 +91,11 @@ async function init() {
 }
 
 function bindEvents() {
-  [els.search, els.topic, els.month, els.type, els.rank, els.sort].forEach((input) => {
+  [els.search, els.topic, els.month, els.type, els.rank, els.sort, els.includeClosed].forEach((input) => {
     input.addEventListener("input", applyFilters);
   });
+
+  els.exportFavorites.addEventListener("click", downloadFavoritesCalendar);
 
   els.viewButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -120,8 +133,19 @@ function bindEvents() {
     els.type.value = "";
     els.rank.value = "";
     els.sort.value = "deadline";
+    els.includeClosed.checked = false;
     state.summaryMode = "all";
     applyFilters();
+  });
+
+  els.closeDetails.addEventListener("click", () => {
+    els.detailsDialog.close();
+  });
+
+  els.detailsDialog.addEventListener("click", (event) => {
+    if (event.target === els.detailsDialog) {
+      els.detailsDialog.close();
+    }
   });
 
   updateViewButtons();
@@ -375,7 +399,7 @@ function applyFilters() {
   const selectedType = els.type.value;
   const selectedRank = els.rank.value;
 
-  let filtered = state.conferences.filter((conference) => {
+  const matchingBeforeClosed = state.conferences.filter((conference) => {
     const matchesQuery = words.every((word) => conference.searchText.includes(word));
     const matchesTopic = !selectedTopic || (conference.areas || []).includes(selectedTopic);
     const matchesType = !selectedType || conference.type === selectedType;
@@ -386,14 +410,21 @@ function applyFilters() {
     return matchesQuery && matchesTopic && matchesType && matchesRank && matchesMonth;
   });
 
-  filtered = sortConferences(filtered, els.sort.value);
+  const sortedMatching = sortConferences(matchingBeforeClosed, els.sort.value);
+  const expiredCount = sortedMatching.filter(isClosedConference).length;
+  state.hiddenClosed = els.includeClosed.checked ? 0 : expiredCount;
+  const filtered = els.includeClosed.checked
+    ? sortedMatching
+    : sortedMatching.filter((conference) => !isClosedConference(conference));
   const upcoming = filtered.filter(isUpcomingConference);
   const tba = filtered.filter(isTbaConference);
-  const favorites = filtered.filter(isFavoriteConference);
+  const favorites = sortedMatching.filter(isFavoriteConference);
   const visible = pickSummaryResults(filtered, upcoming, tba, favorites);
   state.matching = filtered;
+  state.matchingWithClosed = sortedMatching;
   state.filtered = visible;
 
+  updateExpiredControl(expiredCount);
   renderSummary(filtered, upcoming, tba, favorites);
   renderResultsMeta(filtered, visible, upcoming, tba, favorites);
   renderResults(visible);
@@ -445,28 +476,45 @@ function renderSummary(matchingConferences, upcomingConferences, tbaConferences,
   els.summaryUpcomingButton.disabled = upcomingConferences.length === 0;
   els.summaryTbaButton.disabled = tbaConferences.length === 0;
   els.summaryFavoritesButton.disabled = favoriteConferences.length === 0;
+  updateFavoriteExportButton();
 }
 
 function renderResultsMeta(matchingConferences, visibleConferences, upcomingConferences, tbaConferences, favoriteConferences) {
   if (!els.resultsMeta) return;
+  const closedNote = state.hiddenClosed
+    ? ` ${state.hiddenClosed} expired ${state.hiddenClosed === 1 ? "conference is" : "conferences are"} hidden.`
+    : "";
 
   if (state.summaryMode === "upcoming") {
-    els.resultsMeta.textContent = `Showing ${visibleConferences.length} of ${matchingConferences.length} conferences with deadlines in the next 30 days.`;
+    els.resultsMeta.textContent = `Showing ${visibleConferences.length} of ${matchingConferences.length} conferences with deadlines in the next 30 days.${closedNote}`;
     return;
   }
 
   if (state.summaryMode === "tba") {
-    els.resultsMeta.textContent = `Showing ${visibleConferences.length} of ${matchingConferences.length} conferences with deadline TBA or still expected.`;
+    els.resultsMeta.textContent = `Showing ${visibleConferences.length} of ${matchingConferences.length} conferences with deadline TBA or still expected.${closedNote}`;
     return;
   }
 
   if (state.summaryMode === "favorites") {
     const label = visibleConferences.length === 1 ? "favorite conference" : "favorite conferences";
-    els.resultsMeta.textContent = `Showing ${visibleConferences.length} ${label} out of ${matchingConferences.length} matching conferences.`;
+    const expiredFavorites = favoriteConferences.filter(isClosedConference).length;
+    const expiredNote = expiredFavorites
+      ? ` ${expiredFavorites} expired ${expiredFavorites === 1 ? "favorite is" : "favorites are"} included.`
+      : "";
+    els.resultsMeta.textContent = `Showing ${visibleConferences.length} ${label}.${expiredNote}`;
     return;
   }
 
-  els.resultsMeta.textContent = `Showing ${visibleConferences.length} matching conferences.`;
+  els.resultsMeta.textContent = `Showing ${visibleConferences.length} matching conferences.${closedNote}`;
+}
+
+function updateExpiredControl(expiredCount) {
+  const isShowingExpired = els.includeClosed.checked;
+  els.includeClosed.closest(".filter-toggle")?.classList.toggle("showing-expired", isShowingExpired);
+  els.includeClosedTitle.textContent = isShowingExpired ? "Hide expired conferences" : "Show expired conferences";
+  els.includeClosedCount.textContent = expiredCount
+    ? `${expiredCount} matching ${expiredCount === 1 ? "conference" : "conferences"} ${isShowingExpired ? "shown" : "hidden"}`
+    : "No expired conferences match the current filters";
 }
 
 function renderResults(conferences) {
@@ -503,6 +551,7 @@ function renderResults(conferences) {
     if (dayState) {
       daysChip.classList.add(dayState);
     }
+    populateTrustRow(card.querySelector(".trust-row"), conference);
     card.querySelector(".details").textContent = conference.description || "";
 
     const tagRow = card.querySelector(".tag-row");
@@ -520,6 +569,9 @@ function renderResults(conferences) {
     setLink(card.querySelector(".website-link"), conference.website_url);
     setLink(card.querySelector(".cfp-link"), conference.cfp_url || conference.website_url);
     setCalendarButton(card.querySelector(".calendar-button"), conference);
+    card.querySelector(".details-button").addEventListener("click", () => {
+      openConferenceDetails(conference);
+    });
     els.results.appendChild(node);
   });
 }
@@ -568,7 +620,7 @@ function renderTableResults(conferences) {
     const meta = document.createElement("span");
     meta.className = "table-meta";
     meta.textContent = conference.conference_dates ? `Conference: ${conference.conference_dates}` : "Conference: TBA";
-    venueCell.append(acronym, name, meta);
+    venueCell.append(acronym, name, meta, buildTrustRow(conference, "table-trust"));
 
     const areasCell = tableCell("areas-cell");
     if ((conference.areas || []).length) {
@@ -600,6 +652,14 @@ function renderTableResults(conferences) {
     calendarButton.textContent = "Add to calendar";
     setCalendarButton(calendarButton, conference);
     actions.appendChild(calendarButton);
+    const detailsButton = document.createElement("button");
+    detailsButton.className = "secondary-button compact";
+    detailsButton.type = "button";
+    detailsButton.textContent = "Details";
+    detailsButton.addEventListener("click", () => {
+      openConferenceDetails(conference);
+    });
+    actions.appendChild(detailsButton);
     appendTableLink(actions, "Website", conference.website_url);
     appendTableLink(actions, "CFP", conference.cfp_url || conference.website_url);
     linksCell.appendChild(actions);
@@ -641,6 +701,7 @@ function toggleFavorite(conferenceId) {
 
   if (state.summaryMode === "favorites") {
     applyFilters();
+    updateFavoriteControls();
     return;
   }
 
@@ -660,7 +721,7 @@ function updateFavoriteControls() {
 function renderCurrentSummary() {
   const upcoming = state.matching.filter(isUpcomingConference);
   const tba = state.matching.filter(isTbaConference);
-  const favorites = state.matching.filter(isFavoriteConference);
+  const favorites = state.matchingWithClosed.filter(isFavoriteConference);
   renderSummary(state.matching, upcoming, tba, favorites);
 }
 
@@ -698,6 +759,10 @@ function isTbaConference(conference) {
   return !conference.deadlineDate;
 }
 
+function isClosedConference(conference) {
+  return Boolean(conference.deadlineDate) && daysUntil(conference.deadlineDate) < 0;
+}
+
 function isFavoriteConference(conference) {
   return state.favorites.has(conference.id);
 }
@@ -728,6 +793,194 @@ function applyStatusBadge(element, conference) {
 function applyRankBadge(element, conference) {
   element.hidden = false;
   element.textContent = `Rank ${formatRank(conference.rank)}`;
+}
+
+function buildTrustRow(conference, extraClass = "") {
+  const row = document.createElement("div");
+  row.className = extraClass ? `trust-row ${extraClass}` : "trust-row";
+  populateTrustRow(row, conference);
+  return row;
+}
+
+function populateTrustRow(row, conference) {
+  const confidence = getConfidenceInfo(conference.deadline_confidence);
+  const confidenceBadge = document.createElement("span");
+  confidenceBadge.className = `confidence-badge ${confidence.className}`;
+  confidenceBadge.textContent = confidence.label;
+  confidenceBadge.title = confidence.title;
+
+  const freshness = getFreshnessInfo(conference.last_checked);
+  const freshnessLabel = document.createElement("span");
+  freshnessLabel.className = `freshness-label ${freshness.className}`.trim();
+  freshnessLabel.textContent = freshness.label;
+  freshnessLabel.title = freshness.title;
+
+  row.replaceChildren(confidenceBadge, freshnessLabel);
+}
+
+function getConfidenceInfo(value) {
+  const confidence = String(value || "").trim().toLowerCase();
+  if (confidence === "official") {
+    return { label: "Official source", className: "official", title: "Deadline taken from an official conference source" };
+  }
+  if (confidence === "manual") {
+    return { label: "Manually checked", className: "manual", title: "Deadline was entered or verified manually" };
+  }
+  if (confidence === "expected") {
+    return { label: "Expected", className: "expected", title: "Deadline is an estimate and still needs confirmation" };
+  }
+  return { label: "Unverified", className: "unverified", title: "Deadline source has not been classified" };
+}
+
+function getFreshnessInfo(value) {
+  const checkedDate = parseDate(value);
+  if (!checkedDate) {
+    return { label: "Not checked", className: "stale", title: "No last-checked date is available" };
+  }
+
+  const age = Math.max(0, -daysUntil(checkedDate));
+  const stale = age > 90;
+  return {
+    label: `Checked ${formatDate(checkedDate)}`,
+    className: stale ? "stale" : "",
+    title: stale ? `Last checked ${age} days ago` : `Last checked ${age === 0 ? "today" : `${age} days ago`}`,
+  };
+}
+
+function openConferenceDetails(conference) {
+  els.detailsAcronym.textContent = conference.acronym || "Conference";
+  els.detailsTitle.textContent = conference.name;
+  els.detailsContent.replaceChildren();
+
+  const overview = document.createElement("div");
+  overview.className = "details-overview";
+  const statusBadge = document.createElement("span");
+  applyStatusBadge(statusBadge, conference);
+  const rankBadge = document.createElement("span");
+  rankBadge.className = "rank-badge";
+  applyRankBadge(rankBadge, conference);
+  overview.append(statusBadge, rankBadge, buildTrustRow(conference, "details-trust"));
+  els.detailsContent.appendChild(overview);
+
+  const deadlineSection = buildDetailsSection("Deadlines");
+  const deadlineList = document.createElement("div");
+  deadlineList.className = "details-deadline-list";
+  if (conference.deadlineEntries.length) {
+    conference.deadlineEntries.forEach((entry) => {
+      const item = document.createElement("div");
+      item.className = `details-deadline-item ${daysUntil(entry.date) < 0 ? "closed" : ""}`.trim();
+      const heading = document.createElement("strong");
+      heading.textContent = entry.label || entry.kind || "Submission deadline";
+      const date = document.createElement("span");
+      date.textContent = formatDate(entry.date);
+      const metadata = document.createElement("small");
+      metadata.textContent = [entry.kind, entry.timezone].filter(Boolean).join(" · ") || "Exact date";
+      item.append(heading, date, metadata);
+      deadlineList.appendChild(item);
+    });
+  } else {
+    const expected = document.createElement("p");
+    expected.className = "detail-copy";
+    expected.textContent = conference.expected_deadline_months?.length
+      ? `Expected ${conference.expected_deadline_months.map(toTitle).join(", ")}; no exact date has been published yet.`
+      : "No deadline has been published yet.";
+    deadlineList.appendChild(expected);
+  }
+  deadlineSection.appendChild(deadlineList);
+  els.detailsContent.appendChild(deadlineSection);
+
+  const factsSection = buildDetailsSection("Conference information");
+  const facts = document.createElement("dl");
+  facts.className = "details-facts";
+  [
+    ["Type", toTitle(conference.type || "conference")],
+    ["Rank", formatRank(conference.rank)],
+    ["Conference dates", conference.conference_dates || "TBA"],
+    ["Location", conference.location || "TBA"],
+    ["Notification", formatOptionalDate(conference.notification_date)],
+    ["Deadline timezone", conference.nextDeadline?.timezone || conference.deadline_timezone || "TBA"],
+  ].forEach(([label, value]) => {
+    facts.appendChild(buildDetailsFact(label, value));
+  });
+  factsSection.appendChild(facts);
+  els.detailsContent.appendChild(factsSection);
+
+  if (conference.description) {
+    const descriptionSection = buildDetailsSection("About");
+    const description = document.createElement("p");
+    description.className = "detail-copy";
+    description.textContent = conference.description;
+    descriptionSection.appendChild(description);
+    els.detailsContent.appendChild(descriptionSection);
+  }
+
+  if (conference.notes) {
+    const notesSection = buildDetailsSection("Notes");
+    const notes = document.createElement("p");
+    notes.className = "detail-copy";
+    notes.textContent = conference.notes;
+    notesSection.appendChild(notes);
+    els.detailsContent.appendChild(notesSection);
+  }
+
+  const topics = uniqueSorted([...(conference.areas || []), ...(conference.topics || [])]);
+  if (topics.length) {
+    const topicsSection = buildDetailsSection("Areas");
+    const tags = document.createElement("div");
+    tags.className = "tag-row";
+    topics.forEach((topic) => tags.appendChild(buildTag(toTitle(topic))));
+    topicsSection.appendChild(tags);
+    els.detailsContent.appendChild(topicsSection);
+  }
+
+  const actions = document.createElement("div");
+  actions.className = "details-actions";
+  const favoriteButton = document.createElement("button");
+  favoriteButton.className = "favorite-button";
+  favoriteButton.type = "button";
+  favoriteButton.innerHTML = '<span aria-hidden="true">☆</span>';
+  setFavoriteButton(favoriteButton, conference);
+  actions.appendChild(favoriteButton);
+  const calendarButton = document.createElement("button");
+  calendarButton.className = "calendar-button has-symbol";
+  calendarButton.dataset.symbol = "calendar";
+  calendarButton.type = "button";
+  calendarButton.textContent = "Add to calendar";
+  setCalendarButton(calendarButton, conference);
+  actions.appendChild(calendarButton);
+  appendTableLink(actions, "Website", conference.website_url);
+  appendTableLink(actions, "CFP", conference.cfp_url || conference.website_url);
+  els.detailsContent.appendChild(actions);
+
+  if (typeof els.detailsDialog.showModal === "function") {
+    els.detailsDialog.showModal();
+  } else {
+    els.detailsDialog.setAttribute("open", "");
+  }
+}
+
+function buildDetailsSection(title) {
+  const section = document.createElement("section");
+  section.className = "details-section";
+  const heading = document.createElement("h3");
+  heading.textContent = title;
+  section.appendChild(heading);
+  return section;
+}
+
+function buildDetailsFact(label, value) {
+  const wrapper = document.createElement("div");
+  const term = document.createElement("dt");
+  term.textContent = label;
+  const detail = document.createElement("dd");
+  detail.textContent = value;
+  wrapper.append(term, detail);
+  return wrapper;
+}
+
+function formatOptionalDate(value) {
+  const date = parseDate(value);
+  return date ? formatDate(date) : "TBA";
 }
 
 function buildTag(text, className = "") {
@@ -905,8 +1158,39 @@ function setCalendarButton(button, conference) {
 }
 
 function downloadCalendarEvent(conference) {
-  const filename = `${slugify(conference.acronym || conference.name)}-${conference.submission_deadline}-deadline.ics`;
-  const blob = new Blob([buildCalendarEvent(conference)], {
+  const deadlineText = conference.nextDeadline?.dateText || formatIsoDate(conference.deadlineDate);
+  const filename = `${slugify(conference.acronym || conference.name)}-${deadlineText}-deadline.ics`;
+  downloadCalendarFile(filename, buildCalendarEvent(conference));
+}
+
+function updateFavoriteExportButton() {
+  const items = getFavoriteCalendarItems();
+  const favoriteCount = new Set(items.map((item) => item.conference.id)).size;
+  els.exportFavorites.disabled = items.length === 0;
+  els.exportFavorites.title = items.length
+    ? `Download ${items.length} upcoming deadline${items.length === 1 ? "" : "s"} from ${favoriteCount} favorite conference${favoriteCount === 1 ? "" : "s"}`
+    : "Favorite conferences with exact upcoming deadlines can be exported";
+  els.exportFavorites.setAttribute("aria-label", els.exportFavorites.title);
+}
+
+function getFavoriteCalendarItems() {
+  return state.conferences
+    .filter(isFavoriteConference)
+    .flatMap((conference) =>
+      conference.deadlineEntries
+        .filter((entry) => daysUntil(entry.date) >= 0)
+        .map((entry) => ({ conference, entry })),
+    );
+}
+
+function downloadFavoritesCalendar() {
+  const items = getFavoriteCalendarItems();
+  if (!items.length) return;
+  downloadCalendarFile("conference-radar-favorites.ics", buildFavoritesCalendar(items));
+}
+
+function downloadCalendarFile(filename, contents) {
+  const blob = new Blob([contents], {
     type: "text/calendar;charset=utf-8",
   });
   const url = URL.createObjectURL(blob);
@@ -920,16 +1204,39 @@ function downloadCalendarEvent(conference) {
 }
 
 function buildCalendarEvent(conference) {
-  const start = formatIcsDate(conference.deadlineDate);
-  const end = formatIcsDate(addDays(conference.deadlineDate, 1));
+  return buildCalendar([{ conference, entry: conference.nextDeadline }]);
+}
+
+function buildFavoritesCalendar(items) {
+  return buildCalendar(items);
+}
+
+function buildCalendar(items) {
+  return [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Conference Radar//Deadline Events//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    ...items.map(({ conference, entry }) => buildCalendarEventBlock(conference, entry)),
+    "END:VCALENDAR",
+    "",
+  ].join("\r\n");
+}
+
+function buildCalendarEventBlock(conference, entry) {
+  const deadline = entry?.date || conference.deadlineDate;
+  const deadlineText = entry?.dateText || formatIsoDate(deadline);
+  const start = formatIcsDate(deadline);
+  const end = formatIcsDate(addDays(deadline, 1));
   const created = formatIcsDateTime(new Date());
   const sourceUrl = conference.cfp_url || conference.website_url || "";
-  const deadlineLabel = conference.nextDeadline?.label || conference.deadline_kind || "Submission deadline";
+  const deadlineLabel = entry?.label || conference.deadline_kind || "Submission deadline";
   const title = `${deadlineLabel}: ${conference.acronym || conference.name}`;
   const description = [
     `${conference.name} (${conference.acronym || "conference"})`,
-    conference.nextDeadline?.kind ? `Deadline type: ${conference.nextDeadline.kind}` : conference.deadline_kind ? `Deadline type: ${conference.deadline_kind}` : "",
-    conference.nextDeadline?.timezone ? `Timezone: ${conference.nextDeadline.timezone}` : conference.deadline_timezone ? `Timezone: ${conference.deadline_timezone}` : "",
+    entry?.kind ? `Deadline type: ${entry.kind}` : conference.deadline_kind ? `Deadline type: ${conference.deadline_kind}` : "",
+    entry?.timezone ? `Timezone: ${entry.timezone}` : conference.deadline_timezone ? `Timezone: ${conference.deadline_timezone}` : "",
     conference.conference_dates ? `Conference dates: ${conference.conference_dates}` : "",
     conference.location ? `Location: ${conference.location}` : "",
     sourceUrl ? `Source: ${sourceUrl}` : "",
@@ -939,13 +1246,8 @@ function buildCalendarEvent(conference) {
     .join("\\n");
 
   return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Conference Radar//Deadline Event//EN",
-    "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:${conference.id}-${conference.submission_deadline}@conference-radar`,
+    `UID:${conference.id}-${deadlineText}-${slugify(deadlineLabel)}@conference-radar`,
     `DTSTAMP:${created}`,
     `DTSTART;VALUE=DATE:${start}`,
     `DTEND;VALUE=DATE:${end}`,
@@ -958,8 +1260,6 @@ function buildCalendarEvent(conference) {
     buildAlarm("P14D", "Conference deadline in 14 days"),
     buildAlarm("P3D", "Conference deadline in 3 days"),
     "END:VEVENT",
-    "END:VCALENDAR",
-    "",
   ]
     .filter(Boolean)
     .join("\r\n");

@@ -497,25 +497,23 @@
         "privacy engineering",
         "security assurance"
       ],
-      "submission_deadline": "",
-      "expected_deadline_months": [
-        "june"
-      ],
-      "deadline_kind": "paper",
-      "deadline_timezone": "",
+      "submission_deadline": "2026-07-02",
+      "expected_deadline_months": [],
+      "deadline_kind": "paper submission",
+      "deadline_timezone": "Europe/Vienna (14:00 CEST)",
       "notification_date": "",
-      "conference_dates": "September",
+      "conference_dates": "Co-located with ESORICS 2026",
       "expected_conference_months": [
         "september"
       ],
-      "location": "Varies",
+      "location": "TBA",
       "website_url": "https://link.springer.com/conference/dpm",
       "cfp_url": "https://link.springer.com/conference/dpm",
-      "description": "Workshop series on data privacy management, often relevant for privacy policy and assurance work.",
+      "description": "Workshop on data privacy management, co-located with ESORICS 2026 and relevant for privacy policy and assurance work.",
       "rank": "",
-      "notes": "No current 2026 CFP found during seeding; keep as a manual follow-up item.",
-      "last_checked": "2026-04-21",
-      "deadline_confidence": "expected"
+      "notes": "The 2026 paper deadline was July 2 at 14:00 Europe/Vienna time.",
+      "last_checked": "2026-07-10",
+      "deadline_confidence": "manual"
     },
     {
       "id": "usenix-security-2026",
