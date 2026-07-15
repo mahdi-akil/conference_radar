@@ -1,4 +1,7 @@
+import { buildVenueProfileChunks, fingerprintVenueProfiles } from "./matcher-profiles.mjs";
+
 const DATA_URL = "data/conferences.json";
+const VENUE_EMBEDDINGS_URL = "data/venue-embeddings.json";
 const VIEW_STORAGE_KEY = "conference-radar-view";
 const FAVORITES_STORAGE_KEY = "conference-radar-favorites";
 const NO_RANK_FILTER_VALUE = "__no_rank__";
@@ -30,6 +33,7 @@ let lastMatch = null;
 
 const state = {
   conferences: [],
+  profileConferences: [],
   filtered: [],
   matching: [],
   matchingWithClosed: [],
@@ -101,6 +105,7 @@ async function init() {
       throw new Error(`Could not load ${DATA_URL}`);
     }
     const payload = await response.json();
+    state.profileConferences = payload.conferences;
     state.conferences = payload.conferences.map(normalizeConference);
     hydrateFilters(state.conferences);
     bindEvents();
@@ -326,14 +331,14 @@ async function runAbstractMatch() {
 
   try {
     const embedder = await loadEmbedder();
-    setMatchStatus("Scoring venues…");
     const venueEmbeddings = await loadVenueEmbeddings(embedder);
+    setMatchStatus("Scoring venues…");
     const abstractEmbedding = (await embedder(EMBEDDING_QUERY_PREFIX + abstract, { pooling: "cls", normalize: true })).tolist()[0];
     lastMatch = {
       abstract,
       scored: state.conferences.map((conference, index) => ({
         conference,
-        similarity: dotProduct(abstractEmbedding, venueEmbeddings[index]),
+        similarity: scoreVenueChunks(abstractEmbedding, venueEmbeddings[index]),
       })),
     };
     renderCurrentMatches();
@@ -372,8 +377,11 @@ function loadEmbedder() {
 
 function loadVenueEmbeddings(embedder) {
   if (!venueEmbeddingsPromise) {
-    const profiles = state.conferences.map(buildVenueProfile);
-    venueEmbeddingsPromise = embedder(profiles, { pooling: "cls", normalize: true }).then((tensor) => tensor.tolist());
+    venueEmbeddingsPromise = loadPrecomputedVenueEmbeddings().catch(async (error) => {
+      console.warn("Precomputed venue embeddings unavailable; rebuilding in the browser.", error);
+      setMatchStatus("Preparing venue profiles…");
+      return computeVenueEmbeddings(embedder);
+    });
     venueEmbeddingsPromise.catch(() => {
       venueEmbeddingsPromise = null;
     });
@@ -381,19 +389,50 @@ function loadVenueEmbeddings(embedder) {
   return venueEmbeddingsPromise;
 }
 
-function buildVenueProfile(conference) {
-  const areaLabels = (conference.areas || []).map(toTitle);
-  return [
-    `${conference.name} (${conference.acronym || "conference"}).`,
-    conference.description,
-    conference.notes,
-    areaLabels.length ? `Research areas: ${areaLabels.join(", ")}.` : "",
-    conference.topics?.length ? `Topics: ${conference.topics.join(", ")}.` : "",
-    conference.keywords?.length ? `Keywords: ${conference.keywords.join(", ")}.` : "",
-    conference.cfp_topics?.length ? `Call for papers topics: ${conference.cfp_topics.join("; ")}.` : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+async function loadPrecomputedVenueEmbeddings() {
+  setMatchStatus("Loading venue profiles…");
+  const response = await fetch(VENUE_EMBEDDINGS_URL);
+  if (!response.ok) {
+    throw new Error(`Could not load ${VENUE_EMBEDDINGS_URL}`);
+  }
+
+  const payload = await response.json();
+  const fingerprint = fingerprintVenueProfiles(state.profileConferences);
+  if (payload.model !== EMBEDDING_MODEL || payload.profiles_fingerprint !== fingerprint) {
+    throw new Error("The precomputed venue embeddings are stale.");
+  }
+
+  return state.conferences.map((conference, index) => {
+    const embeddings = payload.venues?.[conference.id];
+    const sourceConference = state.profileConferences[index];
+    if (sourceConference?.id !== conference.id) {
+      throw new Error(`Conference profile order differs for ${conference.id}.`);
+    }
+    const expectedChunks = buildVenueProfileChunks(sourceConference).length;
+    if (!Array.isArray(embeddings) || embeddings.length !== expectedChunks || embeddings.some((item) => !Array.isArray(item))) {
+      throw new Error(`Missing or invalid precomputed embeddings for ${conference.id}.`);
+    }
+    return embeddings;
+  });
+}
+
+async function computeVenueEmbeddings(embedder) {
+  const chunksByVenue = state.profileConferences.map(buildVenueProfileChunks);
+  const flatChunks = chunksByVenue.flat();
+  const tensor = await embedder(flatChunks, { pooling: "cls", normalize: true });
+  const flatEmbeddings = tensor.tolist();
+  let offset = 0;
+  return chunksByVenue.map((chunks) => {
+    const embeddings = flatEmbeddings.slice(offset, offset + chunks.length);
+    offset += chunks.length;
+    return embeddings;
+  });
+}
+
+function scoreVenueChunks(abstractEmbedding, venueEmbeddings) {
+  const scores = venueEmbeddings.map((embedding) => dotProduct(abstractEmbedding, embedding)).sort((a, b) => b - a);
+  if (scores.length === 1) return scores[0];
+  return scores[0] * 0.75 + scores[1] * 0.25;
 }
 
 function renderCurrentMatches() {
@@ -475,21 +514,11 @@ function dotProduct(a, b) {
   return sum;
 }
 
-// Thresholds and display range are calibrated to bge-small-en-v1.5 cosine scores,
-// where unrelated abstracts already land around 0.55-0.60.
-const SIMILARITY_FLOOR = 0.55;
-const SIMILARITY_CEIL = 0.8;
-
 function getFitInfo(similarity) {
   if (similarity >= 0.68) return { label: "Strong fit", className: "strong" };
   if (similarity >= 0.63) return { label: "Good fit", className: "good" };
   if (similarity >= 0.6) return { label: "Possible fit", className: "possible" };
   return { label: "Weak fit", className: "weak" };
-}
-
-function scaleSimilarity(similarity) {
-  const scaled = (similarity - SIMILARITY_FLOOR) / (SIMILARITY_CEIL - SIMILARITY_FLOOR);
-  return Math.round(Math.min(1, Math.max(0, scaled)) * 100);
 }
 
 function renderMatchResults(ranked) {
@@ -520,19 +549,12 @@ function renderMatchResults(ranked) {
     item.appendChild(topline);
 
     const fit = getFitInfo(similarity);
-    const matchScore = scaleSimilarity(similarity);
     const fitRow = document.createElement("div");
     fitRow.className = "match-fit-row";
     const fitLabel = document.createElement("span");
     fitLabel.className = `match-fit-label ${fit.className}`;
-    fitLabel.textContent = `${fit.label} · ${matchScore}% match`;
-    const bar = document.createElement("div");
-    bar.className = "match-fit-bar";
-    const fill = document.createElement("div");
-    fill.className = `match-fit-fill ${fit.className}`;
-    fill.style.width = `${Math.max(4, matchScore)}%`;
-    bar.appendChild(fill);
-    fitRow.append(fitLabel, bar);
+    fitLabel.textContent = fit.label;
+    fitRow.appendChild(fitLabel);
     item.appendChild(fitRow);
 
     const deadline = document.createElement("p");

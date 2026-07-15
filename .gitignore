@@ -2,7 +2,9 @@
 __pycache__/
 *.pyc
 .venv/
+node_modules/
 deadline-report.md
 .cache/deadline-page-state.json
+.cache/transformers/
 deadline-review-artifacts/
 deadline-review-artifacts.zip
