@@ -514,11 +514,37 @@ function dotProduct(a, b) {
   return sum;
 }
 
+// Convert BGE cosine similarity into a private, calibrated score. The score is
+// used only to choose a label and is intentionally not shown as a percentage.
+const MATCH_SCORE_CALIBRATION = [
+  { similarity: 0.55, score: 0 },
+  { similarity: 0.6, score: 20 },
+  { similarity: 0.64, score: 40 },
+  { similarity: 0.69, score: 65 },
+  { similarity: 0.75, score: 85 },
+  { similarity: 0.8, score: 100 },
+];
+
 function getFitInfo(similarity) {
-  if (similarity >= 0.68) return { label: "Strong fit", className: "strong" };
-  if (similarity >= 0.63) return { label: "Good fit", className: "good" };
-  if (similarity >= 0.6) return { label: "Possible fit", className: "possible" };
+  const score = getInternalMatchScore(similarity);
+  if (score >= 85) return { label: "Strong fit", className: "strong" };
+  if (score >= 65) return { label: "Good fit", className: "good" };
+  if (score >= 40) return { label: "Possible fit", className: "possible" };
   return { label: "Weak fit", className: "weak" };
+}
+
+function getInternalMatchScore(similarity) {
+  if (similarity <= MATCH_SCORE_CALIBRATION[0].similarity) return 0;
+
+  for (let index = 1; index < MATCH_SCORE_CALIBRATION.length; index += 1) {
+    const upper = MATCH_SCORE_CALIBRATION[index];
+    if (similarity > upper.similarity) continue;
+    const lower = MATCH_SCORE_CALIBRATION[index - 1];
+    const progress = (similarity - lower.similarity) / (upper.similarity - lower.similarity);
+    return lower.score + progress * (upper.score - lower.score);
+  }
+
+  return 100;
 }
 
 function renderMatchResults(ranked) {
