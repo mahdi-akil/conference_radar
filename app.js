@@ -2,6 +2,7 @@ const DATA_URL = "data/conferences.json";
 const VIEW_STORAGE_KEY = "conference-radar-view";
 const FAVORITES_STORAGE_KEY = "conference-radar-favorites";
 const NO_RANK_FILTER_VALUE = "__no_rank__";
+const TOP_RANK_FILTER_VALUE = "__top_rank__";
 const STOP_WORDS = new Set(["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with"]);
 const CORE_AREAS = [
   { value: "privacy", label: "Privacy", aliases: ["privacy", "data protection", "gdpr", "identity", "anonymity"] },
@@ -17,7 +18,15 @@ const CORE_AREAS = [
   { value: "policy", label: "Policy", aliases: ["policy", "law", "regulation", "governance", "compliance", "digital rights"] },
 ];
 const today = startOfDay(new Date());
+const TRANSFORMERS_CDN_URL = "https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.4.0";
+const EMBEDDING_MODEL = "Xenova/bge-small-en-v1.5";
+const EMBEDDING_QUERY_PREFIX = "Represent this sentence for searching relevant passages: ";
+const MIN_ABSTRACT_LENGTH = 120;
+const MAX_MATCH_RESULTS = 5;
 let favoritesCalendarUrl = "";
+let embedderPromise = null;
+let venueEmbeddingsPromise = null;
+let lastMatch = null;
 
 const state = {
   conferences: [],
@@ -66,6 +75,16 @@ const els = {
   deadlineEntryTemplate: document.querySelector("#deadlineEntryTemplate"),
   addOutput: document.querySelector("#conferenceJsonOutput"),
   copyConferenceJson: document.querySelector("#copyConferenceJsonButton"),
+  abstractMatch: document.querySelector("#abstractMatchButton"),
+  matchDialog: document.querySelector("#abstractMatchDialog"),
+  closeMatchDialog: document.querySelector("#closeAbstractMatchButton"),
+  abstractInput: document.querySelector("#abstractInput"),
+  matchType: document.querySelector("#matchTypeFilter"),
+  matchRank: document.querySelector("#matchRankFilter"),
+  matchOpenOnly: document.querySelector("#matchOpenOnlyToggle"),
+  runAbstractMatch: document.querySelector("#runAbstractMatchButton"),
+  matchStatus: document.querySelector("#abstractMatchStatus"),
+  matchResults: document.querySelector("#abstractMatchResults"),
   detailsDialog: document.querySelector("#conferenceDetailsDialog"),
   detailsAcronym: document.querySelector("#conferenceDetailsAcronym"),
   detailsTitle: document.querySelector("#conferenceDetailsTitle"),
@@ -86,6 +105,7 @@ async function init() {
     hydrateFilters(state.conferences);
     bindEvents();
     bindAdminHelper();
+    bindAbstractMatcher();
     applyFilters();
   } catch (error) {
     els.results.innerHTML = `<div class="empty-state">Could not load conference data.</div>`;
@@ -254,6 +274,299 @@ function syncDeadlineMode() {
   const multiple = els.multipleDeadlinesToggle.checked;
   els.deadlineEntriesSection.hidden = !multiple;
   els.singleDeadlineField.hidden = multiple;
+}
+
+function bindAbstractMatcher() {
+  if (!els.abstractMatch || !els.matchDialog) return;
+
+  els.abstractMatch.addEventListener("click", () => {
+    if (typeof els.matchDialog.showModal === "function") {
+      els.matchDialog.showModal();
+    } else {
+      els.matchDialog.setAttribute("open", "");
+    }
+  });
+
+  els.closeMatchDialog.addEventListener("click", () => {
+    els.matchDialog.close();
+  });
+
+  els.matchDialog.addEventListener("click", (event) => {
+    if (event.target === els.matchDialog) {
+      els.matchDialog.close();
+    }
+  });
+
+  const types = uniqueSorted(state.conferences.map((item) => item.type).filter(Boolean));
+  addOptions(els.matchType, types);
+  const ranks = uniqueSorted(state.conferences.map((item) => item.rank).filter(Boolean));
+  addOptions(els.matchRank, ranks, formatRank);
+  addOptions(els.matchRank, [NO_RANK_FILTER_VALUE], () => "No rank");
+
+  [els.matchType, els.matchRank, els.matchOpenOnly].forEach((input) => {
+    input.addEventListener("input", () => {
+      if (lastMatch) {
+        renderCurrentMatches();
+      }
+    });
+  });
+
+  els.runAbstractMatch.addEventListener("click", runAbstractMatch);
+}
+
+async function runAbstractMatch() {
+  const abstract = els.abstractInput.value.trim();
+  if (abstract.length < MIN_ABSTRACT_LENGTH) {
+    setMatchStatus("Please paste the full abstract so there is enough text to compare against each venue.", "error");
+    return;
+  }
+
+  els.runAbstractMatch.disabled = true;
+  els.matchResults.replaceChildren();
+
+  try {
+    const embedder = await loadEmbedder();
+    setMatchStatus("Scoring venues…");
+    const venueEmbeddings = await loadVenueEmbeddings(embedder);
+    const abstractEmbedding = (await embedder(EMBEDDING_QUERY_PREFIX + abstract, { pooling: "cls", normalize: true })).tolist()[0];
+    lastMatch = {
+      abstract,
+      scored: state.conferences.map((conference, index) => ({
+        conference,
+        similarity: dotProduct(abstractEmbedding, venueEmbeddings[index]),
+      })),
+    };
+    renderCurrentMatches();
+  } catch (error) {
+    console.error(error);
+    setMatchStatus("Could not run the matcher. The first run needs an internet connection to download the model — please try again.", "error");
+  } finally {
+    els.runAbstractMatch.disabled = false;
+  }
+}
+
+function setMatchStatus(message, tone = "") {
+  els.matchStatus.textContent = message;
+  els.matchStatus.classList.toggle("error", tone === "error");
+}
+
+function loadEmbedder() {
+  if (!embedderPromise) {
+    setMatchStatus("Loading the language model…");
+    embedderPromise = import(TRANSFORMERS_CDN_URL).then(({ pipeline }) =>
+      pipeline("feature-extraction", EMBEDDING_MODEL, {
+        dtype: "q8",
+        progress_callback: (event) => {
+          if (event.status === "progress" && String(event.file || "").endsWith(".onnx")) {
+            setMatchStatus(`Loading the language model… ${Math.round(event.progress || 0)}%`);
+          }
+        },
+      }),
+    );
+    embedderPromise.catch(() => {
+      embedderPromise = null;
+    });
+  }
+  return embedderPromise;
+}
+
+function loadVenueEmbeddings(embedder) {
+  if (!venueEmbeddingsPromise) {
+    const profiles = state.conferences.map(buildVenueProfile);
+    venueEmbeddingsPromise = embedder(profiles, { pooling: "cls", normalize: true }).then((tensor) => tensor.tolist());
+    venueEmbeddingsPromise.catch(() => {
+      venueEmbeddingsPromise = null;
+    });
+  }
+  return venueEmbeddingsPromise;
+}
+
+function buildVenueProfile(conference) {
+  const areaLabels = (conference.areas || []).map(toTitle);
+  return [
+    `${conference.name} (${conference.acronym || "conference"}).`,
+    conference.description,
+    conference.notes,
+    areaLabels.length ? `Research areas: ${areaLabels.join(", ")}.` : "",
+    conference.topics?.length ? `Topics: ${conference.topics.join(", ")}.` : "",
+    conference.keywords?.length ? `Keywords: ${conference.keywords.join(", ")}.` : "",
+    conference.cfp_topics?.length ? `Call for papers topics: ${conference.cfp_topics.join("; ")}.` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function renderCurrentMatches() {
+  if (!lastMatch) return;
+  const selectedType = els.matchType.value;
+  const selectedRank = els.matchRank.value;
+  const openOnly = els.matchOpenOnly.checked;
+
+  const eligible = lastMatch.scored.filter(({ conference }) => {
+    const matchesType = !selectedType || conference.type === selectedType;
+    return matchesType && matchesRankFilter(conference, selectedRank);
+  });
+
+  const groups = new Map();
+  eligible.forEach((item) => {
+    const key = (item.conference.acronym || item.conference.name).toLowerCase();
+    const group = groups.get(key);
+    if (!group) {
+      groups.set(key, { ...item });
+      return;
+    }
+    group.similarity = Math.max(group.similarity, item.similarity);
+    if (preferVenueEdition(item.conference, group.conference)) {
+      group.conference = item.conference;
+    }
+  });
+
+  const ranked = [...groups.values()]
+    .filter((item) => !openOnly || !isClosedConference(item.conference))
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, MAX_MATCH_RESULTS)
+    .map((item) => ({
+      ...item,
+      sharedThemes: findSharedThemes(item.conference, lastMatch.abstract),
+    }));
+
+  renderMatchResults(ranked);
+  if (!ranked.length) {
+    setMatchStatus("No venues match the selected filters. Loosen the type, rank, or open-calls filters to see more.", "error");
+  } else if (getFitInfo(ranked[0].similarity).className === "weak") {
+    setMatchStatus("None of the tracked venues look like a close fit for this abstract, so treat these as loose suggestions.", "error");
+  } else {
+    setMatchStatus("");
+  }
+}
+
+function matchesRankFilter(conference, selectedRank) {
+  if (!selectedRank) return true;
+  if (selectedRank === NO_RANK_FILTER_VALUE) return !conference.rank;
+  if (selectedRank === TOP_RANK_FILTER_VALUE) return ["A", "A*"].includes(formatRank(conference.rank));
+  return conference.rank === selectedRank;
+}
+
+function preferVenueEdition(candidate, current) {
+  const candidateClosed = isClosedConference(candidate);
+  const currentClosed = isClosedConference(current);
+  if (candidateClosed !== currentClosed) return !candidateClosed;
+  const candidateDays = daysUntil(candidate.deadlineDate);
+  const currentDays = daysUntil(current.deadlineDate);
+  return candidateClosed ? candidateDays > currentDays : candidateDays < currentDays;
+}
+
+function findSharedThemes(conference, abstract) {
+  const abstractText = abstract.toLowerCase();
+  const aliasPhrases = CORE_AREAS
+    .filter((area) => (conference.areas || []).includes(area.value))
+    .flatMap((area) => area.aliases);
+  const phrases = [...(conference.topics || []), ...(conference.keywords || []), ...aliasPhrases]
+    .map((phrase) => String(phrase).toLowerCase())
+    .filter((phrase) => phrase.length > 3 && abstractText.includes(phrase));
+  return [...new Set(phrases)].slice(0, 4);
+}
+
+function dotProduct(a, b) {
+  let sum = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    sum += a[i] * b[i];
+  }
+  return sum;
+}
+
+// Thresholds and display range are calibrated to bge-small-en-v1.5 cosine scores,
+// where unrelated abstracts already land around 0.55-0.60.
+const SIMILARITY_FLOOR = 0.55;
+const SIMILARITY_CEIL = 0.8;
+
+function getFitInfo(similarity) {
+  if (similarity >= 0.68) return { label: "Strong fit", className: "strong" };
+  if (similarity >= 0.63) return { label: "Good fit", className: "good" };
+  if (similarity >= 0.6) return { label: "Possible fit", className: "possible" };
+  return { label: "Weak fit", className: "weak" };
+}
+
+function scaleSimilarity(similarity) {
+  const scaled = (similarity - SIMILARITY_FLOOR) / (SIMILARITY_CEIL - SIMILARITY_FLOOR);
+  return Math.round(Math.min(1, Math.max(0, scaled)) * 100);
+}
+
+function renderMatchResults(ranked) {
+  els.matchResults.replaceChildren();
+
+  ranked.forEach(({ conference, similarity, sharedThemes }, index) => {
+    const item = document.createElement("article");
+    item.className = "match-result";
+
+    const topline = document.createElement("div");
+    topline.className = "match-topline";
+    const heading = document.createElement("div");
+    heading.className = "match-heading";
+    const rank = document.createElement("span");
+    rank.className = "match-rank";
+    rank.textContent = `${index + 1}`;
+    const nameBlock = document.createElement("div");
+    const acronym = document.createElement("p");
+    acronym.className = "acronym";
+    acronym.textContent = conference.acronym || "Conference";
+    const name = document.createElement("h3");
+    name.textContent = conference.name;
+    nameBlock.append(acronym, name);
+    heading.append(rank, nameBlock);
+    const statusBadge = document.createElement("span");
+    applyStatusBadge(statusBadge, conference);
+    topline.append(heading, statusBadge);
+    item.appendChild(topline);
+
+    const fit = getFitInfo(similarity);
+    const matchScore = scaleSimilarity(similarity);
+    const fitRow = document.createElement("div");
+    fitRow.className = "match-fit-row";
+    const fitLabel = document.createElement("span");
+    fitLabel.className = `match-fit-label ${fit.className}`;
+    fitLabel.textContent = `${fit.label} · ${matchScore}% match`;
+    const bar = document.createElement("div");
+    bar.className = "match-fit-bar";
+    const fill = document.createElement("div");
+    fill.className = `match-fit-fill ${fit.className}`;
+    fill.style.width = `${Math.max(4, matchScore)}%`;
+    bar.appendChild(fill);
+    fitRow.append(fitLabel, bar);
+    item.appendChild(fitRow);
+
+    const deadline = document.createElement("p");
+    deadline.className = "match-deadline";
+    deadline.textContent = `${formatDeadline(conference)} · ${formatDays(conference.deadlineDate)}`;
+    item.appendChild(deadline);
+
+    if (sharedThemes.length) {
+      const themes = document.createElement("div");
+      themes.className = "tag-row";
+      const themesLabel = document.createElement("span");
+      themesLabel.className = "match-themes-label";
+      themesLabel.textContent = "Shared themes:";
+      themes.appendChild(themesLabel);
+      sharedThemes.forEach((theme) => themes.appendChild(buildTag(theme)));
+      item.appendChild(themes);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "match-result-actions";
+    const detailsButton = document.createElement("button");
+    detailsButton.className = "secondary-button compact";
+    detailsButton.type = "button";
+    detailsButton.textContent = "Details";
+    detailsButton.addEventListener("click", () => {
+      openConferenceDetails(conference);
+    });
+    actions.appendChild(detailsButton);
+    appendTableLink(actions, "Website", conference.website_url);
+    appendTableLink(actions, "CFP", conference.cfp_url || conference.website_url);
+    item.appendChild(actions);
+
+    els.matchResults.appendChild(item);
+  });
 }
 
 function addDeadlineEntryRow(entry = {}) {

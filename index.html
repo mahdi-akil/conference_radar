@@ -91,6 +91,10 @@
             Export favorites
           </a>
 
+          <button id="abstractMatchButton" class="secondary-button has-symbol" data-symbol="match" type="button">
+            Match my abstract
+          </button>
+
           <button id="addConferenceButton" class="admin-open-button has-symbol" data-symbol="plus" type="button">
             <span>Add conference</span>
           </button>
@@ -221,6 +225,49 @@
           <textarea id="conferenceJsonOutput" class="admin-output" readonly rows="12"></textarea>
         </label>
       </form>
+    </dialog>
+
+    <dialog id="abstractMatchDialog" class="details-dialog match-dialog" aria-labelledby="abstractMatchTitle">
+      <article class="details-panel">
+        <header class="dialog-heading details-heading">
+          <div>
+            <p class="acronym">Venue finder</p>
+            <h2 id="abstractMatchTitle">Match my abstract</h2>
+          </div>
+          <button id="closeAbstractMatchButton" class="secondary-button compact has-symbol" data-symbol="close" type="button">Close</button>
+        </header>
+        <label class="field wide">
+          <span>Paper abstract</span>
+          <textarea id="abstractInput" rows="8" placeholder="Paste the abstract of your paper here to find the venues that fit it best."></textarea>
+        </label>
+        <div class="match-filters">
+          <label class="field">
+            <span>Type</span>
+            <select id="matchTypeFilter">
+              <option value="">All types</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Rank</span>
+            <select id="matchRankFilter">
+              <option value="">All ranks</option>
+              <option value="__top_rank__">A or A*</option>
+            </select>
+          </label>
+          <label class="checkbox-field match-open-toggle">
+            <input id="matchOpenOnlyToggle" type="checkbox">
+            <span>Only open calls</span>
+          </label>
+        </div>
+        <div class="match-actions">
+          <button id="runAbstractMatchButton" class="admin-open-button has-symbol" data-symbol="match" type="button">
+            <span>Find matching venues</span>
+          </button>
+          <p id="abstractMatchStatus" class="match-status" role="status"></p>
+        </div>
+        <section id="abstractMatchResults" class="match-results" aria-live="polite"></section>
+        <p class="helper-note">Matching runs entirely in your browser with a small on-device language model; the abstract is never uploaded anywhere. The first run downloads the model (~35&nbsp;MB), later runs reuse the cached copy.</p>
+      </article>
     </dialog>
 
     <dialog id="conferenceDetailsDialog" class="details-dialog" aria-labelledby="conferenceDetailsTitle">

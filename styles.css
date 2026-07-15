@@ -1410,3 +1410,169 @@ main {
     min-width: 830px;
   }
 }
+
+.has-symbol[data-symbol="match"]::before {
+  content: "✦";
+  font-size: 0.9rem;
+}
+
+.match-dialog {
+  width: min(680px, calc(100vw - 28px));
+}
+
+.match-dialog .field textarea {
+  min-height: 150px;
+}
+
+.match-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.match-open-toggle {
+  font-size: 0.9rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .match-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.match-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.match-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.match-status.error {
+  color: var(--red);
+}
+
+.match-results {
+  display: grid;
+  gap: 10px;
+}
+
+.match-result {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.match-topline {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.match-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.match-rank {
+  flex: 0 0 auto;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--teal-quiet);
+  color: var(--teal);
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.match-result h3 {
+  margin: 2px 0 0;
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.match-fit-row {
+  display: grid;
+  gap: 5px;
+}
+
+.match-fit-label {
+  font-size: 0.82rem;
+  font-weight: 750;
+  color: var(--muted);
+}
+
+.match-fit-label.strong {
+  color: var(--green);
+}
+
+.match-fit-label.good {
+  color: var(--teal);
+}
+
+.match-fit-bar {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.match-fit-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--muted);
+}
+
+.match-fit-fill.strong {
+  background: var(--green);
+}
+
+.match-fit-fill.good {
+  background: var(--teal);
+}
+
+.match-fit-fill.possible {
+  background: var(--gold);
+}
+
+.match-deadline {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.match-themes-label {
+  align-self: center;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.match-result-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
