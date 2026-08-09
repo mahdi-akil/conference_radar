@@ -3524,7 +3524,7 @@
       "id": "acm-symposium-on-principles-of-distributed-computing-2027",
       "name": "ACM Symposium on Principles of Distributed Computing",
       "acronym": "PODC",
-      "type": "symposium",
+      "type": "conference",
       "areas": [
         "computing",
         "systems",
@@ -3598,7 +3598,7 @@
       "id": "acm-ieee-ccgrid-2027",
       "name": "IEEE International Symposium on Cluster, Cloud, and Internet Computing",
       "acronym": "CCGrid",
-      "type": "symposium",
+      "type": "conference",
       "areas": [
         "energy",
         "systems",
