@@ -3636,7 +3636,7 @@
       "website_url": "https://hpcclab.org/ccgrid27/",
       "cfp_url": "https://hpcclab.org/ccgrid27/#call-for-papers",
       "description": "A venue relevant for distributed systems, cloud computing, systems for AI/ML, distributed intelligence and future computing paradigms.",
-      "rank": "",
+      "rank": "B",
       "notes": "Not a pure security venue, but relevant for distributed, cloud, edge security and privacy systems.",
       "last_checked": "2026-08-09",
       "deadline_confidence": "official",
@@ -3648,6 +3648,63 @@
         "Performance Modeling, Analysis, and Optimization",
         "Distributed Systems Security, Privacy, Resilience, and Reliability",
         "Sustainable Computing and Green Technologies"
+      ]
+    },
+    {
+      "id": "ieee-ipdps-2027",
+      "name": "41st IEEE International Parallel & Distributed Processing Symposium",
+      "acronym": "IPDPS",
+      "type": "conference",
+      "areas": [
+        "energy",
+        "systems",
+        "distributed",
+        "processing",
+        "architecture",
+        "security"
+      ],
+      "topics": [
+        "parallel computation",
+        "distributed processing",
+        "algorithm",
+        "energy efficiency",
+        "sustainability",
+        "security"
+      ],
+      "keywords": [
+        "edge",
+        "cloud",
+        "energy",
+        "distributed systems",
+        "sustainable computing"
+      ],
+      "submission_deadline": "2026-10-01",
+      "expected_deadline_months": [
+        "october"
+      ],
+      "deadline_kind": "paper",
+      "deadline_timezone": "",
+      "notification_date": "2027-01-01",
+      "conference_dates": "2027-06-01 to 2027-06-05",
+      "expected_conference_months": [
+        "october"
+      ],
+      "location": "Seattle, USA",
+      "website_url": "https://www.ipdps.org/",
+      "cfp_url": "https://www.ipdps.org/ipdps2027/2027-call-for-papers.html",
+      "description": "A venue relevant for high performance computing in parallel and distributed processing.",
+      "rank": "A",
+      "notes": "Not a pure security venue, but relevant for distributed processing security and privacy systems.",
+      "last_checked": "2026-08-09",
+      "deadline_confidence": "official",
+      "cfp_topics": [
+        "Algorithms",
+        "Applications",
+        "Architecture",
+        "Machine Learning and Artificial Intelligence (ML/AI)",
+        "Measurements, Modeling, and Experiments",
+        "Programming Models, Compilers, and Runtime Systems",
+        "System Software"
       ]
     }
   ]
