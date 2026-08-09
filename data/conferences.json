@@ -3595,28 +3595,29 @@
       ]
     },
     {
-      "id": "acm-ieee-sec-2026",
-      "name": "ACM/IEEE Symposium on Edge Computing",
-      "acronym": "SEC",
+      "id": "acm-ieee-ccgrid-2027",
+      "name": "IEEE International Symposium on Cluster, Cloud, and Internet Computing",
+      "acronym": "CCGrid",
       "type": "symposium",
       "areas": [
         "energy",
-        "iot",
-        "security",
         "systems",
-        "networking"
+        "security",
+        "distributed",
+        "processing"
       ],
       "topics": [
         "edge computing",
-        "IoT",
+        "cloud computing",
         "security",
-        "smart energy",
+        "algorithm",
+        "energy efficiency",
         "sustainability"
       ],
       "keywords": [
         "edge",
-        "IoT hubs",
-        "smart energy",
+        "cloud",
+        "energy",
         "distributed systems",
         "sustainable computing"
       ],
