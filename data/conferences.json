@@ -3706,58 +3706,6 @@
         "Programming Models, Compilers, and Runtime Systems",
         "System Software"
       ]
-    },
-    {
-      "id": "energy-informatics-2026",
-      "name": "15th DACH + Conference on Energy Informatics",
-      "acronym": "energy-informatics2026",
-      "type": "conference",
-      "areas": [
-        "energy grid technologies",
-        "information technologies in energy sector",
-        "communication technologies in energy sector"
-      ],
-      "topics": [
-        "energy informatics",
-        "smart grid",
-        "algorithm",
-        "energy efficiency"
-      ],
-      "keywords": [
-        "energy",
-        "grid",
-        "energy",
-        "informatics"
-      ],
-      "submission_deadline": "2026-05-10",
-      "expected_deadline_months": [
-        "may"
-      ],
-      "deadline_kind": "paper",
-      "deadline_timezone": "CEST",
-      "notification_date": "2026-06-26",
-      "conference_dates": "2027-09-22 to 2027-09-23",
-      "expected_conference_months": [
-        "october"
-      ],
-      "location": "Energy Institute at the JKU Linz, 4040 Linz, Austria",
-      "website_url": "https://energy-informatics2026.org/",
-      "cfp_url": "https://energy-informatics2026.org/submissions/call-research-papers/",
-      "description": "A venue relevant for energy informatics.",
-      "rank": "B",
-      "notes": "Not a pure security/privacy venue, but relevant for energy informatics systems.",
-      "last_checked": "2026-08-12",
-      "deadline_confidence": "official",
-      "cfp_topics": [
-        "ICT and Data-Driven Innovations in Energy Systems",
-        "Future Energy Markets and Decision Support Systems",
-        "Energy System Modeling, Data, and Software Innovations",
-        "Smart Management and Analytics in Energy Systems",
-        "Risk Management and System Resilience",
-        "Sustainable Mobility and Energy Integration",
-        "Smart Buildings and User-Centric Energy Solutions",
-        "Policy, Regulation, and Cross-Cutting Issues in Smart Energy Systems"
-      ]
     }
   ]
 }
