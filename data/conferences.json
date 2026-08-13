@@ -3727,7 +3727,7 @@
         "energy",
         "grid",
         "energy",
-        "informatics",
+        "informatics"
       ],
       "submission_deadline": "2026-05-10",
       "expected_deadline_months": [
@@ -3744,7 +3744,7 @@
       "website_url": "https://energy-informatics2026.org/",
       "cfp_url": "https://energy-informatics2026.org/submissions/call-research-papers/",
       "description": "A venue relevant for energy informatics.",
-      "rank": "A",
+      "rank": "B",
       "notes": "Not a pure security/privacy venue, but relevant for energy informatics systems.",
       "last_checked": "2026-08-12",
       "deadline_confidence": "official",
